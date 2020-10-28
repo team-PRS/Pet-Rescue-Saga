@@ -3,7 +3,7 @@
 #Les animaux :
     • Se trouvent sur les blocs ;
     • Se déplacent avec les blocs OU tout seuls (vérifier déplacement de côtés) ;
-    • S’ils arrivent jusqu’au “sol”  sauvés et disparaissent ;
+    • S’ils arrivent jusqu’au “sol” -> sauvés et disparaissent ;
     • Sauvetage de chaque animal apporte X points au joueur ;
     • Peuvent être ajoutés au cours de partie avec un/des blocs colorés ou sans ;
     • Ne sont pas tués si un bloc tombe par-dessus, ou s‘ils tombent, ou si la bombe s’explose à côté ;
@@ -47,19 +47,20 @@ Les outils peuvent s’obtenir dans les blocs spéciaux (des caisses) Les caisse
 #Partie de jeu :
     • Différentes conditions selon le niveau de jeu ;
     • Partie se termine si :
-    • Tous les animaux pour cette partie sont été sauvés  parie est gagnée ;
-    • Il n’y a plus de coup possible, i.e. il n’y a plus de groupe de blocs, ni de ballons, ni de pics,  ni de bombe, ni de fusée MAIS il y a >= 1 animal non-sauvé  parie est perdu.
-    • Le temps de partie s’écoule – pour qqs niveaux de jeu (est-ce qu’on a besoin de ça ? cela veut dire qu’il faut ajouter class Timer)  parie est perdu;
-    • Le nombre de coups devient = 0 – pour qqs niveaux de jeu (est-ce qu’on a besoin de ça ?) ;
-    • Étoiles caractérisent à quel point de succès la partie a été jouée ? (Élaborer des critères ex : temps, nombre de coups restant)
+       - Tous les animaux pour cette partie sont été sauvés -> parie est gagnée ;
+       - Il n’y a plus de coup possible, i.e. il n’y a plus de groupe de blocs, ni de ballons, ni de pics,  ni de bombe, ni de fusée MAIS il y a >= 1 animal non-sauvé -> parie est perdu.
+       - Le temps de partie s’écoule – pour qqs niveaux de jeu (est-ce qu’on a besoin de ça ? cela veut dire qu’il faut ajouter class Timer) -> parie est perdu;
+       - Le nombre de coups devient = 0 – pour qqs niveaux de jeu (est-ce qu’on a besoin de ça ?) ;
+    • Étoiles caractérisent à quel point de succès la partie a été jouée ? (Élaborer des critères ex : temps, nombre de coups restant, nombre de blocs éliminés )
     • Report de partie : nombre d’étoiles pour partie, nombre de points gagnés, lingots d’or gagnés ;
     • Mise à jour le compte de joueur (nombre de points gagnés, lingots d’or gagnés) ;
     • Mise à jour le Map de jeu (+1 tour apparaissent comme joué, nombre d’étoiles pour ce tour, des tours disponibles à jouer (si accès est progressif)) ;
 
-#Complexité de partie (nivaux du jeu)
+#Complexité de partie (niveaux du jeu)
     • Demander au joueur de sauvé certain animaux ou tous.
     • Faire jouer le joueur avec plus de couleur différentes
     • Partie sur une carte plus grande.
+    • Absence/presence des blocs immobiles sur le plateau qui empechent a grouper les blocs mobiles.
 
 #Map de jeu :
 Simple = *tableaux avec des chiffres* ? (int [ ][ ])
