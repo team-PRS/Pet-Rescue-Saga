@@ -67,3 +67,7 @@ Simple = *tableaux avec des chiffres* ? (int [ ][ ])
 Ou *liste chaînée* avec des cases voisines (haut, bas, gauche, droite) : avantage ça permet de facilement traiter les cases voisines récursivement Inconvénient c’est un peu plus long a mettre en place.
 *Accessibles* = couleurs vives (avec drawRect et filRect ca devrais pas être trop dur)
 *sans accès* = couleurs pale/gris ? (Je crois que c’est juste dans le terminale cette partie la, on peu afficher un nombre pour chaque couleur, une lettre pour chaque animale et des lettres grec (ou des majuscules) pour les autres trucs.)
+
+#Niveau a ajouter :
+1 niveau "tuto" très facile
+4 niveau avec temp limité / coup limité ou pas.
