@@ -48,12 +48,17 @@ public class Bloc extends ObjectSurCase implements Amovible, Disparaissant
     public void ceDeplacer()
     {
         // TODO clarify method logic with Emilien
+        //Where we want to go.
+        CCase emptyCc = ...;
+        disparaitre();//remove from Plateau
+        emptyCc.getContenu().setO(this);//add at the new place.
     }
 
     @Override
     public void disparaitre()
     {
         // TODO clarify method logic with Emilien
+        cc.getContenu().removeO(); //remove this from the Case (& from the Plateau).
     }
 
 }

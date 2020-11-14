@@ -4,7 +4,7 @@ import prs.Amovible;
 
 public class Animal extends ObjectSurCase implements Amovible, Disparaissant
 {
-    private int ID;
+    private int type;
 
     public enum typeAnimal
     {
@@ -13,23 +13,24 @@ public class Animal extends ObjectSurCase implements Amovible, Disparaissant
         BIRD (3),
         FROG (3);
 
-        private final int ID;
+        private final int type;
 
         typeAnimal(int iVal)
         {
-            this.ID = iVal;
+            this.type = iVal;
         }
 
     }
 
-    public Animal(int id)
+    public Animal(int ty)
     {
-        ID = id;
+        super();
+        type = ty;
     }
 
-    public int getID()
+    public int getType()
     {
-        return ID;
+        return type;
     }
 
     @Override
