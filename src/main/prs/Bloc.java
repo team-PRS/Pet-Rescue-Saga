@@ -18,10 +18,7 @@ public class Bloc extends ObjectSurCase implements Amovible, Disparaissant
         this.color = color;
     }
 
-    public String getColor()
-    {
-        return color;
-    }
+    public String getColor(){return color;}
 
     public void setColor(String c)
     {
@@ -48,8 +45,7 @@ public class Bloc extends ObjectSurCase implements Amovible, Disparaissant
     public void ceDeplacer()
     {
         // TODO clarify method logic with Emilien
-        //Where we want to go.
-        CCase emptyCc = ...;
+        CCase emptyCc = cc.getBas();//Where we want to go, for exemple the Case below.
         disparaitre();//remove from Plateau
         emptyCc.getContenu().setO(this);//add at the new place.
     }

@@ -18,4 +18,6 @@ public class ObjectSurCase{
 
   public CCase getCc(){return cc;}
   public void setCc(CCase x){cc=x;}
+
+  public boolean equals(ObjectSurCase o){return id==o.getId();}//Or they have the same id or they are not equals.
 }
