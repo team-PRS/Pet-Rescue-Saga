@@ -23,30 +23,44 @@ public class Plateau
         }
     }
 
-    public int getHeight()
-    {
-        return height;
-    }
+    public int getHeight(){return height;}
 
-    public int getWidth()
-    {
-        return width;
-    }
+    public int getWidth(){return width;}
 
-    public boolean isOnPlateau(ObjectSurCase a)                       //check if ObjectSurCase is on Plateau
+ //   public boolean isOnPlateau(ObjectSurCase a)                       //check if ObjectSurCase is on Plateau
+ //   {
+ //       boolean onPlateau = false;
+ //       for (int i = 0; i < height; i++)
+ //       {
+ //           for (int j = 0; j < height; j++)
+ //           {
+ //               if (this.plateau[i][j] == a)
+ //               {
+ //                   onPlateau = true;
+ //               }
+ //           }
+ //       }
+ //       return onPlateau;
+ //   }
+
+    public boolean isOnPlateau(Point p)                       //check if Joueur click on Plateau
     {
         boolean onPlateau = false;
-        for (int i = 0; i < height; i++)
+        if (((p.getCoordX() >= 0) && (p.getCoordX() <= height)) && ((p.getCoordY() >= 0) && (p.getCoordY() <= width)))
         {
-            for (int j = 0; j < height; j++)
-            {
-                if (this.plateau[i][j] == a)
-                {
-                    onPlateau = true;
-                }
-            }
+            onPlateau = true;
         }
         return onPlateau;
+    }
+
+    public boolean isEmpty(int x, int y)                       //check if Joueur click on Plateau
+    {
+        boolean isEmpty = false;
+        if (getObject(x, y) == null)
+        {
+            isEmpty = true;
+        }
+        return isEmpty;
     }
 
     public ObjectSurCase getObject(int x, int y)                       //return ObjectSurCase by coordinates
@@ -66,7 +80,6 @@ public class Plateau
 
 
     /* find all Blocs of the same color, i.e. check if there is a group for the Bloc ----- return LinkedList<Point>
-    
      */
 
     public LinkedList<Point> getGroup(int x, int y)
@@ -186,13 +199,26 @@ public class Plateau
         }
     }
 
-    //   TODO function for instance of ObjectSurCase: delete from one place, insert to another one
-
-    public void moveObject(int depX, int depY, int arrX, int arrY, ObjectSurCase obj)
+    //function for instance of ObjectSurCase: delete from one place, insert to another one
+    public void moveObject(int depX, int depY, int arrX, int arrY)
     {
-        this.cleanCase(depX, depY);
-        //TODO add intermediate cases ?
-        this.setObject(obj, depX, depY);
+        if ((((depX >= 0) && (depX <= height)) && ((depY >= 0) && (depY <= width))) &&
+                (((arrX >= 0) && (arrX <= height)) && ((arrY >= 0) && (arrY <= width))))
+        {
+            ObjectSurCase obj = this.getObject(depX, depY);
+            this.cleanCase(depX, depY);
+            if (this.isEmpty(arrX, arrY))                              //TODO add intermediate cases between dep and arr?
+            {
+                this.setObject(obj, arrX, arrY);
+            } else
+            {
+                System.out.println("This place is occupied");
+            }
+        }
+        else
+        {
+            System.out.println("Out of bounds of tableau");
+        }
     }
 
     public static void main(String[] args)
@@ -218,6 +244,16 @@ public class Plateau
         test1.printMap();
         System.out.println("");
         test1.getGroup(1, 3);
+
+        test1.moveObject(2,3, 0,2);
+        test1.printMap();
+        System.out.println("");
+        test1.getGroup(1, 3);
+
+
+        test1.moveObject(3,2, 0,6);
+        test1.printMap();
+        System.out.println("");
 
     }
 

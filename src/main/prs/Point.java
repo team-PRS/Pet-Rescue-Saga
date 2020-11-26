@@ -2,8 +2,8 @@ package prs;
 
 public class Point
 {
-    public int coordX;
-    public int coordY;
+    private int coordX;
+    private int coordY;
 
     public Point(int x, int y)
     {
@@ -11,4 +11,6 @@ public class Point
         this.coordY = y;
     }
 
+    public int getCoordX(){return coordX;}
+    public int getCoordY(){return coordY;}
 }
