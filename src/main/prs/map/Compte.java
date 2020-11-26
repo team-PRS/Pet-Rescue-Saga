@@ -29,6 +29,13 @@ public class Compte implements Serializable{
   // GET SET --------------------------------------------------------------------
   public int getGold(){ return gold;}
   public void setGold(int g){gold =g;}
+  public int getScore(int i){return levelScore[i];}
+  /**
+  *{@summary setScore.}
+  *@param i the id of the level and his place in levelScore [].
+  *@param score the score to set.
+  *@return true if it worked.
+  */
   public boolean setScore(int i, int score){
     if(score < 0){
       System.out.println("Impossible to set a < 0 score.");
@@ -47,10 +54,22 @@ public class Compte implements Serializable{
     r+=tableau.tableauToString(levelScore);
     return r;
   }
+  /**
+  *{@summary Check if a level is unlock.}
+  *@param i the id of the level and his place in levelScore [].
+  *@return true if the level is unlock.
+  */
   public boolean isLevelUnlock(int i){
+    if(i<0 || i>=levelScore.length){System.out.println("i n'est pas correcte");return false;}
     return levelScore[i]!=-1;
   }
+  /**
+  *{@summary Unlock a level.}
+  *@param i the id of the level and his place in levelScore [].
+  *@return true if it worked.
+  */
   public boolean unlockLevel(int i){
+    if(i<0 || i>=levelScore.length){System.out.println("i n'est pas correcte");return false;}
     if(levelScore[i]==-1){
       levelScore[i]=0;
       return true;
