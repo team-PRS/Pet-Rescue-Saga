@@ -1,6 +1,6 @@
 package prs;
 
-public class Bloc extends ObjectSurCase implements Amovible, Disparaissant
+public class Bloc extends ObjectSurCase
 {
     private String color;
 
@@ -40,21 +40,4 @@ public class Bloc extends ObjectSurCase implements Amovible, Disparaissant
     {
         return true;
     }
-
-    @Override
-    public void ceDeplacer()
-    {
-        // TODO clarify method logic with Emilien
-        CCase emptyCc = cc.getBas();//Where we want to go, for exemple the Case below.
-        disparaitre();//remove from Plateau
-        emptyCc.getContenu().setO(this);//add at the new place.
-    }
-
-    @Override
-    public void disparaitre()
-    {
-        // TODO clarify method logic with Emilien
-        cc.getContenu().removeO(); //remove this from the Case (& from the Plateau).
-    }
-
 }

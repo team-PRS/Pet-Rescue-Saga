@@ -1,8 +1,6 @@
 package prs;
 
-import prs.Amovible;
-
-public class Animal extends ObjectSurCase implements Amovible, Disparaissant
+public class Animal extends ObjectSurCase
 {
     private int type;
 
@@ -19,7 +17,6 @@ public class Animal extends ObjectSurCase implements Amovible, Disparaissant
         {
             this.type = iVal;
         }
-
     }
 
     public Animal(int ty)
@@ -39,18 +36,4 @@ public class Animal extends ObjectSurCase implements Amovible, Disparaissant
         return false;
     }
 
-    @Override
-    public void ceDeplacer()
-    {
-        // TODO clarify method logic with Emilien
-    }
-
-    @Override
-    public void disparaitre()
-    {
-      //  if (this.getX() == Plateau.getHeight())  //TODO it's just first outline of idea. I need access to getX but which class Case/Plateau?
-        {
-            // TODO clarify method logic with Emilien
-        }
-    }
 }
