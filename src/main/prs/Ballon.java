@@ -7,7 +7,7 @@ public class Ballon extends Outil
     public Ballon(String name)
     {
         this.name = name;
-    }
+    }   //TODO add name from enum
 
     public String getName()
     {

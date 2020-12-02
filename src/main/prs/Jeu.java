@@ -16,51 +16,66 @@ public class Jeu
 
     }
 
+    /* function which provide the reactions for clic:
+     - if group of blocs, delete them all
+     - if one bloc, do nothing
+     - if bomb, make an explosion and deletion of 8 cells around
+     - if ballon, delete all bloc of its color
+     - if outil, launch it
+     - if animal, do nothing for the moment
+     */
+
     private void mouseClicked(MouseEvent e)    //TODO verify how to make it as lambda
     {
+        int x = cell.getCoordX();
+        int y = cell.getCoordY();
+
         // player has clicked on plateau
         if (plateau.isOnPlateau(cell))
         {
             // not empty cell
-            if (!plateau.isEmpty(cell.getCoordX(), cell.getCoordX()))
+            if (!plateau.isEmpty(x, y))
             {
-                // bloc
-                if (plateau.getObject(cell.getCoordX(), cell.getCoordX()) instanceof Bloc)
+                // if bloc
+                if (plateau.getObject(x, y) instanceof Bloc)
                 {
                     // only one bloc
-                    if (plateau.getGroup(cell.getCoordX(), cell.getCoordX()).size() == 1)
+                    if (plateau.getGroup(x, y).size() == 1)
                     {
                         //skip
                     }
                     // group of blocs
                     else
                     {
-                        LinkedList<Point> gr = plateau.getGroup(cell.getCoordX(), cell.getCoordX());
-                        // TODO delete group
+                        LinkedList<Point> gr = plateau.getGroup(x, y);
+                        // delete group
+                        gr.clear();
                         // TODO move upstairs
                         // TODO add another blocs  (depends of level)
                     }
                 }
-                // animal
-                else if (plateau.getObject(cell.getCoordX(), cell.getCoordX()) instanceof Animal)
+                // if animal
+                else if (plateau.getObject(x, y) instanceof Animal)
                 {
                     //TODO get sound
                 }
-                // outil
-                else if (plateau.getObject(cell.getCoordX(), cell.getCoordX()) instanceof Outil)
+                // if outil
+                else if (plateau.getObject(x, y) instanceof Outil)
                 {
-                    //bomb
-                    if (plateau.getObject(cell.getCoordX(), cell.getCoordX()) instanceof Bomb)
+                    // if bomb
+                    if (plateau.getObject(x, y) instanceof Bomb)
                     {
-                        //TODO bomb destroyed 9 cells
+                        //bomb destroyed 9 cells -- its cell + 8 around
+                        plateau.bombExplosion(x, y);
                     }
 
                     //ballon
-                    else if (plateau.getObject(cell.getCoordX(), cell.getCoordX()) instanceof Ballon)
+                    else if (plateau.getObject(x, y) instanceof Ballon)
                     {
-                        //TODO ballon destroyed all blocs of his color
+                        //ballon destroyed all blocs of his color
+                        String ballonColor = ((Ballon)plateau.getObject(x, y)).getName();
+                        plateau.ballonExplosion(ballonColor);
                     }
-
                 }
             }
             //empty cell

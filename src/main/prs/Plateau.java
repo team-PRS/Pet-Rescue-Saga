@@ -110,7 +110,6 @@ public class Plateau
         return dataToExit;
     }
 
-
     public void getGroup(int x, int y, int[][] groupe)         // find all Blocs of the same color
     {
         ObjectSurCase a = this.getObject(x, y);
@@ -142,7 +141,7 @@ public class Plateau
                                         if (((Math.abs(i - x) == 1) && (Math.abs(j - y) == 0) ||
                                                 ((Math.abs(j - y) == 1) && (Math.abs(i - x) == 0))))
                                         {
-                                            groupe[i][j] = 2;    //TODO check if they touch only by corners and there are not?
+                                            groupe[i][j] = 2;     // TODO verify this place while it will be random may be need to change
                                         }
                                     }
                                     else
@@ -156,7 +155,6 @@ public class Plateau
                                                 getGroup(i, j, groupe);             //RECURSION
                                             }
                                         }
-                                    
                                 }
                                 else
                                     {
@@ -193,10 +191,23 @@ public class Plateau
                     {
                         System.out.print(" bb");
                     }
-                    else
+                    else if (((Bloc) plateau[i][j]).getColor() == "YELLOW")
                         {
                             System.out.print(" by");
                         }
+                    else if (((Bloc) plateau[i][j]).getColor() == "RED")
+                    {
+                        System.out.print(" br");
+                    }
+                    else if (((Bloc) plateau[i][j]).getColor() == "GREEN")
+                    {
+                        System.out.print(" bg");
+                    }
+                    else
+                    {
+                        System.out.print(" bp");
+                    }
+
                 }
                 else if (plateau[i][j] instanceof Outil)
                     {
@@ -236,6 +247,33 @@ public class Plateau
             System.out.println("Out of bounds of tableau");
         }
     }
+
+    public void bombExplosion(int x, int y)
+    {
+        for (int i = x - 1; i <= x + 1; i++)
+        {
+            for (int j = y - 1; j <= y + 1; j++)
+            {
+                cleanCase(i, j);
+            }
+        }
+    }
+
+    public void ballonExplosion(String ballonColor)
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (((Bloc) plateau[i][j]).getColor() == ballonColor)
+                {
+                    cleanCase(i, j);
+                }
+            }
+        }
+    }
+
+    
 
     public static void main(String[] args)
     {
