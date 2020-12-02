@@ -114,44 +114,60 @@ public class Plateau
     public void getGroup(int x, int y, int[][] groupe)         // find all Blocs of the same color
     {
         ObjectSurCase a = this.getObject(x, y);
-        if (a instanceof Bloc)                                 // method only for blocs
+        // only for blocs:
+        if (a instanceof Bloc)
         {
             for (int i = x - 1; i <= x + 1; i++)
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    if ((i == x) && (j == y))                  // do not examine himself
+                    if ((i == x) && (j == y)) 
                     {
-                        // skip
+                        // skip - do not examine himself
                     }
                     else
                     {
-                        if (((i >= 0) && (i <= height)) && ((j >= 0) && (j <= width)))     // finding only on Plateau..
+                        // search only on Plateau..
+                        if (((i >= 0) && (i <= height)) && ((j >= 0) && (j <= width)))
                         {
                             ObjectSurCase b = getObject(i, j);
                             if (b instanceof Bloc)
                             {
-                                if (((Bloc) a).getColor() == ((Bloc) b).getColor())
+                                if (((Bloc) a).getColor() == ((Bloc) b).getColor())  // 0 non-examined, 1 - examined, 2 - part of groupe
                                 {
-                                    groupe[x][y] = 2;                    // 0 non-examined, 1 - examined, 2 - part of groupe
-                                    if ((groupe[i][j] == 2))         // if it's part of groupe already
+                                    // if b is a part of group already
+                                    if ((groupe[i][j] == 2))
                                     {
-                                        //skip
+                                        //check if they touch by sides, NOT by corners
+                                        if (((Math.abs(i - x) == 1) && (Math.abs(j - y) == 0) ||
+                                                ((Math.abs(j - y) == 1) && (Math.abs(i - x) == 0))))
+                                        {
+                                            groupe[i][j] = 2;    //TODO check if they touch only by corners and there are not?
+                                        }
                                     }
                                     else
+                                        // if b is not a part of group
                                         {
-                                            groupe[i][j] = 2;
-                                            getGroup(i, j, groupe);             //RECURSION
+                                            //check if they touch by sides, NOT by corners
+                                            if (((Math.abs(i - x) == 1) && (Math.abs(j - y) == 0) ||
+                                                    ((Math.abs(j - y) == 1) && (Math.abs(i - x) == 0)))) 
+                                            {
+                                                groupe[i][j] = 2;
+                                                getGroup(i, j, groupe);             //RECURSION
+                                            }
                                         }
+                                    
                                 }
                                 else
                                     {
-                                        groupe[i][j] = 1;        //mark otherwise colored Bloc as examined
+                                        //mark otherwise colored Bloc as examined
+                                        groupe[i][j] = 1;
                                     }
                             }
                             else
                                 {
-                                   groupe[i][j] = 1;        //mark non Bloc as examined
+                                    //mark non Bloc as examined
+                                   groupe[i][j] = 1;
                                 }
                         }
                         else
