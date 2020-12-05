@@ -29,9 +29,7 @@ public class Bloc extends ObjectSurCase
     public boolean sameColor(Bloc a, Bloc b)                    // check if two blocs has the same color
     {
         if (a.getColor() == b.getColor())
-        {
             return true;
-        }
         return false;
     }
 

@@ -7,6 +7,7 @@ public class Jeu
 {
     private Plateau plateau;
     private Point cell;
+    int randomNmb;     // nmb de blocs to add according the level
     //private Joueur jouer;
     //private Compte compte;
 

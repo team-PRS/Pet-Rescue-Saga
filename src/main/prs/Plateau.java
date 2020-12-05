@@ -17,9 +17,7 @@ public class Plateau
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
-            {
                 plateau[i][j] = null;
-            }
         }
     }
 
@@ -47,9 +45,7 @@ public class Plateau
     {
         boolean onPlateau = false;
         if (((p.getCoordX() >= 0) && (p.getCoordX() <= height)) && ((p.getCoordY() >= 0) && (p.getCoordY() <= width)))
-        {
             onPlateau = true;
-        }
         return onPlateau;
     }
 
@@ -57,9 +53,7 @@ public class Plateau
     {
         boolean isEmpty = false;
         if (getObject(x, y) == null)
-        {
             isEmpty = true;
-        }
         return isEmpty;
     }
 
@@ -97,13 +91,9 @@ public class Plateau
                         dataToExit.addLast(new Point(i, j));
                     }
                     else if (groupe[i][j] == 1)
-                        {
                             System.out.print(" 1 ");
-                        }
                     else if (groupe[i][j] == 0)
-                    {
                         System.out.print(" 0 ");
-                    }
             }
             System.out.println("");
         }       
@@ -188,39 +178,22 @@ public class Plateau
                 if (plateau[i][j] instanceof Bloc)
                 {
                     if (((Bloc) plateau[i][j]).getColor() == "BLUE")
-                    {
                         System.out.print(" bb");
-                    }
                     else if (((Bloc) plateau[i][j]).getColor() == "YELLOW")
-                        {
                             System.out.print(" by");
-                        }
                     else if (((Bloc) plateau[i][j]).getColor() == "RED")
-                    {
                         System.out.print(" br");
-                    }
                     else if (((Bloc) plateau[i][j]).getColor() == "GREEN")
-                    {
                         System.out.print(" bg");
-                    }
                     else
-                    {
                         System.out.print(" bp");
-                    }
-
                 }
                 else if (plateau[i][j] instanceof Outil)
-                    {
                         System.out.print(" u ");
-                    }
                 else if (plateau[i][j] instanceof Animal)
-                {
                     System.out.print(" a ");
-                }
                 else
-                {
-                    System.out.print(" - ");;
-                }
+                    System.out.print(" - ");
             }
             System.out.println("");
         }
@@ -237,15 +210,12 @@ public class Plateau
             if (this.isEmpty(arrX, arrY))                              //TODO add intermediate cases between dep and arr?
             {
                 this.setObject(obj, arrX, arrY);
-            } else
-            {
-                System.out.println("This place is occupied");
             }
+            else
+                System.out.println("This place is occupied");
         }
         else
-        {
             System.out.println("Out of bounds of tableau");
-        }
     }
 
     public void bombExplosion(int x, int y)
@@ -253,9 +223,7 @@ public class Plateau
         for (int i = x - 1; i <= x + 1; i++)
         {
             for (int j = y - 1; j <= y + 1; j++)
-            {
                 cleanCase(i, j);
-            }
         }
     }
 
@@ -266,14 +234,16 @@ public class Plateau
             for (int j = 0; j < width; j++)
             {
                 if (((Bloc) plateau[i][j]).getColor() == ballonColor)
-                {
                     cleanCase(i, j);
-                }
             }
         }
     }
 
-    
+    public void addBlocs(int nmbBlocs)
+    {
+        //TODO need the logic how and were to add the blocs
+    }
+
 
     public static void main(String[] args)
     {
