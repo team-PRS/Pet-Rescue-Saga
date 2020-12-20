@@ -11,6 +11,7 @@ public class Jeu
     private int additionalBlocs, additionalAnimals, additionalBombs, additionalBallons;
     private int random;
     private Configuration configLevel;
+    private Configuration configPlayer;
     private int level;
     
     //private Joueur jouer;
@@ -19,9 +20,8 @@ public class Jeu
     public Jeu()
     {
         this.configLevel = new Configuration("/home/nata/Documents/Projets/Pet-Rescue-Saga/Pet_Rescue/Pet-Rescue-Saga/config.txt");
-      //  this.level = jouer.getLevel();                   //TODO getLevel() in Joueur depending of player's config
-        this.level = 1;                                     //temporary
-        
+        this.level = Integer.parseInt(configPlayer.getPlayerValue("Level"));
+
         this.plateau = new Plateau(Integer.parseInt(configLevel.getValue(level, "height")),
                                    Integer.parseInt(configLevel.getValue(level, "width")));
 
@@ -69,12 +69,27 @@ public class Jeu
     }
 
 
-    private void StartGame()
+    private void GameSet()
     {
-        //ask
+        /*1) ask if want play
+        if no -> exit
+        if yes:
+          2) make un account -> create config OR insert name -> load level, points etc from configPlayer
+          3) <Play>
+          4) create plateau, fill it by elements
+          5) cycle mouseClicked - reactions
+            till:
+             - level win
+             - level lost
+          6) save level, points etc to configPlayer
+          7) start new level OR exit
+         */
     }
 
+    private void remplissage()
+    {
 
+    }
 
     /* function which provide reactions for clic:
      - if group of blocs, delete them all
@@ -149,5 +164,13 @@ public class Jeu
         {
             System.out.println("Clicked out of bounds of plateau");
         }
+    }
+
+    public static void main (String[] args)
+    {
+        Configuration conf = new Configuration("/home/nata/Documents/Projets/Pet-Rescue-Saga/Pet_Rescue/Pet-Rescue-Saga/config.txt");
+        System.out.println(conf.getValue(1, "additionalBlocs"));
+        Configuration confPlayer = new Configuration("/home/nata/Documents/Projets/Pet-Rescue-Saga/Pet_Rescue/Pet-Rescue-Saga/configPlayer.txt");
+        System.out.println(confPlayer.getPlayerValue("Level"));
     }
 }

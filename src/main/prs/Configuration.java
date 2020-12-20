@@ -24,20 +24,27 @@ public class Configuration
         }
     }
 
-    public String getValue (Integer level, String NameValue)
+    public String getValue(Integer level, String NameValue)
     {
-        String Key = "L"+ level.toString() + "_" + NameValue;
+        String key = "L"+ level.toString() + "_" + NameValue;
         if (this.prop != null)
         {
-            return this.prop.getProperty(Key);
+            return this.prop.getProperty(key);
         }
         return null;
     }
 
-
-    public static void main (String[] args)
+    public String getPlayerValue(String key)
     {
-        Configuration conf = new Configuration("/home/nata/Documents/Projets/Pet-Rescue-Saga/Pet_Rescue/Pet-Rescue-Saga/config.txt");
-        System.out.println(conf.getValue(1, "additionalBlocs"));
+        if (this.prop != null)
+        {
+            return this.prop.getProperty(key);
+        }
+        return null;
+    }
+
+    public void setValue(int val)
+    {
+        
     }
 }
