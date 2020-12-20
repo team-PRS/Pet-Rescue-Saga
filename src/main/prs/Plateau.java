@@ -244,6 +244,11 @@ public class Plateau
         //TODO need the logic how and were to add the blocs
     }
 
+    public void shiftLeft()
+    {
+        //TODO left shift of element if it is on unmovable bloc
+    }
+
 
     public static void main(String[] args)
     {

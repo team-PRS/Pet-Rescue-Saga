@@ -7,17 +7,76 @@ public class Jeu
 {
     private Plateau plateau;
     private Point cell;
-    int randomNmb;     // nmb de blocs to add according the level
+    private int initialBlocs, initialAnimals, initialImmoBlocs, initialBombs, initialBallons;
+    private int additionalBlocs, additionalAnimals, additionalBombs, additionalBallons;
+    private int random;
+    private Configuration configLevel;
+    private int level;
+    
     //private Joueur jouer;
     //private Compte compte;
 
     public Jeu()
     {
-        //this.plateau = new Plateau();
+        this.configLevel = new Configuration("/home/nata/Documents/Projets/Pet-Rescue-Saga/Pet_Rescue/Pet-Rescue-Saga/config.txt");
+      //  this.level = jouer.getLevel();                   //TODO getLevel() in Joueur depending of player's config
+        this.level = 1;                                     //temporary
+        
+        this.plateau = new Plateau(Integer.parseInt(configLevel.getValue(level, "height")),
+                                   Integer.parseInt(configLevel.getValue(level, "width")));
+
+        //initialisation of start values of number of blocs, animals etc.
+        initialBlocs = Integer.parseInt(configLevel.getValue(level, "initialBlocs"));
+        initialAnimals = Integer.parseInt(configLevel.getValue(level, "initialAnimals"));
+        initialImmoBlocs = Integer.parseInt(configLevel.getValue(level, "initialImmoBlocs"));
+        if (configLevel.getValue(level, "outils") == "true")
+        {
+            initialBombs = Integer.parseInt(configLevel.getValue(level, "initialBombs"));
+            initialBallons = Integer.parseInt(configLevel.getValue(level, "initialBallons"));
+        }
+        else
+            {
+                initialBombs = 0;
+                initialBallons = 0;
+            }
+
+        //initialisation of additional values which would be added during the game according the level
+        if (configLevel.getValue(level, "addBlocs") == "true")
+        {
+            additionalBlocs = Integer.parseInt(configLevel.getValue(level, "additionalBlocs"));
+        }
+        else {additionalBlocs = 0;}
+
+        if (configLevel.getValue(level, "addAnimals") == "true")
+        {
+            additionalAnimals = Integer.parseInt(configLevel.getValue(level, "additionalAnimals"));
+        }
+        else {additionalAnimals = 0;}
+
+        if (configLevel.getValue(level, "addBombs") == "true")
+        {
+            additionalBombs = Integer.parseInt(configLevel.getValue(level, "additionalBombs"));
+        }
+        else {additionalBombs = 0;}
+
+        if (configLevel.getValue(level, "addBallons") == "true")
+        {
+            additionalBallons = Integer.parseInt(configLevel.getValue(level, "additionalBallons"));
+        }
+        else {additionalBallons = 0;}
+
 
     }
 
-    /* function which provide the reactions for clic:
+
+    private void StartGame()
+    {
+        //ask
+    }
+
+
+
+    /* function which provide reactions for clic:
      - if group of blocs, delete them all
      - if one bloc, do nothing
      - if bomb, make an explosion and deletion of 8 cells around
@@ -26,7 +85,7 @@ public class Jeu
      - if animal, do nothing for the moment
      */
 
-    private void mouseClicked(MouseEvent e)    //TODO verify how to make it as lambda
+    private void mouseClicked(MouseEvent e)
     {
         int x = cell.getCoordX();
         int y = cell.getCoordY();
@@ -51,8 +110,8 @@ public class Jeu
                         LinkedList<Point> gr = plateau.getGroup(x, y);
                         // delete group
                         gr.clear();
-                        // TODO move upstairs
-                        // TODO add another blocs  (depends of level)
+                        // TODO move down upstairs elements
+                        // TODO add another blocs and elements (depends of level)
                     }
                 }
                 // if animal
@@ -88,7 +147,7 @@ public class Jeu
         // player has clicked out of plateau
         else
         {
-            System.out.println("Clicked out of bonds of plateau");
+            System.out.println("Clicked out of bounds of plateau");
         }
     }
 }
