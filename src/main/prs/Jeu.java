@@ -9,9 +9,8 @@ public class Jeu
     private Point cell;
     private int initialBlocs, initialAnimals, initialImmoBlocs, initialBombs, initialBallons;
     private int additionalBlocs, additionalAnimals, additionalBombs, additionalBallons;
-    private int random;
     private Configuration configLevel;
-    private Configuration configPlayer;
+    private Configuration configJoueur;
     private int level;
     
     //private Joueur jouer;
@@ -20,10 +19,7 @@ public class Jeu
     public Jeu()
     {
        // this.configLevel = new Configuration("config.txt");
-        this.level = Integer.parseInt(configPlayer.getPlayerValue("Level"));
-
-        this.plateau = new Plateau(Integer.parseInt(configLevel.getValue(level, "height")),
-                                   Integer.parseInt(configLevel.getValue(level, "width")));
+        this.level = Integer.parseInt(configJoueur.getPlayerValue("Level"));
 
         //initialisation of start values of number of blocs, animals etc.
         initialBlocs = Integer.parseInt(configLevel.getValue(level, "initialBlocs"));
@@ -73,24 +69,31 @@ public class Jeu
 
     private void GameSet()
     {
-        /*1) ask if want play
-        if no -> exit
-        if yes:
-          2) make un account -> create config OR insert name -> load level, points etc from configPlayer 3) <Play>
-          4) create plateau, fill it by elements
-          5) cycle mouseClicked - reactions
-            till:
-             - level win
-             - level lost
-          6) save level, points etc to configPlayer
-          7) start new level OR exit
+        /*1) ask if want <play> (button) or <exit> (button)
+        if push play:
+          2) make un account -> create config/save obj joueur OR insert name -> load level, points etc from configJoueur/dataJoueur
+          3) push <Play>
+          4) Game set:
+               a) create plateau, fill it by elements
+               b) pressCell <-> reactions (cycle)
+                   till:
+                          - level win
+                          - level lost
+               c) save level, points etc to configJoueur
+               d) <start new level> OR <exit>
          */
+    }
+
+    private Plateau createPlateau(Configuration config)
+    {
+        this.configLevel = config;
+        return plateau = new Plateau(Integer.parseInt(configLevel.getValue(level, "height")),
+                Integer.parseInt(configLevel.getValue(level, "width")));
     }
 
     private void remplirPlateau(Configuration config)
     {
         this.configLevel = config;
-        //random filling by blocs, animals, ballons according the level
         this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals,initialBallons);
     }
 
@@ -104,13 +107,10 @@ public class Jeu
      - if outil, launch it
      - if animal, do nothing for the moment
      */
-    private void mouseClicked(MouseEvent e)
+    private void pressCell(int x, int y)       
     {
-        int x = cell.getCoordX();
-        int y = cell.getCoordY();
-
         // player has clicked on plateau
-        if (plateau.isOnPlateau(cell))
+        if (plateau.isOnPlateau(x, y))
         {
             // not empty cell
             if (!plateau.isEmpty(x, y))
@@ -180,6 +180,6 @@ public class Jeu
         System.out.println(conf.getValue(1, "additionalBlocs"));
         Configuration confPlayer = new Configuration("configPlayer.txt");
         System.out.println(confPlayer.getPlayerValue("Level"));
-        //remplirPlateau(conf);
+
     }
 }

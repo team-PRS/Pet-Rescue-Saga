@@ -42,15 +42,15 @@ public class Plateau
  //       return onPlateau;
  //   }
 
-    public boolean isOnPlateau(Point p)                       //check if Joueur click on Plateau
+    public boolean isOnPlateau(int x, int y)                       //check if Joueur click on Plateau
     {
         boolean onPlateau = false;
-        if (((p.getCoordX() >= 0) && (p.getCoordX() <= height)) && ((p.getCoordY() >= 0) && (p.getCoordY() <= width)))
+        if ((x >= 0) && (x < height) && (y >= 0) && (y < width))
             onPlateau = true;
         return onPlateau;
     }
 
-    public boolean isEmpty(int x, int y)                       //check if Joueur click on Plateau
+    public boolean isEmpty(int x, int y)                             //check if cell is empty
     {
         return (getObject(x, y) == null ? true : false);
     }
@@ -114,10 +114,10 @@ public class Plateau
                     else
                     {
                         // search only on Plateau..
-                        if (((i >= 0) && (i < height)) && ((j >= 0) && (j < width)))
+                        if (isOnPlateau(i, j))
                         {
                             ObjectSurCase b = getObject(i, j);
-                                                     if ((b instanceof Bloc) && (b.isClicable()))
+                            if ((b instanceof Bloc) && (b.isClicable()))
                             {
                                 if (((Bloc) a).getColor() == ((Bloc) b).getColor())  // 0 non-examined, 1 - examined, 2 - part of groupe
                                 {
@@ -149,7 +149,6 @@ public class Plateau
                                 //mark non Bloc as examined
                                 groupe[i][j] = 1;
                             }
-
                         }
                         else
                             {
@@ -197,8 +196,9 @@ public class Plateau
     //function for instance of ObjectSurCase: delete from one place, insert to another one
     public void moveObject(int depX, int depY, int arrX, int arrY)
     {
-        if ((((depX >= 0) && (depX <= height)) && ((depY >= 0) && (depY <= width))) &&
-                (((arrX >= 0) && (arrX <= height)) && ((arrY >= 0) && (arrY <= width))))
+        if (isOnPlateau(depX, depY) && isOnPlateau(arrX, arrY))
+       // ((((depX >= 0) && (depX <= height)) && ((depY >= 0) && (depY <= width))) &&
+       //         (((arrX >= 0) && (arrX <= height)) && ((arrY >= 0) && (arrY <= width))))
         {
             ObjectSurCase obj = this.getObject(depX, depY);
             this.cleanCase(depX, depY);
@@ -238,36 +238,39 @@ public class Plateau
     {
         int a=nmbImmoBlocs, b=nmbBlocs, c=nmbAnimals, d=nmbBallons;
         int ia = 0, ib=0, ic=0, id=0;
-        if (nmbImmoBlocs != 0)                                   // set decoration (random mode)
-        {                                                        //TODO may be need implement in stable positions
+        // Set decoration (RANDOM mode)
+        if (nmbImmoBlocs != 0)
+        {                                                        //TODO may be need to implement on stable positions
             for (int i = nmbImmoBlocs; i > 0; i--)
             {
-                Bloc immo = new Bloc("NONE");
-                int x = new Random().nextInt(height);
-                int y = new Random().nextInt(width);
-                if (plateau[x][y] == null)
+                while (nmbImmoBlocs - ia != 0)
                 {
-                    setObject(immo, x, y);
-                    ia ++;
-                }
-                else
-                {
-                    //try again
+                    Bloc immo = new Bloc("NONE");
+                    int x = new Random().nextInt(height);
+                    int y = new Random().nextInt(width);
+                    if (plateau[x][y] == null)
+                    {
+                        setObject(immo, x, y);
+                        ia++;
+                    }
                 }
             }
         }
-
-        for (int i = height - 1; i >= 0; i--)                   // set movables objects (random mode)
+        
+        /* Set movables objects (RANDOM mode)
+        */
+        for (int i = height - 1; i >= 0; i--)
         {
             for (int j = width - 1; j >= 0; j--)
             {
                 if (plateau[i][j] == null)
                 {
+                    //top part of plateau - any element can be added
                     if ((i != height - 1) && (i != height - 2) && (i != height - 3))
                     {
                         int rd = new Random().nextInt(100);
                         {
-                            if (rd <= 80)
+                            if (rd < 80)                                    // add blocs (80% probability)
                             {
                                 if (nmbBlocs > 0)
                                 {
@@ -275,8 +278,7 @@ public class Plateau
                                     nmbBlocs--;
                                     ib ++;
                                 }
-                                else
-                                if (nmbBallons > 0)
+                                else if (nmbBallons > 0)                     //it helps to fill without gaps
                                 {
                                     plateau[i][j] = new Ballon();
                                     nmbBallons--;
@@ -290,7 +292,7 @@ public class Plateau
                                 }
                             }
 
-                            else if ((rd > 80) && (rd < 90))
+                            else if ((rd >= 80) && (rd < 90))                 // add ballons (10% probability)
 
                             {
                                 // add ballon
@@ -300,7 +302,7 @@ public class Plateau
                                     nmbBallons--;
                                     id ++;
                                 }
-                                else
+                                else                                          //it helps to fill without gaps
                                 {
                                     if (nmbBlocs > 0)
                                     {
@@ -309,7 +311,7 @@ public class Plateau
                                         ib ++;
                                     }
                                 }
-                            } else
+                            } else                                            // add animals (10% probability)
                             {
                                 // add animal
                                 if (nmbAnimals > 0)
@@ -318,7 +320,7 @@ public class Plateau
                                     nmbAnimals--;
                                     ic ++;
                                 }
-                                else
+                                else                                             //it helps to fill without gaps
                                 {
                                     if (nmbBlocs > 0)
                                     {
@@ -331,10 +333,10 @@ public class Plateau
                         }
                     }
 
-                    else          //can't add animals
+                    else          //can't add animals in bottom of plateau
                     {
                         int rd = new Random().nextInt(100);
-                        if (rd <= 60)
+                        if (rd <= 80)                                              // add blocs (80% probability)
                         {
                             if (nmbBlocs > 0)
                             {
@@ -344,14 +346,14 @@ public class Plateau
                             }
                         } else
                         {
-                            if (nmbBallons > 0)
+                            if (nmbBallons > 0)                                    // add ballons (10% probability)
                             {
                                 plateau[i][j] = new Ballon();
                                 nmbBallons--;
                                 id ++;
                             }
                             else
-                            if (nmbBlocs > 0)
+                            if (nmbBlocs > 0)                                      //it helps to fill without gaps
                             {
                                 plateau[i][j] = new Bloc();
                                 nmbBlocs--;

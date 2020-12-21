@@ -75,3 +75,7 @@ L3_additionalBombs=0
 L3_additionalBallons=2
 
 L3_shiftLeft=false
+
+
+probability of remplissage can be added as parametre
+now it is 80% (blocs) + 10&(ballons) + 10%(animals)
