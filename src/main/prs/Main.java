@@ -20,6 +20,10 @@ public class Main {
     map.getJoueur().getCompte().setScore(2,100);
     System.out.println(map);
     System.out.println("==============================");
-    Frame f = new Frame();
+    Model m = new Model();
+    System.out.println(m.addFrame());
+    System.out.println(m.addPanelMap());
+    System.out.println(m.iniImage());
+    m.repaint();
   }
 }

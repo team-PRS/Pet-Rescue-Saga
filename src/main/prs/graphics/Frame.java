@@ -14,7 +14,7 @@ public class Frame extends JFrame{
     //setLocationRelativeTo(null); // fenetre centrée
     setExtendedState(JFrame.MAXIMIZED_BOTH);//Frame take as many space as it can.
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // bouton fermer par défaut.
-    //notre bouton fermé si dessous.
+    //TODO notre bouton fermer si dessous qui demande une validation de l'utilisateur.
     /*
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     Runnable r = new Runnable() {
