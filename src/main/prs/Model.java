@@ -3,6 +3,9 @@ import prs.graphics.*;
 import prs.usuel.image;
 import java.awt.Image;
 
+/**
+{@summary Contain a lot of usefull fonction to modify the graphics interface.}
+*/
 public class Model {
 
   // CONSTRUCTORS --------------------------------------------------------------

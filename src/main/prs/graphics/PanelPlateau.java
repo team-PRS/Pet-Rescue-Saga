@@ -3,6 +3,9 @@ import prs.Controller;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 
+/**
+{@summary Represent the plateau on the Frame.}
+*/
 public class PanelPlateau extends JPanel{
 
   // CONSTRUCTORS --------------------------------------------------------------

@@ -26,6 +26,8 @@ public class Main {
     System.out.println(m.iniImage());
     m.repaint();
     m.pause(1000);
+    System.out.println("repaint");
     System.out.println(m.addPanelMap());
+    m.repaint();
   }
 }

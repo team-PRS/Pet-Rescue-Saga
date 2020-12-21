@@ -6,6 +6,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Toolkit;
 
+/**
+{@summary Main Frame.}
+*/
 public class Frame extends JFrame{
 
   // CONSTRUCTORS --------------------------------------------------------------

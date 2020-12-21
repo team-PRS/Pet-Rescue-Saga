@@ -1,6 +1,10 @@
 package prs;
 import java.awt.Image;
 
+/**
+*{@summary Contain all data (images) that will be used by the graphic interface.}
+*@author Hydrolien
+*/
 public class Data {
   public static Image pMapImg;
   public static Image pPlateauImg;

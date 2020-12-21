@@ -3,6 +3,9 @@ import prs.Controller;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 
+/**
+{@summary Represent the map on the Frame.}
+*/
 public class PanelMap extends JPanel{
 
   // CONSTRUCTORS --------------------------------------------------------------
