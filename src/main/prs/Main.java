@@ -1,4 +1,5 @@
 package prs;
+import prs.graphics.Frame;
 
 import java.io.Serializable;
 import prs.map.*;
@@ -18,5 +19,7 @@ public class Main {
     System.out.println("==============================");
     map.getJoueur().getCompte().setScore(2,100);
     System.out.println(map);
+    System.out.println("==============================");
+    Frame f = new Frame();
   }
 }
