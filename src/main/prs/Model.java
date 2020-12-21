@@ -29,7 +29,7 @@ public class Model {
     }
   }
   public boolean iniImage(){
-    Image img = image.getImage("background.jpg","data");
+    Image img = image.getImage("background.jpg");
     if(img==null){return false;}
     img = img.getScaledInstance(frame.getWidth(),frame.getHeight() ,Image.SCALE_SMOOTH);
     Controller.getData().setPMapImg(img);

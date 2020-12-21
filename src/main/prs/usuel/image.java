@@ -62,5 +62,6 @@ public class image {
     }
     return imgr;
   }
+  public static BufferedImage getImage(String nom){ return getImage(nom,"data/images");}
 
 }
