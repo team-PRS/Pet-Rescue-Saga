@@ -19,7 +19,7 @@ public class Jeu
 
     public Jeu()
     {
-        this.configLevel = new Configuration("/home/nata/Documents/Projets/Pet-Rescue-Saga/Pet_Rescue/Pet-Rescue-Saga/config.txt");
+       // this.configLevel = new Configuration("config.txt");
         this.level = Integer.parseInt(configPlayer.getPlayerValue("Level"));
 
         this.plateau = new Plateau(Integer.parseInt(configLevel.getValue(level, "height")),
@@ -29,6 +29,8 @@ public class Jeu
         initialBlocs = Integer.parseInt(configLevel.getValue(level, "initialBlocs"));
         initialAnimals = Integer.parseInt(configLevel.getValue(level, "initialAnimals"));
         initialImmoBlocs = Integer.parseInt(configLevel.getValue(level, "initialImmoBlocs"));
+        
+        // if level with outils
         if (configLevel.getValue(level, "outils") == "true")
         {
             initialBombs = Integer.parseInt(configLevel.getValue(level, "initialBombs"));
@@ -74,8 +76,7 @@ public class Jeu
         /*1) ask if want play
         if no -> exit
         if yes:
-          2) make un account -> create config OR insert name -> load level, points etc from configPlayer
-          3) <Play>
+          2) make un account -> create config OR insert name -> load level, points etc from configPlayer 3) <Play>
           4) create plateau, fill it by elements
           5) cycle mouseClicked - reactions
             till:
@@ -86,10 +87,14 @@ public class Jeu
          */
     }
 
-    private void remplissage()
+    private void remplirPlateau(Configuration config)
     {
-
+        this.configLevel = config;
+        //random filling by blocs, animals, ballons according the level
+        this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals,initialBallons);
     }
+
+
 
     /* function which provide reactions for clic:
      - if group of blocs, delete them all
@@ -99,7 +104,6 @@ public class Jeu
      - if outil, launch it
      - if animal, do nothing for the moment
      */
-
     private void mouseClicked(MouseEvent e)
     {
         int x = cell.getCoordX();
@@ -127,6 +131,10 @@ public class Jeu
                         gr.clear();
                         // TODO move down upstairs elements
                         // TODO add another blocs and elements (depends of level)
+                       //  if (configLevel.getValue(level, "addBlocs") == "true")
+                       // {
+                       //     plateau.addBlocsInGame(configLevel.getValue(level, "additionalBlocs"));
+                       // }
                     }
                 }
                 // if animal
@@ -148,7 +156,7 @@ public class Jeu
                     else if (plateau.getObject(x, y) instanceof Ballon)
                     {
                         //ballon destroyed all blocs of his color
-                        String ballonColor = ((Ballon)plateau.getObject(x, y)).getName();
+                        String ballonColor = ((Ballon)plateau.getObject(x, y)).getColor();
                         plateau.ballonExplosion(ballonColor);
                     }
                 }
@@ -168,9 +176,10 @@ public class Jeu
 
     public static void main (String[] args)
     {
-        Configuration conf = new Configuration("/home/nata/Documents/Projets/Pet-Rescue-Saga/Pet_Rescue/Pet-Rescue-Saga/config.txt");
+        Configuration conf = new Configuration("config.txt");
         System.out.println(conf.getValue(1, "additionalBlocs"));
-        Configuration confPlayer = new Configuration("/home/nata/Documents/Projets/Pet-Rescue-Saga/Pet_Rescue/Pet-Rescue-Saga/configPlayer.txt");
+        Configuration confPlayer = new Configuration("configPlayer.txt");
         System.out.println(confPlayer.getPlayerValue("Level"));
+        //remplirPlateau(conf);
     }
 }

@@ -1,6 +1,7 @@
 package prs;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Plateau
 {
@@ -51,10 +52,7 @@ public class Plateau
 
     public boolean isEmpty(int x, int y)                       //check if Joueur click on Plateau
     {
-        boolean isEmpty = false;
-        if (getObject(x, y) == null)
-            isEmpty = true;
-        return isEmpty;
+        return (getObject(x, y) == null ? true : false);
     }
 
     public ObjectSurCase getObject(int x, int y)                       //return ObjectSurCase by coordinates
@@ -75,7 +73,6 @@ public class Plateau
 
     /* find all Blocs of the same color, i.e. check if there is a group for the Bloc ----- return LinkedList<Point>
      */
-
     public LinkedList<Point> getGroup(int x, int y)
     {
         int[][] groupe = new int[height][width];
@@ -104,7 +101,7 @@ public class Plateau
     {
         ObjectSurCase a = this.getObject(x, y);
         // only for blocs:
-        if (a instanceof Bloc)
+        if ((a instanceof Bloc) && (a.isClicable()))
         {
             for (int i = x - 1; i <= x + 1; i++)
             {
@@ -117,10 +114,10 @@ public class Plateau
                     else
                     {
                         // search only on Plateau..
-                        if (((i >= 0) && (i <= height)) && ((j >= 0) && (j <= width)))
+                        if (((i >= 0) && (i < height)) && ((j >= 0) && (j < width)))
                         {
                             ObjectSurCase b = getObject(i, j);
-                            if (b instanceof Bloc)
+                                                     if ((b instanceof Bloc) && (b.isClicable()))
                             {
                                 if (((Bloc) a).getColor() == ((Bloc) b).getColor())  // 0 non-examined, 1 - examined, 2 - part of groupe
                                 {
@@ -128,35 +125,31 @@ public class Plateau
                                     if ((groupe[i][j] == 2))
                                     {
                                         //check if they touch by sides, NOT by corners
-                                        if (((Math.abs(i - x) == 1) && (Math.abs(j - y) == 0) ||
-                                                ((Math.abs(j - y) == 1) && (Math.abs(i - x) == 0))))
+                                        if (((Math.abs(i - x) == 1) && (Math.abs(j - y) == 0) || ((Math.abs(j - y) == 1) && (Math.abs(i - x) == 0))))
                                         {
                                             groupe[i][j] = 2;     // TODO verify this place while it will be random may be need to change
                                         }
-                                    }
-                                    else
-                                        // if b is not a part of group
-                                        {
-                                            //check if they touch by sides, NOT by corners
-                                            if (((Math.abs(i - x) == 1) && (Math.abs(j - y) == 0) ||
-                                                    ((Math.abs(j - y) == 1) && (Math.abs(i - x) == 0)))) 
-                                            {
-                                                groupe[i][j] = 2;
-                                                getGroup(i, j, groupe);             //RECURSION
-                                            }
-                                        }
-                                }
-                                else
+                                    } else
+                                    // if b is not a part of group
                                     {
-                                        //mark otherwise colored Bloc as examined
-                                        groupe[i][j] = 1;
+                                        //check if they touch by sides, NOT by corners
+                                        if (((Math.abs(i - x) == 1) && (Math.abs(j - y) == 0) || ((Math.abs(j - y) == 1) && (Math.abs(i - x) == 0))))
+                                        {
+                                            groupe[i][j] = 2;
+                                            getGroup(i, j, groupe);             //RECURSION
+                                        }
                                     }
-                            }
-                            else
+                                } else
                                 {
-                                    //mark non Bloc as examined
-                                   groupe[i][j] = 1;
+                                    //mark otherwise colored Bloc as examined
+                                    groupe[i][j] = 1;
                                 }
+                            } else
+                            {
+                                //mark non Bloc as examined
+                                groupe[i][j] = 1;
+                            }
+
                         }
                         else
                             {
@@ -177,7 +170,9 @@ public class Plateau
             {
                 if (plateau[i][j] instanceof Bloc)
                 {
-                    if (((Bloc) plateau[i][j]).getColor() == "BLUE")
+                    if (((Bloc) plateau[i][j]).getColor() == "NONE")
+                        System.out.print(" nn");
+                    else if (((Bloc) plateau[i][j]).getColor() == "BLUE")
                         System.out.print(" bb");
                     else if (((Bloc) plateau[i][j]).getColor() == "YELLOW")
                             System.out.print(" by");
@@ -239,50 +234,163 @@ public class Plateau
         }
     }
 
-    public void addBlocs(int nmbBlocs)
+    public void remplirPlateau(int nmbImmoBlocs, int nmbBlocs, int nmbAnimals,int nmbBallons)
+    {
+        int a=nmbImmoBlocs, b=nmbBlocs, c=nmbAnimals, d=nmbBallons;
+        int ia = 0, ib=0, ic=0, id=0;
+        if (nmbImmoBlocs != 0)                                   // set decoration (random mode)
+        {                                                        //TODO may be need implement in stable positions
+            for (int i = nmbImmoBlocs; i > 0; i--)
+            {
+                Bloc immo = new Bloc("NONE");
+                int x = new Random().nextInt(height);
+                int y = new Random().nextInt(width);
+                if (plateau[x][y] == null)
+                {
+                    setObject(immo, x, y);
+                    ia ++;
+                }
+                else
+                {
+                    //try again
+                }
+            }
+        }
+
+        for (int i = height - 1; i >= 0; i--)                   // set movables objects (random mode)
+        {
+            for (int j = width - 1; j >= 0; j--)
+            {
+                if (plateau[i][j] == null)
+                {
+                    if ((i != height - 1) && (i != height - 2) && (i != height - 3))
+                    {
+                        int rd = new Random().nextInt(100);
+                        {
+                            if (rd <= 80)
+                            {
+                                if (nmbBlocs > 0)
+                                {
+                                    plateau[i][j] = new Bloc();
+                                    nmbBlocs--;
+                                    ib ++;
+                                }
+                                else
+                                if (nmbBallons > 0)
+                                {
+                                    plateau[i][j] = new Ballon();
+                                    nmbBallons--;
+                                    id ++;
+                                }
+                                else if (nmbAnimals > 0)
+                                {
+                                    plateau[i][j] = new Animal();
+                                    nmbAnimals--;
+                                    ic ++;
+                                }
+                            }
+
+                            else if ((rd > 80) && (rd < 90))
+
+                            {
+                                // add ballon
+                                if (nmbBallons > 0)
+                                {
+                                    plateau[i][j] = new Ballon();
+                                    nmbBallons--;
+                                    id ++;
+                                }
+                                else
+                                {
+                                    if (nmbBlocs > 0)
+                                    {
+                                        plateau[i][j] = new Bloc();
+                                        nmbBlocs--;
+                                        ib ++;
+                                    }
+                                }
+                            } else
+                            {
+                                // add animal
+                                if (nmbAnimals > 0)
+                                {
+                                    plateau[i][j] = new Animal();
+                                    nmbAnimals--;
+                                    ic ++;
+                                }
+                                else
+                                {
+                                    if (nmbBlocs > 0)
+                                    {
+                                        plateau[i][j] = new Bloc();
+                                        nmbBlocs--;
+                                        ib ++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    else          //can't add animals
+                    {
+                        int rd = new Random().nextInt(100);
+                        if (rd <= 60)
+                        {
+                            if (nmbBlocs > 0)
+                            {
+                                plateau[i][j] = new Bloc();
+                                nmbBlocs--;
+                                ib ++;
+                            }
+                        } else
+                        {
+                            if (nmbBallons > 0)
+                            {
+                                plateau[i][j] = new Ballon();
+                                nmbBallons--;
+                                id ++;
+                            }
+                            else
+                            if (nmbBlocs > 0)
+                            {
+                                plateau[i][j] = new Bloc();
+                                nmbBlocs--;
+                                ib ++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println(" need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
+                            "  animaux: " + c + ":" + ic + "  ballons: " + d + ":" + id);
+        System.out.println("");
+    }
+
+    public void addBlocsInGame(int nmbBlocs)
     {
         //TODO need the logic how and were to add the blocs
     }
 
     public void shiftLeft()
     {
-        //TODO left shift of element if it is on unmovable bloc
+        //TODO left shift of element if it is on top unmovable bloc
     }
 
 
     public static void main(String[] args)
     {
-        Plateau test1 = new Plateau(5, 5);
+        Plateau test1 = new Plateau(7, 7);
 
-        Bloc b1 = new Bloc("BLUE");
-        Bloc b2 = new Bloc("BLUE");
-        Bloc b3 = new Bloc("BLUE");
-        Bloc b4 = new Bloc("BLUE");
-        Bloc b5 = new Bloc("YELLOW");
-        Animal a1 = new Animal(1);
-        Animal a2 = new Animal(2);
-
-        test1.setObject(b1,2,2);
-        test1.setObject(b2,2,3);
-        test1.setObject(b3,1,3);
-        test1.setObject(b4,4,1);
-        test1.setObject(b5,3,2);
-        test1.setObject(a1,3,3);
-        test1.setObject(a2,1,2);
+        test1.remplirPlateau(2, 34, 4, 2);
 
         test1.printMap();
         System.out.println("");
-        test1.getGroup(1, 3);
+        test1.getGroup(5, 6);
 
-        test1.moveObject(2,3, 0,2);
-        test1.printMap();
+
         System.out.println("");
-        test1.getGroup(1, 3);
-
-
-        test1.moveObject(3,2, 0,6);
-        test1.printMap();
-        System.out.println("");
+        test1.getGroup(3, 4);
 
     }
 

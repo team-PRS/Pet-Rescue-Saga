@@ -2,18 +2,12 @@ package prs;
 
 public class Bomb extends Outil
 {
-    private String name;
+   // private String name;
 
-    public Bomb(String name)
+    public Bomb()
     {
-        this.name = name;
     }
 
-    // isClicable does't need to be implemented because succeed from Outil
+    // isClicable succeed from Outil, always true
 
-
-    public void exterminate()
-    {
-        //TODO I need access to getX et getY but in which class?
-    }
 }

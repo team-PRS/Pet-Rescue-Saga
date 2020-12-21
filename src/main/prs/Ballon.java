@@ -1,12 +1,26 @@
 package prs;
 
+import java.util.Random;
+
 public class Ballon extends Outil
 {
-    private String name;
+    private String color;
+    private String[] colors = new String[]{"YELLOW", "BLUE", "RED", "GREEN", "PURPLE"};
 
-    public Ballon(String name){this.name = name;}   //TODO add name from enum
+    public Ballon(String color)                     //usual ballon's constructor
+    {
+        this.color = color;
+    }
 
-    public String getName(){return name;}
+    public Ballon()                                //random color ballon's constructor (to fill an the beginning of set or for additional ballon)
+    {
+        int index = new Random().nextInt(5);
+        this.color = colors[index];
+    }
 
-    // isClicable does't need to be implemented because succeed from Outil
+    public String getColor(){return color;}
+
+
+    // isClicable succeed from Outil, always true
+
 }

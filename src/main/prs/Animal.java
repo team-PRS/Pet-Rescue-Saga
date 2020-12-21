@@ -1,31 +1,25 @@
 package prs;
 
+import java.util.Random;
+
 public class Animal extends ObjectSurCase
 {
-    private int type;
+    private String type;
+    private String[] types = new String[]{"CAT", "DOG", "BIRD", "FROG"};        
 
-    public enum typeAnimal
+    public Animal(String ty)
     {
-        CAT (1),
-        DOG (2),
-        BIRD (3),
-        FROG (3);
-
-        private final int type;
-
-        typeAnimal(int iVal)
-        {
-            this.type = iVal;
-        }
+        this.type = ty;
     }
 
-    public Animal(int ty)
+    public Animal()                                   //random type Animal's constructor (to fill an the beginning of set or for additional animal)
     {
-        super();
-        type = ty;
+        int index = new Random().nextInt(4);
+        this.type = types[index];
+
     }
 
-    public int getType()
+    public String getType()
     {
         return type;
     }
@@ -34,6 +28,6 @@ public class Animal extends ObjectSurCase
     public boolean isClicable()
     {
         return false;
-    }
+    }    //TODO change it if we'll add sounds
 
 }
