@@ -8,7 +8,7 @@ public class Plateau
     private int height;
     private int width;
     private ObjectSurCase[][] plateau;
-    private static boolean inOnFlor = false;
+    private static boolean inOnFloor = false;
 
     /*================================= Constructor ==============================*/
     public Plateau(int h, int w)
@@ -390,32 +390,66 @@ public class Plateau
         for (int i = x - 1; i <= x + 1; i++)
         {
             for (int j = y - 1; j <= y + 1; j++)
-                cleanCase(i, j);
+            {
+                if (plateau[i][j] != null)
+                {
+                    cleanCase(i, j);
+                    shiftDown(i, j);
+                }
+                else
+                    {
+                        //skip
+                    }
+            }                   
         }
     }
 
     public void ballonExplosion(String ballonColor)
     {
-        for (int i = 0; i < height; i++)
+        for (int i = height - 1; i >= 0; i--)
         {
-            for (int j = 0; j < width; j++)
+            for (int j = width - 1; j >= 0; j--)
             {
-                if (((Bloc) plateau[i][j]).getColor() == ballonColor)
-                    cleanCase(i, j);
+                if (plateau[i][j] != null)
+                {
+                    ObjectSurCase obj = getObject(i, j);
+                    if ((obj instanceof Bloc) && obj.isClicable())            //if color bloc
+                    {
+                        if (((Bloc) obj).getColor() == ballonColor)
+                        {
+                            cleanCase(i, j);
+                            shiftDown(i, j);
+                            //return on the same place to check if shifted element will not a bloc of the same color
+                            j++;   
+                        }
+                    }
+                    else if (obj instanceof Ballon)                        //if ballon
+                        {
+                            cleanCase(i, j);
+                            shiftDown(i, j);
+                            //return on the same place to check if shifted element will not a bloc of the same color
+                            j++;
+                        }
+                    else                                     //if animal, deco, bomb
+                    {
+                        //do nothing just keep moving
+                        continue;
+                    }
+                }
             }
         }
     }
 
     public LinkedList<Point> animalsOnFloor()
     {
-        this.inOnFlor = false;
+        this.inOnFloor = false;
         LinkedList<Point> animalsToRescue = new LinkedList<Point>();
         for (int j = 0; j < width; j++)
         {
             int i = height - 1;
             if (plateau[i][j] instanceof Animal)
             {
-                inOnFlor = true;
+                inOnFloor = true;
                 Point animalCoord = new Point(i, j);
                 animalsToRescue.add(animalCoord);
             }
@@ -501,43 +535,82 @@ public class Plateau
     public static void main(String[] args)
     {
         Plateau test1 = new Plateau(7, 7);
-        test1.remplirPlateau(2, 34, 4, 2);
 
+        test1.remplirPlateau(2, 34, 4, 1);
         test1.printMap();
         System.out.println("");
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 6; i >= 0; i--)                             //test ballonExplosion()
         {
-            System.out.println(inOnFlor);
-            test1.animalsOnFloor();
-            if (inOnFlor == true)
+            for (int j = 6; j >= 0; j--)
             {
-                System.out.println("");
-                System.out.println("Need to rescue ");
-                test1.animalRescue(test1.animalsOnFloor());
-                // System.out.println("");
-                test1.printMap();
+                if (test1.getObject(i, j) != null)
+                {
+                    ObjectSurCase obj = test1.getObject(i, j);
+
+                    if (obj instanceof Outil)
+                    {
+                        test1.ballonExplosion("BLUE");
+                    }
+                }
+                else
+                {
+                    System.out.println("has not element");
+                }
             }
-            System.out.println("Start cycle " + i);
-            test1.cleanCase(6, 6);
-            test1.printMap();
-            test1.shiftDown(6, 6);
-            System.out.println("");
-            test1.animalsOnFloor();
-            if (inOnFlor == true)
-            {
-                System.out.println("");
-                System.out.println("Need to rescue ");
-                test1.animalRescue(test1.animalsOnFloor());
-                // System.out.println("");
-                test1.printMap();
-            }
-           
         }
 
-        //  test1.getGroup(5, 6);
-        //
-        //
+      //  for (int i = 6; i >= 0; i--)                                //test bombExplosion()
+      //  {
+      //      for (int j = 6; j >= 0; j--)
+      //      {
+      //          if (test1.getObject(i, j) != null)
+      //          {
+      //              ObjectSurCase obj = test1.getObject(i, j);
+      //
+      //              if (obj instanceof Outil)
+      //              {
+      //                  test1.bombExplosion(i, j);
+      //              }
+      //          }
+      //          else
+      //          {
+      //              System.out.println("has not element");
+      //          }
+      //      }
+      //  }
+        test1.printMap();
+
+     //   for (int i = 0; i < 6; i++)
+     //   {
+     //       System.out.println(inOnFloor);
+     //       test1.animalsOnFloor();
+     //       if (inOnFloor == true)                                             //test animal rescue()
+     //       {
+     //           System.out.println("");
+     //           System.out.println("Need to rescue ");
+     //           test1.animalRescue(test1.animalsOnFloor());
+     //           // System.out.println("");
+     //           test1.printMap();
+     //       }
+     //       System.out.println("Start cycle " + i);
+     //       test1.cleanCase(6, 6);
+     //       test1.printMap();
+     //       test1.shiftDown(6, 6);
+     //       System.out.println("");
+     //       test1.animalsOnFloor();
+     //       if (inOnFloor == true)
+     //       {
+     //           System.out.println("");
+     //           System.out.println("Need to rescue ");
+     //           test1.animalRescue(test1.animalsOnFloor());
+     //           // System.out.println("");
+     //           test1.printMap();
+     //       }
+     //
+     //   }
+
+        //  test1.getGroup(5, 6);                                       //test getGroup()
         //  System.out.println("");
         //  test1.getGroup(3, 4);
        // System.out.println(test1.levelLost());

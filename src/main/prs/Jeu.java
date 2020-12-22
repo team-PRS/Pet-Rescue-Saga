@@ -64,21 +64,6 @@ public class Jeu
 
     }
 
-        /*  GameSet
-          1) ask if want <play> (button) or <exit> (button)
-        if push play:
-          2) make un account -> create config/save obj joueur OR insert name -> load level, points etc from configJoueur/dataJoueur
-          3) push <Play>
-          4) Game set:
-               a) create plateau, fill it by elements
-               b) pressCell <-> reactions (cycle)
-                   till:
-                          - level win
-                          - level lost
-               c) save level, points etc to configJoueur
-               d) <start new level> OR <exit>
-         */
-
 
     private Plateau createPlateau(Configuration config)
     {
@@ -115,18 +100,24 @@ public class Jeu
                 // if bloc
                 if (plateau.getObject(x, y) instanceof Bloc)
                 {
-                    // only one bloc
+                    // if only one bloc
                     if (plateau.getGroup(x, y).size() == 1)
                     {
                         //skip
                     }
-                    // group of blocs
+                    // if group of blocs
                     else
                     {
-                        LinkedList<Point> gr = plateau.getGroup(x, y);
-                        // delete group
-                        gr.clear();
-                        // TODO move down upstairs elements
+                        LinkedList<Point> blocGroupe = plateau.getGroup(x, y);
+                        // delete group and shift down all upstairs elements
+                        for (Point p : blocGroupe)
+                        {
+                            int xCoord = p.getCoordX();
+                            int yCoord = p.getCoordY();
+                            plateau.cleanCase(xCoord, yCoord);
+                            plateau.shiftDown(xCoord, yCoord);
+                        }
+
                         // TODO add another blocs and elements (depends of level)
                        //  if (configLevel.getValue(level, "addBlocs") == "true")
                        // {
@@ -155,6 +146,7 @@ public class Jeu
                         //ballon destroyed all blocs of his color
                         String ballonColor = ((Ballon)plateau.getObject(x, y)).getColor();
                         plateau.ballonExplosion(ballonColor);
+
                     }
                 }
             }
@@ -182,6 +174,21 @@ public class Jeu
         System.out.println(conf.getValue(1, "additionalBlocs"));
         Configuration confPlayer = new Configuration("configPlayer.txt");
         System.out.println(confPlayer.getPlayerValue("Level"));
+
+        /*  GameSet
+          1) ask if want <play> (button) or <exit> (button)
+        if push play:
+          2) make un account -> create config/save obj joueur OR insert name -> load level, points etc from configJoueur/dataJoueur
+          3) push <Play>
+          4) Game set:
+               a) create plateau, fill it by elements
+               b) pressCell <-> reactions (cycle)
+                   till:
+                          - level win
+                          - level lost
+               c) save level, points etc to configJoueur
+               d) <start new level> OR <exit>
+         */
 
     }
 }
