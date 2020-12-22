@@ -53,6 +53,7 @@ public class PanelMap extends JPanel{
     //mouse action
     public void mouseClicked(MouseEvent e){
       System.out.println("launch of "+id+" level.");
+      //TODO launch addPanelPlateau(id) in Controller.
     }
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}

@@ -33,15 +33,22 @@ public class Controller {
       return false;
     }
   }
-  public boolean addPanelPlateau(){
+  /**
+  *Add a Panel to represent a level.
+  */
+  public boolean addPanelPlateau(int id){
     try {
       pPlateau = new PanelPlateau();
       frame.setContentPane(pPlateau);
+      //TODO load the save of the id level & ask pPlateau to print it.
       return true;
     }catch (Exception e) {
       return false;
     }
   }
+  /**
+  *Load game images.
+  */
   public boolean iniImage(){
     boolean ok = true;
     Image img = image.getImage("background.jpg");
@@ -63,6 +70,9 @@ public class Controller {
   public void repaint(){
     frame.repaint();
   }
+  /**
+  * Unlock the next level
+  */
   public boolean addLevel(){
     if(pMap.getNbrButton() < data.getNbrLevelAviable()){
       pMap.addLevel();
