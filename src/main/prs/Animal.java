@@ -27,7 +27,7 @@ public class Animal extends ObjectSurCase
     @Override
     public boolean isClicable()
     {
-        return false;
-    }    //TODO change it if we'll add sounds
+        return true;
+    }    
 
 }

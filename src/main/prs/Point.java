@@ -13,4 +13,5 @@ public class Point
 
     public int getCoordX(){return coordX;}
     public int getCoordY(){return coordY;}
+
 }

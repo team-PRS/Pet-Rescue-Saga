@@ -6,13 +6,11 @@ import java.util.LinkedList;
 public class Jeu
 {
     private Plateau plateau;
-    private Point cell;
     private int initialBlocs, initialAnimals, initialImmoBlocs, initialBombs, initialBallons;
     private int additionalBlocs, additionalAnimals, additionalBombs, additionalBallons;
     private Configuration configLevel;
     private Configuration configJoueur;
     private int level;
-    
     //private Joueur jouer;
     //private Compte compte;
 
@@ -66,10 +64,8 @@ public class Jeu
 
     }
 
-
-    private void GameSet()
-    {
-        /*1) ask if want <play> (button) or <exit> (button)
+        /*  GameSet
+          1) ask if want <play> (button) or <exit> (button)
         if push play:
           2) make un account -> create config/save obj joueur OR insert name -> load level, points etc from configJoueur/dataJoueur
           3) push <Play>
@@ -82,7 +78,7 @@ public class Jeu
                c) save level, points etc to configJoueur
                d) <start new level> OR <exit>
          */
-    }
+
 
     private Plateau createPlateau(Configuration config)
     {
@@ -107,6 +103,7 @@ public class Jeu
      - if outil, launch it
      - if animal, do nothing for the moment
      */
+    
     private void pressCell(int x, int y)       
     {
         // player has clicked on plateau
@@ -173,6 +170,11 @@ public class Jeu
             System.out.println("Clicked out of bounds of plateau");
         }
     }
+
+
+
+
+
 
     public static void main (String[] args)
     {
