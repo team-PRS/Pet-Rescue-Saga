@@ -12,9 +12,12 @@ public class Controller {
   private Frame frame;
   private PanelMap pMap;
   private PanelPlateau pPlateau;
+  private PanelGame pGame;
   private static Data data = new Data();
   // GET SET -------------------------------------------------------------------
   public Frame getFrame(){return frame;}
+  public int getWidthMax(){return getFrame().getWidth();}
+  public int getHeightMax(){return getFrame().getHeight();}
   public PanelPlateau getPPlateau(){return pPlateau;}
   public static Data getData(){return data;}
   // FUNCTIONS -----------------------------------------------------------------
@@ -40,8 +43,8 @@ public class Controller {
   */
   public boolean addPanelPlateau(int id){
     try {
-      pPlateau = new PanelPlateau();
-      frame.setContentPane(pPlateau);
+      pGame = new PanelGame();
+      frame.setContentPane(pGame);
       //TODO load the save of the id level & ask pPlateau to print it.
       return true;
     }catch (Exception e) {
@@ -55,8 +58,23 @@ public class Controller {
     try {
       pPlateau = new PanelPlateau();
       pPlateau.setPlateau(p);
-      frame.setContentPane(pPlateau);
+      frame.setContentPane(new PanelGame(pPlateau));
+      setPanelPlateauSize();
       //TODO load the save of the id level & ask pPlateau to print it.
+      return true;
+    }catch (Exception e) {
+      return false;
+    }
+  }
+  public boolean setPanelPlateauSize(){
+    try {
+      int dimX = 1+getData().getTailleDUneCase()*pPlateau.getPlateau().getWidth();
+      int dimY = 1+getData().getTailleDUneCase()*pPlateau.getPlateau().getHeight();
+      int xCenter = (getWidthMax()-dimX)/2;
+      int yCenter = (getHeightMax()-dimY)/2;
+      pPlateau.setBounds(xCenter,yCenter,dimX,dimY);
+      System.out.println(xCenter+" "+yCenter);
+      pGame.revalidate();
       return true;
     }catch (Exception e) {
       return false;
@@ -69,14 +87,14 @@ public class Controller {
     boolean ok = true;
     Image img = image.getImage("background.jpg");
     try {
-      img = img.getScaledInstance(frame.getWidth(),frame.getHeight() ,Image.SCALE_SMOOTH);
+      img = img.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
       Controller.getData().setPMapImg(img);
     }catch (Exception e) {
       ok=false;
     }
     Image img2 = image.getImage("background2.jpg");
     try {
-      img2 = img2.getScaledInstance(frame.getWidth(),frame.getHeight() ,Image.SCALE_SMOOTH);
+      img2 = img2.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
       Controller.getData().setPPlateauImg(img2);
     }catch (Exception e) {
       ok=false;

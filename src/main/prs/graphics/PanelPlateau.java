@@ -17,15 +17,15 @@ public class PanelPlateau extends JPanel{
 
   // CONSTRUCTORS --------------------------------------------------------------
   public PanelPlateau(){
+    setOpaque(false);
+    setLayout(null);
     //setExtendedState(JPanel.MAXIMIZED_BOTH);
   }
   // GET SET -------------------------------------------------------------------
+  public Plateau getPlateau(){return plateau;}
   public void setPlateau(Plateau p){plateau=p;}
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
-    if(Controller.getData().getPPlateauImg() != null){
-      g.drawImage(Controller.getData().getPPlateauImg(),0,0,this);
-    }
     if(plateau!=null){
       paintCase(g);
       paintGrid(g);

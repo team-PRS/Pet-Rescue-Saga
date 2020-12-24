@@ -35,7 +35,7 @@ public class Main {
     m.repaint();
 
     System.out.println("==============================");
-    Plateau plateau = new Plateau(5, 10);
+    Plateau plateau = new Plateau(6, 15);
     plateau.remplirPlateau(2, 34, 4, 1);
     plateau.printMap();
     System.out.println(m.addPanelPlateau(plateau));
