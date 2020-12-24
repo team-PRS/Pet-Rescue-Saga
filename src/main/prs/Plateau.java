@@ -11,6 +11,9 @@ public class Plateau
     private static boolean inOnFloor = false;
 
     /*================================= Constructor ==============================*/
+    /**
+    *Similar to Plateau(int y, int x) !
+    */
     public Plateau(int h, int w)
     {
         this.height = h;
@@ -81,7 +84,7 @@ public class Plateau
             {
                 while (nmbImmoBlocs - ia != 0)
                 {
-                    Bloc immo = new Bloc("NONE");
+                    Bloc immo = new Bloc(false);
                     int x = new Random().nextInt(height);
                     int y = new Random().nextInt(width);
                     if (plateau[x][y] == null)
@@ -256,7 +259,7 @@ public class Plateau
                             ObjectSurCase b = getObject(i, j);
                             if ((b instanceof Bloc) && (b.isClicable()))
                             {
-                                if (((Bloc) a).getColor() == ((Bloc) b).getColor())  // 0 non-examined, 1 - examined, 2 - part of groupe
+                                if (((Bloc) a).getColorName() == ((Bloc) b).getColorName())  // 0 non-examined, 1 - examined, 2 - part of groupe
                                 {
                                     // if b is a part of group already
                                     if ((groupe[i][j] == 2))
@@ -310,15 +313,15 @@ public class Plateau
             {
                 if (plateau[i][j] instanceof Bloc)
                 {
-                    if (((Bloc) plateau[i][j]).getColor() == "NONE")
+                    if (((Bloc) plateau[i][j]).getColorName() == "NONE")
                         System.out.print(" nn");
-                    else if (((Bloc) plateau[i][j]).getColor() == "BLUE")
+                    else if (((Bloc) plateau[i][j]).getColorName() == "BLUE")
                         System.out.print(" bb");
-                    else if (((Bloc) plateau[i][j]).getColor() == "YELLOW")
+                    else if (((Bloc) plateau[i][j]).getColorName() == "YELLOW")
                             System.out.print(" by");
-                    else if (((Bloc) plateau[i][j]).getColor() == "RED")
+                    else if (((Bloc) plateau[i][j]).getColorName() == "RED")
                         System.out.print(" br");
-                    else if (((Bloc) plateau[i][j]).getColor() == "GREEN")
+                    else if (((Bloc) plateau[i][j]).getColorName() == "GREEN")
                         System.out.print(" bg");
                     else
                         System.out.print(" bp");
@@ -417,7 +420,7 @@ public class Plateau
                     ObjectSurCase obj = getObject(i, j);
                     if ((obj instanceof Bloc) && obj.isClicable())            //if color bloc
                     {
-                        if (((Bloc) obj).getColor() == ballonColor)
+                        if (((Bloc) obj).getColorName() == ballonColor)
                         {
                             cleanCase(i, j);
                             shiftDown(i, j);

@@ -1,27 +1,39 @@
 package prs;
-
-
+import java.awt.Color;
 import java.util.Random;
 
 public class Bloc extends ObjectSurCase
 {
-    private String color;
-    private String[] colors = new String[]{"YELLOW", "BLUE", "RED", "GREEN", "PURPLE", "NONE"};
+    private Color color;
+    private Color[] colors = new Color[]{Color.YELLOW, Color.BLUE, Color.RED, Color.GREEN, Color.MAGENTA, new Color(0,0,0,0)};
+    private String colorName;
+    private String[] colorsName = new String[]{"YELLOW", "BLUE", "RED", "GREEN", "PURPLE", "NONE"};
 
-    public Bloc(String color)                        //usual bloc's constructor
+    public Bloc(int idColor)                        //usual bloc's constructor
     {
-        this.color = color;
+      this.color = colors[idColor];
+      this.colorName = colorsName[idColor];
     }
-
-    public Bloc()                                   //random color bloc's constructor (to fill an the beginning of set or for additional blocs)
+    public Bloc(boolean colored)
     {
+      if(colored){
         int index = new Random().nextInt(5);
         this.color = colors[index];
+        this.colorName = colorsName[index];
+      }else{
+        this.color = colors[5];
+        this.colorName = colorsName[5];
+      }
+    }
+    public Bloc()                                   //random color bloc's constructor (to fill an the beginning of set or for additional blocs)
+    {
+        this(true);
     }
 
-    public String getColor(){return color;}
+    public String getColorName(){return colorName;}
+    public Color getColor(){return color;}
 
-    public void setColor(String c) {this.color = c;}
+    public void setColor(Color c) {this.color = c;}
 
 
     public boolean sameColor(Bloc a, Bloc b)                    // check if two blocs has the same color
@@ -32,7 +44,7 @@ public class Bloc extends ObjectSurCase
     @Override
     public boolean isClicable ()
     {
-        return (color != "NONE" ? true : false);        // blocs without color = decoration = non clicable
+        return (color.toString() != "NONE" ? true : false);        // blocs without color = decoration = non clicable
     }
 
     public static void main(String[] args)

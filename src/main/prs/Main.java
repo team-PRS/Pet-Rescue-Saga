@@ -1,7 +1,7 @@
 package prs;
 import prs.graphics.Frame;
 import java.awt.Graphics;
-
+import java.awt.Color;
 import java.io.Serializable;
 import prs.map.*;
 
@@ -35,7 +35,7 @@ public class Main {
     m.repaint();
 
     System.out.println("==============================");
-    Plateau plateau = new Plateau(7, 7);
+    Plateau plateau = new Plateau(5, 10);
     plateau.remplirPlateau(2, 34, 4, 1);
     plateau.printMap();
     System.out.println(m.addPanelPlateau(plateau));
@@ -44,6 +44,8 @@ public class Main {
     //m.getPPlateau().repaint();
     //m.getPPlateau().paintComponent(new Graphics());
     System.out.println("==============================");
+    Color c = Color.BLACK;
+    System.out.println(c);
 
   }
 }
