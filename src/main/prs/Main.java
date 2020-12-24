@@ -1,4 +1,5 @@
 package prs;
+import prs.graphics.Frame;
 
 import java.io.Serializable;
 import prs.map.*;
@@ -18,5 +19,18 @@ public class Main {
     System.out.println("==============================");
     map.getJoueur().getCompte().setScore(2,100);
     System.out.println(map);
+    System.out.println("==============================");
+    Controller m = new Controller();
+    System.out.println(m.addFrame());
+    System.out.println(m.addPanelMap());
+    System.out.println(m.iniImage());
+    m.repaint();
+    //m.pause(1000);
+    //System.out.println("repaint");
+    //System.out.println(m.addPanelMap());
+    System.out.println(m.addLevel());
+    m.repaint();
+    System.out.println(m.addLevel());
+    m.repaint();
   }
 }
