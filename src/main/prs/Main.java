@@ -1,5 +1,6 @@
 package prs;
 import prs.graphics.Frame;
+import java.awt.Graphics;
 
 import java.io.Serializable;
 import prs.map.*;
@@ -32,5 +33,17 @@ public class Main {
     m.repaint();
     System.out.println(m.addLevel());
     m.repaint();
+
+    System.out.println("==============================");
+    Plateau plateau = new Plateau(7, 7);
+    plateau.remplirPlateau(2, 34, 4, 1);
+    plateau.printMap();
+    System.out.println(m.addPanelPlateau(plateau));
+    // printAll > repaint. printAll force le redessinage de la fenetre quand repaint ne fonctionne que lorsqu'il concidère que c'est utile.
+    m.getFrame().printAll(m.getFrame().getGraphics());
+    //m.getPPlateau().repaint();
+    //m.getPPlateau().paintComponent(new Graphics());
+    System.out.println("==============================");
+
   }
 }

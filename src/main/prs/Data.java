@@ -13,6 +13,7 @@ public class Data {
   private int screenDimY;
   private static int nbrLevelAviable=4;
   private static Font font=new Font("FreeSans",Font.BOLD,60);
+  private int tailleDUneCase = 100;
   // CONSTRUCTORS --------------------------------------------------------------
 
   // GET SET -------------------------------------------------------------------
@@ -26,6 +27,7 @@ public class Data {
   public void setScreenDimY(int x){screenDimY=x;}
   public static int getNbrLevelAviable(){return nbrLevelAviable;}
   public static Font getFont(){return font;}
+  public int getTailleDUneCase(){return tailleDUneCase;}
   // FUNCTIONS -----------------------------------------------------------------
 
   // SUB-CLASS -----------------------------------------------------------------

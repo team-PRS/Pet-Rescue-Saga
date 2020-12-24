@@ -14,6 +14,8 @@ public class Controller {
   private PanelPlateau pPlateau;
   private static Data data = new Data();
   // GET SET -------------------------------------------------------------------
+  public Frame getFrame(){return frame;}
+  public PanelPlateau getPPlateau(){return pPlateau;}
   public static Data getData(){return data;}
   // FUNCTIONS -----------------------------------------------------------------
   public boolean addFrame(){
@@ -39,6 +41,20 @@ public class Controller {
   public boolean addPanelPlateau(int id){
     try {
       pPlateau = new PanelPlateau();
+      frame.setContentPane(pPlateau);
+      //TODO load the save of the id level & ask pPlateau to print it.
+      return true;
+    }catch (Exception e) {
+      return false;
+    }
+  }
+  /**
+  *Add a Panel to represent a level.
+  */
+  public boolean addPanelPlateau(Plateau p){
+    try {
+      pPlateau = new PanelPlateau();
+      pPlateau.setPlateau(p);
       frame.setContentPane(pPlateau);
       //TODO load the save of the id level & ask pPlateau to print it.
       return true;

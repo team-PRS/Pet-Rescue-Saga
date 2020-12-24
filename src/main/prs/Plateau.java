@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class Plateau
 {
-    private int height;
     private int width;
+    private int height;
     private ObjectSurCase[][] plateau;
     private static boolean inOnFloor = false;
 
@@ -26,9 +26,9 @@ public class Plateau
 
     /*============================== Getters & Setters ============================*/
 
-    public int getHeight(){return height;}
-
     public int getWidth(){return width;}
+
+    public int getHeight(){return height;}
 
     public ObjectSurCase getObject(int x, int y)                       //return ObjectSurCase by coordinates
     {
@@ -230,7 +230,7 @@ public class Plateau
                         System.out.print(" 0 ");
             }
             System.out.println("");
-        }       
+        }
         return dataToExit;
     }
 
@@ -244,7 +244,7 @@ public class Plateau
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    if ((i == x) && (j == y)) 
+                    if ((i == x) && (j == y))
                     {
                         // skip - do not examine himself
                     }
@@ -298,7 +298,9 @@ public class Plateau
     }
 
     /*================================= Print to Console ==============================*/
+    /*public String toString(){
 
+    }*/
     public void printMap()		                                    // print Plateau
     {
         System.out.println("h:" + height + " l:" + width);
@@ -400,7 +402,7 @@ public class Plateau
                     {
                         //skip
                     }
-            }                   
+            }
         }
     }
 
@@ -420,7 +422,7 @@ public class Plateau
                             cleanCase(i, j);
                             shiftDown(i, j);
                             //return on the same place to check if shifted element will not a bloc of the same color
-                            j++;   
+                            j++;
                         }
                     }
                     else if (obj instanceof Ballon)                        //if ballon

@@ -21,6 +21,7 @@ public class PanelMap extends JPanel{
   public int getNbrButton(){return nbrButton;}
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
+    System.out.println("paint map");//@a
     if(Controller.getData().getPMapImg() != null){
       g.drawImage(Controller.getData().getPMapImg(),0,0,this);
     }
