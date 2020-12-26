@@ -2,10 +2,13 @@ package prs;
 
 import prs.map.Compte;
 import prs.map.Joueur;
+import prs.graphics.*;
+import prs.usuel.image;
 
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.awt.Image;
 
 public class Jeu
 {
@@ -17,6 +20,11 @@ public class Jeu
     private int level;
     private Compte compte;
     private Scanner scanAnswer;
+    private Frame frame;
+    private PanelMap pMap;
+    private PanelPlateau pPlateau;
+    private PanelGame pGame;
+    private static Data data = new Data();
 
 
     /*================================= Constructor ==============================*/
@@ -69,9 +77,14 @@ public class Jeu
         }
         else {additionalBallons = 0;}
 
-       
-    }
 
+    }
+    // GET SET -------------------------------------------------------------------
+    public Frame getFrame(){return frame;}
+    public int getWidthMax(){return getFrame().getWidth();}
+    public int getHeightMax(){return getFrame().getHeight();}
+    public PanelPlateau getPPlateau(){return pPlateau;}
+    public static Data getData(){return data;}
     /*============================= Common functions ==========================*/
 
     private void createPlateau(Configuration config, Joueur gamer)
@@ -82,15 +95,24 @@ public class Jeu
                 Integer.parseInt(configLevel.getLevelValue(level, "width")));
         this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals,initialBallons);
     }
-
-
-    /* function which provide reactions for clic:
-     - if group of blocs, delete them all
-     - if one bloc, do nothing
-     - if bomb, make an explosion and deletion of 8 cells around
-     - if ballon, delete all bloc of its color
-     - if outil, launch it
-     - if animal, do nothing for the moment
+    /**
+    function that caculate coordinates of a clic & launch pressCell
+    */
+    public void clicOnPlateau(int x, int y)
+    {
+      if(x<0 || y<0){return;}
+      if(x>Data.getScreenDimX() || y>Data.getScreenDimY()){return;}
+      pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
+      //TODO add a sound ?
+    }
+    /**
+      {@summary function which provide reactions for clic:}<br>
+     - if group of blocs, delete them all<br>
+     - if one bloc, do nothing<br>
+     - if bomb, make an explosion and deletion of 8 cells around<br>
+     - if ballon, delete all bloc of its color<br>
+     - if outil, launch it<br>
+     - if animal, do nothing for the moment<br>
      */
     public void pressCell(int x, int y)
     {
@@ -166,8 +188,110 @@ public class Jeu
             System.out.println("Out of bounds of plateau");
         }
     }
+    /*============================= graphics functions ==========================*/
+    public boolean addFrame(){
+      try {
+        frame = new Frame();
+        return true;
+      }catch (Exception e) {
+        return false;
+      }
+    }
+    public boolean addPanelMap(){
+      try {
+        pMap = new PanelMap();
+        frame.setContentPane(pMap);
+        return true;
+      }catch (Exception e) {
+        return false;
+      }
+    }
+    /**
+    *Add a Panel to represent a level.
+    */
+    public boolean addPanelPlateau(int id){
+      try {
+        pGame = new PanelGame();
+        frame.setContentPane(pGame);
+        //TODO load the save of the id level & ask pPlateau to print it.
+        return true;
+      }catch (Exception e) {
+        return false;
+      }
+    }
+    /**
+    *Add a Panel to represent a level.
+    */
+    public boolean addPanelPlateau(Plateau p){
+      try {
+        pPlateau = new PanelPlateau();
+        pPlateau.setPlateau(p);
+        frame.setContentPane(new PanelGame(pPlateau));
+        setPanelPlateauSize();
+        //TODO load the save of the id level & ask pPlateau to print it.
+        return true;
+      }catch (Exception e) {
+        return false;
+      }
+    }
+    public boolean setPanelPlateauSize(){
+      try {
+        int dimX = 1+getData().getTailleDUneCase()*pPlateau.getPlateau().getWidth();
+        int dimY = 1+getData().getTailleDUneCase()*pPlateau.getPlateau().getHeight();
+        int xCenter = (getWidthMax()-dimX)/2;
+        int yCenter = (getHeightMax()-dimY)/2;
+        pPlateau.setBounds(xCenter,yCenter,dimX,dimY);
+        System.out.println(xCenter+" "+yCenter);
+        pGame.revalidate();
+        return true;
+      }catch (Exception e) {
+        return false;
+      }
+    }
+    /**
+    *Load game images.
+    */
+    public boolean iniImage(){
+      boolean ok = true;
+      Image img = image.getImage("background.jpg");
+      try {
+        img = img.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
+        getData().setPMapImg(img);
+      }catch (Exception e) {
+        ok=false;
+      }
+      Image img2 = image.getImage("background2.jpg");
+      try {
+        img2 = img2.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
+        getData().setPPlateauImg(img2);
+      }catch (Exception e) {
+        ok=false;
+      }
+      return true;
+    }
+    public void repaint(){
+      frame.repaint();
+    }
+    /**
+    * Unlock the next level
+    */
+    public boolean addLevel(){
+      if(pMap.getNbrButton() < data.getNbrLevelAviable()){
+        pMap.addLevel();
+        return true;
+      }
+      return false;
+    }
 
-
+    //static
+    public static void pause(int ms){
+      //if(ms<1){error.error("fail to pause "+ms);}
+      try {
+          Thread.sleep(ms);
+      } catch (InterruptedException ie) {
+          //error.error("fail to pause "+ms);
+      }
+    }
 
     /*============================= Console UI functions ==========================*/
 
@@ -222,7 +346,7 @@ public class Jeu
         catch (IOException | ClassNotFoundException e)
         {
             e.printStackTrace();
-        }                                  
+        }
         return joueur;
     }
 
@@ -423,7 +547,7 @@ public class Jeu
                         int[] coord = askCoordinates();
                         plateau.bombExplosion(coord[0], coord[1]);
                     } else System.out.println("Wrong input, try again");
-                    
+
                     printPlateau();
                     plateau.rescueAnimals(plateau.getAnimalsOnFloor());
                     plateau.gameState();

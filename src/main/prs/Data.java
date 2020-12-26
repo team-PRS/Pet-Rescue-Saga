@@ -9,11 +9,11 @@ import java.awt.Font;
 public class Data {
   private Image pMapImg;
   private Image pPlateauImg;
-  private int screenDimX;
-  private int screenDimY;
+  private static int screenDimX;
+  private static int screenDimY;
   private static int nbrLevelAviable=4;
   private static Font font=new Font("FreeSans",Font.BOLD,60);
-  private int tailleDUneCase = 100;
+  private static int tailleDUneCase = 100;
   // CONSTRUCTORS --------------------------------------------------------------
 
   // GET SET -------------------------------------------------------------------
@@ -21,13 +21,13 @@ public class Data {
   public void setPMapImg(Image i){pMapImg = i;}
   public Image getPPlateauImg(){return pPlateauImg;}
   public void setPPlateauImg(Image i){pPlateauImg = i;}
-  public int getScreenDimX(){return screenDimX;}
-  public void setScreenDimX(int x){screenDimX=x;}
-  public int getScreenDimY(){return screenDimY;}
-  public void setScreenDimY(int x){screenDimY=x;}
+  public static int getScreenDimX(){return screenDimX;}
+  public static void setScreenDimX(int x){screenDimX=x;}
+  public static int getScreenDimY(){return screenDimY;}
+  public static void setScreenDimY(int x){screenDimY=x;}
   public static int getNbrLevelAviable(){return nbrLevelAviable;}
   public static Font getFont(){return font;}
-  public int getTailleDUneCase(){return tailleDUneCase;}
+  public static int getTailleDUneCase(){return tailleDUneCase;}
   // FUNCTIONS -----------------------------------------------------------------
 
   // SUB-CLASS -----------------------------------------------------------------
