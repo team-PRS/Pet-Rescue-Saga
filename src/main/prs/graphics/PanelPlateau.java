@@ -32,22 +32,22 @@ public class PanelPlateau extends JPanel{
     }
   }
   public void paintCase(Graphics g){
-   // for (int i = 0; i < plateau.getWidth(); i++){
-   //   for (int j = 0; j < plateau.getHeight(); j++){
-   //     if(plateau.getObject(j,i) instanceof Bloc){
-   //       Bloc b = (Bloc) plateau.getObject(j,i);
-   //       if(b.getColorName()!="NONE"){
-   //         drawColorRect(i,j,b.getColor(),g);
-   //       }else{
-   //         //g.drawImage(...);
-   //       }
-   //     }else if(plateau.getObject(j,i) instanceof Animal){
-   //       //g.drawImage(...);
-   //     }else if(plateau.getObject(j,i) instanceof Outil){
-   //       //g.drawImage(...);
-   //     }
-   //   }
-   // }
+    for (int i = 0; i < plateau.getWidth(); i++){
+      for (int j = 0; j < plateau.getHeight(); j++){
+        if(plateau.getObject(j,i) instanceof Bloc){
+          Bloc b = (Bloc) plateau.getObject(j,i);
+          if(b.getColor()!="NONE"){
+            drawColorRect(i,j,b.getColor2(),g);
+          }else{
+            //g.drawImage(...);
+          }
+        }else if(plateau.getObject(j,i) instanceof Animal){
+          //g.drawImage(...);
+        }else if(plateau.getObject(j,i) instanceof Outil){
+          //g.drawImage(...);
+        }
+      }
+    }
   }
   public void paintGrid(Graphics g){
     g.setColor(Color.BLACK);
