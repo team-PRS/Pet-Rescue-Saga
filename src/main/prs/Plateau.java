@@ -240,27 +240,27 @@ public class Plateau
         int[][] groupe = new int[height][width];
         LinkedList<Point> dataToExit = new LinkedList<Point>();
         getGroup(x, y, groupe);                             // use the RECURSIVE function
-      //  for (int i = 0; i < height; i++)                    // print group founded to console AND create the LIST of cells the blocs of the group
-      //  {
-      //      //TODO this is service function, REMOVE after implementation GUI and CI
-      //      for (int j = 0; j < width; j++)
-      //      {
-      //          if (groupe[i][j] == 2)
-      //          {
-      //              System.out.print(" 2 ");
-      //              dataToExit.addLast(new Point(i, j));
-      //          }
-      //          else if (groupe[i][j] == 1)
-      //          {
-      //              System.out.print(" 1 ");
-      //          }
-      //          else if (groupe[i][j] == 0)
-      //          {
-      //              System.out.print(" 0 ");
-      //          }
-      //      }
-      //      System.out.println("");
-      //  }
+     //   for (int i = 0; i < height; i++)                    // print group founded to console AND create the LIST of cells the blocs of the group
+     //   {
+     //       //TODO this is service function, REMOVE after implementation GUI and CI
+     //       for (int j = 0; j < width; j++)
+     //       {
+     //           if (groupe[i][j] == 2)
+     //           {
+     //               System.out.print(" 2 ");
+     //               dataToExit.addLast(new Point(i, j));
+     //           }
+     //           else if (groupe[i][j] == 1)
+     //           {
+     //               System.out.print(" 1 ");
+     //           }
+     //           else if (groupe[i][j] == 0)
+     //           {
+     //               System.out.print(" 0 ");
+     //           }
+     //       }
+     //       System.out.println("");
+     //   }
         return dataToExit;
     }
 
@@ -549,7 +549,6 @@ public class Plateau
                 if (plateau[i][j] instanceof Bloc)
                 {
                     LinkedList l = getGroup(i, j);
-                   // printMap();
                     if (l.size() != 1)
                         {
                             isGroupsPresent = true;
@@ -560,7 +559,7 @@ public class Plateau
 
         if ((an != 0) && (bal == 0) && (isGroupsPresent == false)) { state = "lost"; }
         else if (an == 0) { state = "win"; }
-        else { state = "contitue"; }
+        else { state = "continue"; }
 
         return state;
     }

@@ -192,11 +192,6 @@ public class Jeu
         }
     }
 
-    public void saveToAccount()
-    {
-
-    }
-
     public Joueur loadFromAccount() throws IOException
     {
         System.out.println("Please, enter your pseudo : ");
@@ -315,6 +310,11 @@ public class Jeu
         return Action.charAt(0);
     }
 
+    public void saveToAccount()
+    {
+
+    }
+
     public void finish() { this.scanAnswer.close(); }
 
 
@@ -394,38 +394,47 @@ public class Jeu
             System.out.println("LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals (a)\n" +
                     "so they will go down and will be rescued\n");
             printPlateau();
-            while (plateau.gameState().equals("continue"))
+            System.out.println(plateau.gameState());
+
+            while (! plateau.gameState().equals("lost"))
             {
-                char action = askAction();
-                if (action == 'c')          //clic
+                if (plateau.gameState().equals("continue"))
                 {
-                    int[] coord = askCoordinates();
-                    pressCell(coord[0], coord[1]);
-                }
-                else if (action == 'b')    //buy ballon
-                {
-                    joueur.buyBallon();
-                }
-                else if (action == 'a')    //activate ballon
-                {
-                    if (compte.getBallon() > 0)
+                    askAction();
+                    char action = askAction();
+                    if (action == 'c')          //clic
                     {
-                        int[]coord = askCoordinates();
-                        String color = plateau.getColorOfBloc(coord[0], coord[1]);
-                        plateau.ballonExplosion(color);
-                        compte.setBallon(compte.getBallon() - 1);
-                    }
+                        int[] coord = askCoordinates();
+                        pressCell(coord[0], coord[1]);
+                    } else if (action == 'b')    //buy ballon
+                    {
+                        joueur.buyBallon();
+                    } else if (action == 'a')    //activate ballon
+                    {
+                        if (compte.getBallon() > 0)
+                        {
+                            int[] coord = askCoordinates();
+                            String color = plateau.getColorOfBloc(coord[0], coord[1]);
+                            plateau.ballonExplosion(color);
+                            compte.setBallon(compte.getBallon() - 1);
+                        }
+                    } else if (action == 'e')    //activate bombe
+                    {
+                        int[] coord = askCoordinates();
+                        plateau.bombExplosion(coord[0], coord[1]);
+                    } else System.out.println("Wrong input, try again");
+
+                    plateau.rescueAnimals(plateau.getAnimalsOnFloor());
+                    plateau.gameState();
                 }
-                else if (action == 'e')    //activate bombe
+                if (plateau.gameState().equals("win"))
                 {
-                    int[] coord = askCoordinates();
-                    plateau.bombExplosion(coord[0], coord[1]);
+                    System.out.println("Congratulations, you win !! ");
                 }
-
-                else System.out.println("Wrong input, try again");
-
-                plateau.rescueAnimals(plateau.getAnimalsOnFloor());
-                plateau.gameState();
+                else
+                {
+                    System.out.println("The level is lost. Try again.. ");
+                }
             }
         }
         else

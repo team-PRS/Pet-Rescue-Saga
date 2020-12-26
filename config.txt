@@ -1,12 +1,12 @@
-L1_height=10
-L1_width=10
+L1_height=7
+L1_width=7
 
 L1_blocs=true
 L1_animals=true
 L1_outils=false
 L1_immovable=false
 
-L1_initialBlocs=18
+L1_initialBlocs=38
 L1_initialAnimals=5
 L1_initialImmoBlocs=0
 L1_initialBombs=0
