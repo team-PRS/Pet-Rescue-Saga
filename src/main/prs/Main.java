@@ -21,7 +21,7 @@ public class Main {
     map.getJoueur().getCompte().setScore(2,100);
     System.out.println(map);
     System.out.println("==============================");
-    Controller m = new Controller();
+    Jeu m = new Jeu();
     System.out.println(m.addFrame());
     System.out.println(m.addPanelMap());
     System.out.println(m.iniImage());
@@ -36,16 +36,14 @@ public class Main {
 
     System.out.println("==============================");
     Plateau plateau = new Plateau(6, 15);
-    plateau.remplirPlateau(2, 34, 4, 1);
+    plateau.remplirPlateau(2, 60, 4, 1);
     plateau.printMap();
-    System.out.println(m.addPanelPlateau(plateau));
+    m.addPlateau(plateau);
+    System.out.println(m.addPanelPlateau());
     // printAll > repaint. printAll force le redessinage de la fenetre quand repaint ne fonctionne que lorsqu'il concidère que c'est utile.
     m.getFrame().printAll(m.getFrame().getGraphics());
     //m.getPPlateau().repaint();
     //m.getPPlateau().paintComponent(new Graphics());
     System.out.println("==============================");
-    Color c = Color.BLACK;
-    System.out.println(c);
-
   }
 }

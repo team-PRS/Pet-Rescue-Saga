@@ -85,6 +85,7 @@ public class Jeu
     public int getHeightMax(){return getFrame().getHeight();}
     public PanelPlateau getPPlateau(){return pPlateau;}
     public static Data getData(){return data;}
+    public void addPlateau(Plateau p){plateau=p;}
     /*============================= Common functions ==========================*/
 
     private void createPlateau(Configuration config, Joueur gamer)
@@ -101,7 +102,7 @@ public class Jeu
     public void clicOnPlateau(int x, int y)
     {
       if(x<0 || y<0){return;}
-      if(x>Data.getScreenDimX() || y>Data.getScreenDimY()){return;}
+      //if(x>Data.getScreenDimX() || y>Data.getScreenDimY()){return;}
       pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
       //TODO add a sound ?
     }
@@ -199,7 +200,7 @@ public class Jeu
     }
     public boolean addPanelMap(){
       try {
-        pMap = new PanelMap();
+        pMap = new PanelMap(this);
         frame.setContentPane(pMap);
         return true;
       }catch (Exception e) {
@@ -209,24 +210,27 @@ public class Jeu
     /**
     *Add a Panel to represent a level.
     */
-    public boolean addPanelPlateau(int id){
+    /*public boolean addPanelPlateau(int id){
       try {
         pGame = new PanelGame();
         frame.setContentPane(pGame);
+        pGame.setJeu(this);
         //TODO load the save of the id level & ask pPlateau to print it.
         return true;
       }catch (Exception e) {
         return false;
       }
-    }
+    }*/
     /**
     *Add a Panel to represent a level.
     */
-    public boolean addPanelPlateau(Plateau p){
+    public boolean addPanelPlateau(){
       try {
         pPlateau = new PanelPlateau();
-        pPlateau.setPlateau(p);
-        frame.setContentPane(new PanelGame(pPlateau));
+        pPlateau.setPlateau(plateau);
+        pGame = new PanelGame(pPlateau);
+        pGame.setJeu(this);
+        frame.setContentPane(pGame);
         setPanelPlateauSize();
         //TODO load the save of the id level & ask pPlateau to print it.
         return true;
@@ -282,7 +286,15 @@ public class Jeu
       }
       return false;
     }
-
+    public boolean paintAll(){
+      try {
+        frame.paintAll(frame.getGraphics());
+        return true;
+      }catch (Exception e) {
+        //error.error("fail repaintAll");
+        return false;
+      }
+    }
     //static
     public static void pause(int ms){
       //if(ms<1){error.error("fail to pause "+ms);}

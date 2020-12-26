@@ -1,5 +1,5 @@
 package prs.graphics;
-import prs.Controller;
+import prs.Jeu;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,22 +8,26 @@ import prs.Plateau;
 import prs.*;
 import java.awt.Color;
 import java.awt.BasicStroke;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 /**
 {@summary Represent the plateau on the Frame.}
 */
-public class PanelPlateau extends JPanel{
+public class PanelPlateau extends JPanel implements MouseListener{
   private Plateau plateau;
+  private Jeu jeu;
 
   // CONSTRUCTORS --------------------------------------------------------------
   public PanelPlateau(){
     setOpaque(false);
     setLayout(null);
-    //setExtendedState(JPanel.MAXIMIZED_BOTH);
+    addMouseListener(this);
   }
   // GET SET -------------------------------------------------------------------
   public Plateau getPlateau(){return plateau;}
   public void setPlateau(Plateau p){plateau=p;}
+  public void setJeu(Jeu j){jeu=j;}
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
     if(plateau!=null){
@@ -56,16 +60,16 @@ public class PanelPlateau extends JPanel{
     int xCase = plateau.getWidth();
     int yCase = plateau.getHeight();
     for (int i=0;i<xCase+1 ;i++ ) {
-      int xT = Controller.getData().getTailleDUneCase()*i;
-      g.drawLine(xT,0,xT,Controller.getData().getTailleDUneCase()*yCase);
+      int xT = jeu.getData().getTailleDUneCase()*i;
+      g.drawLine(xT,0,xT,jeu.getData().getTailleDUneCase()*yCase);
     }
     for (int i=0;i<yCase+1 ;i++ ) {
-      int xT = Controller.getData().getTailleDUneCase()*i;
-      g.drawLine(0,xT,Controller.getData().getTailleDUneCase()*xCase,xT);
+      int xT = jeu.getData().getTailleDUneCase()*i;
+      g.drawLine(0,xT,jeu.getData().getTailleDUneCase()*xCase,xT);
     }
   }
   public void drawColorRect(int i, int j, Color c, Graphics g){
-    int tc = Controller.getData().getTailleDUneCase();
+    int tc = jeu.getData().getTailleDUneCase();
     g.setColor(c);
     g.fillRect(tc*i,tc*j,tc,tc);
     //graphics bonus
@@ -83,6 +87,16 @@ public class PanelPlateau extends JPanel{
     g2d.setColor(new Color(255,255,255,50));
     g2d.drawLine(tc*(i+1),tc*(j+1),tc*(i+1)-tc/8,tc*(j+1)-tc/8);
   }
+  //public class Listener implements MouseListener{
+    public void mouseClicked(MouseEvent e){
+      jeu.clicOnPlateau(e.getY(),e.getX()); // /!\ our x & y are revers to the java usualx & y.
+      jeu.paintAll();
+      //repaint():
+    }
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent event) {}
+    public void mousePressed(MouseEvent event) { }
+    public void mouseReleased(MouseEvent event) { }
+  //}
   // SUB-CLASS -----------------------------------------------------------------
-
 }

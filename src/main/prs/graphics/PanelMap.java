@@ -1,5 +1,5 @@
 package prs.graphics;
-import prs.Controller;
+import prs.Jeu;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import javax.swing.JButton;
@@ -12,9 +12,11 @@ import javax.swing.event.MouseInputListener;
 */
 public class PanelMap extends JPanel{
   private int nbrButton = 0;
+  private Jeu jeu;
   // CONSTRUCTORS --------------------------------------------------------------
-  public PanelMap(){
+  public PanelMap(Jeu j){
     setLayout(null);
+    jeu=j;
     //setExtendedState(JPanel.MAXIMIZED_BOTH);
   }
   // GET SET -------------------------------------------------------------------
@@ -22,8 +24,8 @@ public class PanelMap extends JPanel{
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
     System.out.println("paint map");//@a
-    if(Controller.getData().getPMapImg() != null){
-      g.drawImage(Controller.getData().getPMapImg(),0,0,this);
+    if(jeu.getData().getPMapImg() != null){
+      g.drawImage(jeu.getData().getPMapImg(),0,0,this);
     }
   }
   public void addLevel(){
@@ -54,7 +56,7 @@ public class PanelMap extends JPanel{
     //mouse action
     public void mouseClicked(MouseEvent e){
       System.out.println("launch of "+id+" level.");
-      //TODO launch addPanelPlateau(id) in Controller.
+      //TODO launch addPanelPlateau(id) in jeu.
     }
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}

@@ -14,9 +14,10 @@ public class Frame extends JFrame{
   // CONSTRUCTORS --------------------------------------------------------------
   public Frame(){
     setTitle("Pet Rescue Saga");
+    setResizable(true);
     //setLocationRelativeTo(null); // fenetre centrée
     setExtendedState(JFrame.MAXIMIZED_BOTH);//Frame take as many space as it can.
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // bouton fermer par défaut.
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // bouton fermer par défaut.
     //TODO notre bouton fermer si dessous qui demande une validation de l'utilisateur.
     /*
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -38,7 +39,7 @@ public class Frame extends JFrame{
 
   // FUNCTIONS -----------------------------------------------------------------
   public void setBoutonFermer(){
-    this.addWindowListener(new WindowAdapter() {
+    addWindowListener(new WindowAdapter() {
         @Override // indique au compilateur qu'on écrit sur la méthode windowClosing déjà défini et il est sencé vérifier qu'on a pas fait de bêtise d'écriture.
         public void windowClosing(WindowEvent e) {
           quit();
