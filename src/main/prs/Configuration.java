@@ -24,7 +24,7 @@ public class Configuration
         }
     }
 
-    public String getValue(Integer level, String NameValue)
+    public String getLevelValue(Integer level, String NameValue)
     {
         String key = "L"+ level.toString() + "_" + NameValue;
         if (this.prop != null)
@@ -43,8 +43,4 @@ public class Configuration
         return null;
     }
 
-    public void setValue(int val)
-    {
-        //TODO
-    }
 }

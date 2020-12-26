@@ -5,15 +5,12 @@ import java.util.Random;
 
 public class Plateau
 {
-    private int width;
     private int height;
+    private int width;
     private ObjectSurCase[][] plateau;
-    private static boolean inOnFloor = false;
+    private boolean isOnFloor = false;
 
     /*================================= Constructor ==============================*/
-    /**
-    *Similar to Plateau(int y, int x) !
-    */
     public Plateau(int h, int w)
     {
         this.height = h;
@@ -23,24 +20,51 @@ public class Plateau
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
+            {
                 plateau[i][j] = null;
+            }
         }
     }
 
     /*============================== Getters & Setters ============================*/
 
-    public int getWidth(){return width;}
-
     public int getHeight(){return height;}
+
+    public int getWidth(){return width;}
 
     public ObjectSurCase getObject(int x, int y)                       //return ObjectSurCase by coordinates
     {
-        return (this.plateau[x][y]);
+        if (isOnPlateau(x, y))
+        {
+            return (this.plateau[x][y]);
+        }
+        return null;
     }
 
     public void setObject(ObjectSurCase a, int x, int y)               //set the ObjectSurCase on position (x,y)
     {
-        this.plateau[x][y] = a;
+        if (isOnPlateau(x, y))
+        {
+            this.plateau[x][y] = a;
+        }
+        else
+        {
+            System.out.println("Can't set object in this cell: out of bounds");
+        }
+    }
+
+    public String getColorOfBloc(int x, int y)                         //return color of colored Blocs (non decoration)
+    {
+        String colorBloc = "";
+        if (plateau[x][y] != null)
+        {
+            ObjectSurCase obj = getObject(x, y);
+            if ((obj instanceof Bloc) && (obj.isClicable()))
+            {
+                colorBloc = ((Bloc) obj).getColor();
+            }
+        }
+        return colorBloc;
     }
 
     /*================================ Cleaning ==============================*/
@@ -50,7 +74,7 @@ public class Plateau
         if (obj.isClicable())
         {
             this.plateau[x][y] = null;
-            System.out.println("            1 case cleaned");
+            //System.out.println("            1 case cleaned");               //debug code
         }
         else System.out.println("Can't delete decoration");
     }
@@ -67,9 +91,8 @@ public class Plateau
 
     public boolean isEmpty(int x, int y)                             //check if cell is empty
     {
-        return (getObject(x, y) == null ? true : false);
+        return (getObject(x, y).equals(null) ? true : false);
     }
-
 
     /*================================= Filling by elements ==============================*/
 
@@ -84,11 +107,11 @@ public class Plateau
             {
                 while (nmbImmoBlocs - ia != 0)
                 {
-                    Bloc immo = new Bloc(false);
-                    int x = new Random().nextInt(height);
-                    int y = new Random().nextInt(width);
+                    int x = new Random().nextInt(height - 1);
+                    int y = new Random().nextInt(width - 1);
                     if (plateau[x][y] == null)
                     {
+                        Bloc immo = new Bloc("NONE");
                         setObject(immo, x, y);
                         ia++;
                     }
@@ -172,7 +195,7 @@ public class Plateau
                         }
                     }
 
-                    else          //can't add animals in bottom of plateau
+                    else          //can't add animals in the bottom of plateau
                     {
                         int rd = new Random().nextInt(100);
                         if (rd <= 80)                                              // add blocs (80% probability)
@@ -203,11 +226,10 @@ public class Plateau
                 }
             }
         }
-        System.out.println(" need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
+        System.out.println("need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
                 "  animaux: " + c + ":" + ic + "  ballons: " + d + ":" + id);
         System.out.println("");
     }
-
 
     /*================================= Find group of blocs ==============================*/
 
@@ -218,22 +240,27 @@ public class Plateau
         int[][] groupe = new int[height][width];
         LinkedList<Point> dataToExit = new LinkedList<Point>();
         getGroup(x, y, groupe);                             // use the RECURSIVE function
-        for (int i = 0; i < height; i++)                    // print group founded to console AND create the LIST of cells the blocs of the group
-        {
-            for (int j = 0; j < width; j++)
-            {
-                    if (groupe[i][j] == 2)
-                    {
-                        System.out.print(" 2 ");
-                        dataToExit.addLast(new Point(i, j));
-                    }
-                    else if (groupe[i][j] == 1)
-                            System.out.print(" 1 ");
-                    else if (groupe[i][j] == 0)
-                        System.out.print(" 0 ");
-            }
-            System.out.println("");
-        }
+      //  for (int i = 0; i < height; i++)                    // print group founded to console AND create the LIST of cells the blocs of the group
+      //  {
+      //      //TODO this is service function, REMOVE after implementation GUI and CI
+      //      for (int j = 0; j < width; j++)
+      //      {
+      //          if (groupe[i][j] == 2)
+      //          {
+      //              System.out.print(" 2 ");
+      //              dataToExit.addLast(new Point(i, j));
+      //          }
+      //          else if (groupe[i][j] == 1)
+      //          {
+      //              System.out.print(" 1 ");
+      //          }
+      //          else if (groupe[i][j] == 0)
+      //          {
+      //              System.out.print(" 0 ");
+      //          }
+      //      }
+      //      System.out.println("");
+      //  }
         return dataToExit;
     }
 
@@ -247,7 +274,7 @@ public class Plateau
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    if ((i == x) && (j == y))
+                    if ((i == x) && (j == y)) 
                     {
                         // skip - do not examine himself
                     }
@@ -259,7 +286,7 @@ public class Plateau
                             ObjectSurCase b = getObject(i, j);
                             if ((b instanceof Bloc) && (b.isClicable()))
                             {
-                                if (((Bloc) a).getColorName() == ((Bloc) b).getColorName())  // 0 non-examined, 1 - examined, 2 - part of groupe
+                                if (((Bloc) a).getColor() == ((Bloc) b).getColor())  // 0 non-examined, 1 - examined, 2 - part of groupe
                                 {
                                     // if b is a part of group already
                                     if ((groupe[i][j] == 2))
@@ -291,9 +318,9 @@ public class Plateau
                             }
                         }
                         else
-                            {
-                                // out of plateau
-                            }
+                        {
+                            // out of plateau
+                        }
                     }
                 }
             }
@@ -301,27 +328,44 @@ public class Plateau
     }
 
     /*================================= Print to Console ==============================*/
-    /*public String toString(){
 
-    }*/
+    //TODO: this function should not be visible outside. Just for debug!
     public void printMap()		                                    // print Plateau
     {
         System.out.println("h:" + height + " l:" + width);
+        System.out.println("");
+        //print y-scale
+        System.out.print("  | ");
+        for (int k = 0; k < width; k++)
+        {
+            System.out.print(" " + (k + 1) + " ");
+        }
+        System.out.println("");
+        System.out.print("-----");
+        for (int l = 0; l < width; l++)
+        {
+            System.out.print("---");
+        }
+        System.out.println("");
+        //print table
         for (int i = 0; i < height; i++)
         {
+            char ch = (char) ('a' + i);
+            System.out.print(ch + " | ");
+ 
             for (int j = 0; j < width; j++)
             {
                 if (plateau[i][j] instanceof Bloc)
                 {
-                    if (((Bloc) plateau[i][j]).getColorName() == "NONE")
+                    if (((Bloc) plateau[i][j]).getColor() == "NONE")
                         System.out.print(" nn");
-                    else if (((Bloc) plateau[i][j]).getColorName() == "BLUE")
+                    else if (((Bloc) plateau[i][j]).getColor() == "BLUE")
                         System.out.print(" bb");
-                    else if (((Bloc) plateau[i][j]).getColorName() == "YELLOW")
+                    else if (((Bloc) plateau[i][j]).getColor() == "YELLOW")
                             System.out.print(" by");
-                    else if (((Bloc) plateau[i][j]).getColorName() == "RED")
+                    else if (((Bloc) plateau[i][j]).getColor() == "RED")
                         System.out.print(" br");
-                    else if (((Bloc) plateau[i][j]).getColorName() == "GREEN")
+                    else if (((Bloc) plateau[i][j]).getColor() == "GREEN")
                         System.out.print(" bg");
                     else
                         System.out.print(" bp");
@@ -340,7 +384,7 @@ public class Plateau
     /*================================= Object's Mouvements ==============================*/
 
     //function for instance of ObjectSurCase: delete from one place, insert to another one
-    public void moveObject(int depX, int depY, int arrX, int arrY)
+    public void moveObject(int depX, int depY, int arrX, int arrY) 
     {
         if (isOnPlateau(depX, depY) && isOnPlateau(arrX, arrY))
         {
@@ -368,15 +412,15 @@ public class Plateau
                 {
                     plateau[i][y] = plateau[i - 1][y];
                     cleanCase(i - 1, y);
-                    System.out.println("            1 shift down made");
+                    //System.out.println("            1 shift down made");     //debug code
                 }
                 else
-                    {
-                        //if deco
-                        break;
+                {
+                    //if deco
+                    break;
+                }
 
-                    }
-                printMap();
+                //printMap();                                                   //debug code
                 if ((i >=2) && (plateau[i - 2][y] == null)) break;                 //protection against NullPointerException
             }
         }
@@ -387,26 +431,29 @@ public class Plateau
         //TODO left shift of element if it is on top unmovable bloc
     }
 
-
     /*================================= Object's behaviour ==============================*/
 
     public void bombExplosion(int x, int y)
     {
-        for (int i = x - 1; i <= x + 1; i++)
+        ObjectSurCase obj = getObject(x, y);
+        if (obj instanceof Bomb)
         {
-            for (int j = y - 1; j <= y + 1; j++)
+            for (int i = x - 1; i <= x + 1; i++)
             {
-                if (plateau[i][j] != null)
+                for (int j = y - 1; j <= y + 1; j++)
                 {
-                    cleanCase(i, j);
-                    shiftDown(i, j);
-                }
-                else
+                    if (plateau[i][j] != null)
+                    {
+                        cleanCase(i, j);
+                        shiftDown(i, j);
+                    } else
                     {
                         //skip
                     }
+                }
             }
         }
+        else { System.out.println("It is not a bomb"); }
     }
 
     public void ballonExplosion(String ballonColor)
@@ -420,7 +467,7 @@ public class Plateau
                     ObjectSurCase obj = getObject(i, j);
                     if ((obj instanceof Bloc) && obj.isClicable())            //if color bloc
                     {
-                        if (((Bloc) obj).getColorName() == ballonColor)
+                        if (((Bloc) obj).getColor().equals(ballonColor))
                         {
                             cleanCase(i, j);
                             shiftDown(i, j);
@@ -429,12 +476,12 @@ public class Plateau
                         }
                     }
                     else if (obj instanceof Ballon)                        //if ballon
-                        {
-                            cleanCase(i, j);
-                            shiftDown(i, j);
-                            //return on the same place to check if shifted element will not a bloc of the same color
-                            j++;
-                        }
+                    {
+                        cleanCase(i, j);
+                        shiftDown(i, j);
+                        //return on the same place to check if shifted element will not a bloc of the same color
+                        j++;
+                    }
                     else                                     //if animal, deco, bomb
                     {
                         //do nothing just keep moving
@@ -445,16 +492,16 @@ public class Plateau
         }
     }
 
-    public LinkedList<Point> animalsOnFloor()
+    public LinkedList<Point> getAnimalsOnFloor()
     {
-        this.inOnFloor = false;
+        this.isOnFloor = false;
         LinkedList<Point> animalsToRescue = new LinkedList<Point>();
         for (int j = 0; j < width; j++)
         {
             int i = height - 1;
             if (plateau[i][j] instanceof Animal)
             {
-                inOnFloor = true;
+                isOnFloor = true;
                 Point animalCoord = new Point(i, j);
                 animalsToRescue.add(animalCoord);
             }
@@ -462,27 +509,31 @@ public class Plateau
         return animalsToRescue;
     }
 
-    public void animalRescue(LinkedList<Point> animalsToRescue)
+    public void rescueAnimals(LinkedList<Point> animalsToRescue)
     {
-        for (Point animalCoord : animalsToRescue)
+        if (animalsToRescue != null)
         {
-            int x = animalCoord.getCoordX();
-            int y = animalCoord.getCoordY();
-            cleanCase(x, y);
-            shiftDown(x, y);
-            System.out.println("            1 animal rescued");
+            for (Point animalCoord : animalsToRescue)
+            {
+                int x = animalCoord.getCoordX();
+                int y = animalCoord.getCoordY();
+                cleanCase(x, y);
+                shiftDown(x, y);
+                //System.out.println("            1 animal rescued");                    //debug code
+            }
         }
     }
 
-    /*================================= Set Screening ==============================*/
+    /*================================= GameSet Screening ==============================*/
 
-    public boolean levelLost()
+    public String gameState()
     {
-        //(animals != 0) && (ballons == 0) && (can't find any groupe anymore)
+        //(animals != 0) && (ballons == 0) && (can't find any group anymore)
         int an = 0;
         int bal = 0;
         LinkedList[] lists = null;
         boolean isGroupsPresent = false;
+        String state = "";
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
@@ -495,9 +546,10 @@ public class Plateau
                 {
                     bal++;
                 }
-                if (plateau[i][j] instanceof Ballon)
+                if (plateau[i][j] instanceof Bloc)
                 {
                     LinkedList l = getGroup(i, j);
+                   // printMap();
                     if (l.size() != 1)
                         {
                             isGroupsPresent = true;
@@ -505,27 +557,13 @@ public class Plateau
                 }
             }
         }
-        return ((an != 0) && (bal == 0) && (isGroupsPresent == false)) ? true : false;
 
+        if ((an != 0) && (bal == 0) && (isGroupsPresent == false)) { state = "lost"; }
+        else if (an == 0) { state = "win"; }
+        else { state = "contitue"; }
+
+        return state;
     }
-
-    public boolean levelWon()
-    {
-        //(animals == 0)
-        int an = 0;
-        for (int i = 0; i < height; i++)
-        {
-            for (int j = 0; j < width; j++)
-            {
-                if (plateau[i][j] instanceof Animal)
-                {
-                    an++;
-                }
-            }
-        }
-        return (an == 0) ? true : false;
-    }
-
 
     /*============================= Add Elements During the Set ==========================*/
 
@@ -535,91 +573,91 @@ public class Plateau
     }
 
 
+
     /*================================= MAIN ==============================*/
 
-    public static void main(String[] args)
-    {
-        Plateau test1 = new Plateau(7, 7);
-
-        test1.remplirPlateau(2, 34, 4, 1);
-        test1.printMap();
-        System.out.println("");
-
-        for (int i = 6; i >= 0; i--)                             //test ballonExplosion()
-        {
-            for (int j = 6; j >= 0; j--)
-            {
-                if (test1.getObject(i, j) != null)
-                {
-                    ObjectSurCase obj = test1.getObject(i, j);
-
-                    if (obj instanceof Outil)
-                    {
-                        test1.ballonExplosion("BLUE");
-                    }
-                }
-                else
-                {
-                    System.out.println("has not element");
-                }
-            }
-        }
-
-      //  for (int i = 6; i >= 0; i--)                                //test bombExplosion()
-      //  {
-      //      for (int j = 6; j >= 0; j--)
-      //      {
-      //          if (test1.getObject(i, j) != null)
-      //          {
-      //              ObjectSurCase obj = test1.getObject(i, j);
-      //
-      //              if (obj instanceof Outil)
-      //              {
-      //                  test1.bombExplosion(i, j);
-      //              }
-      //          }
-      //          else
-      //          {
-      //              System.out.println("has not element");
-      //          }
-      //      }
-      //  }
-        test1.printMap();
-
-     //   for (int i = 0; i < 6; i++)
-     //   {
-     //       System.out.println(inOnFloor);
-     //       test1.animalsOnFloor();
-     //       if (inOnFloor == true)                                             //test animal rescue()
-     //       {
-     //           System.out.println("");
-     //           System.out.println("Need to rescue ");
-     //           test1.animalRescue(test1.animalsOnFloor());
-     //           // System.out.println("");
-     //           test1.printMap();
-     //       }
-     //       System.out.println("Start cycle " + i);
-     //       test1.cleanCase(6, 6);
-     //       test1.printMap();
-     //       test1.shiftDown(6, 6);
-     //       System.out.println("");
-     //       test1.animalsOnFloor();
-     //       if (inOnFloor == true)
-     //       {
-     //           System.out.println("");
-     //           System.out.println("Need to rescue ");
-     //           test1.animalRescue(test1.animalsOnFloor());
-     //           // System.out.println("");
-     //           test1.printMap();
-     //       }
-     //
-     //   }
-
-        //  test1.getGroup(5, 6);                                       //test getGroup()
-        //  System.out.println("");
-        //  test1.getGroup(3, 4);
-       // System.out.println(test1.levelLost());
-       // System.out.println(test1.levelWon());
-    }
-
+  //  public static void main(String[] args)
+  //  {
+  //      Plateau test1 = new Plateau(7, 7);
+  //
+  //      test1.remplirPlateau(3, 34, 4, 1);
+  //      test1.printMap();
+  //      System.out.println("");
+  //
+  //      for (int i = test1.height - 1; i >= 0; i--)                             //test ballonExplosion()
+  //      {
+  //          for (int j = 6; j >= 0; j--)
+  //          {
+  //              if (test1.getObject(i, j) != null)
+  //              {
+  //                  ObjectSurCase obj = test1.getObject(i, j);
+  //
+  //                  if (obj instanceof Outil)
+  //                  {
+  //                      test1.ballonExplosion("BLUE");
+  //                  }
+  //              } else
+  //              {
+  //                  //System.out.println("has not element");          //for test
+  //              }
+  //          }
+  //      }
+  //
+  //      //  for (int i = 6; i >= 0; i--)                                //test bombExplosion()
+  //      //  {
+  //      //      for (int j = 6; j >= 0; j--)
+  //      //      {
+  //      //          if (test1.getObject(i, j) != null)
+  //      //          {
+  //      //              ObjectSurCase obj = test1.getObject(i, j);
+  //      //
+  //      //              if (obj instanceof Outil)
+  //      //              {
+  //      //                  test1.bombExplosion(i, j);
+  //      //              }
+  //      //          }
+  //      //          else
+  //      //          {
+  //      //              System.out.println("has not element");
+  //      //          }
+  //      //      }
+  //      //  }
+  //      test1.printMap();
+  //
+  //      //   for (int i = 0; i < 6; i++)
+  //      //   {
+  //      //       System.out.println(isOnFloor);
+  //      //       test1.getAnimalsOnFloor();
+  //      //       if (isOnFloor == true)                                             //test animal rescue()
+  //      //       {
+  //      //           System.out.println("");
+  //      //           System.out.println("Need to rescue ");
+  //      //           test1.rescueAnimals(test1.getAnimalsOnFloor());
+  //      //           // System.out.println("");
+  //      //           test1.printMap();
+  //      //       }
+  //      //       System.out.println("Start cycle " + i);
+  //      //       test1.cleanCase(6, 6);
+  //      //       test1.printMap();
+  //      //       test1.shiftDown(6, 6);
+  //      //       System.out.println("");
+  //      //       test1.getAnimalsOnFloor();
+  //      //       if (isOnFloor == true)
+  //      //       {
+  //      //           System.out.println("");
+  //      //           System.out.println("Need to rescue ");
+  //      //           test1.rescueAnimals(test1.getAnimalsOnFloor());
+  //      //           // System.out.println("");
+  //      //           test1.printMap();
+  //      //       }
+  //      //
+  //      //   }
+  //
+  //      //  test1.getGroup(5, 6);                                       //test getGroup()
+  //      //  System.out.println("");
+  //      //  test1.getGroup(3, 4);
+  //
+  //     // System.out.println(test1.levelLost());
+  //     // System.out.println(test1.levelWon());
+  //  }
 }

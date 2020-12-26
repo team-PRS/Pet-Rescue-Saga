@@ -2,8 +2,6 @@ package prs;
 
 public class Bomb extends Outil
 {
-   // private String name;
-
     public Bomb()
     {
     }
