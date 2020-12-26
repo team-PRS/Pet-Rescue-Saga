@@ -240,27 +240,27 @@ public class Plateau
         int[][] groupe = new int[height][width];
         LinkedList<Point> dataToExit = new LinkedList<Point>();
         getGroup(x, y, groupe);                             // use the RECURSIVE function
-     //   for (int i = 0; i < height; i++)                    // print group founded to console AND create the LIST of cells the blocs of the group
-     //   {
-     //       //TODO this is service function, REMOVE after implementation GUI and CI
-     //       for (int j = 0; j < width; j++)
-     //       {
-     //           if (groupe[i][j] == 2)
-     //           {
-     //               System.out.print(" 2 ");
-     //               dataToExit.addLast(new Point(i, j));
-     //           }
-     //           else if (groupe[i][j] == 1)
-     //           {
-     //               System.out.print(" 1 ");
-     //           }
-     //           else if (groupe[i][j] == 0)
-     //           {
-     //               System.out.print(" 0 ");
-     //           }
-     //       }
-     //       System.out.println("");
-     //   }
+        for (int i = 0; i < height; i++)                    // print group founded to console AND create the LIST of cells the blocs of the group
+        {
+            //TODO this is service function, REMOVE after implementation GUI and CI
+            for (int j = 0; j < width; j++)
+            {
+                if (groupe[i][j] == 2)
+                {
+                    //System.out.print(" 2 ");
+                    dataToExit.addLast(new Point(i, j));
+                }
+                else if (groupe[i][j] == 1)
+                {
+                    //System.out.print(" 1 ");
+                }
+                else if (groupe[i][j] == 0)
+                {
+                    //System.out.print(" 0 ");
+                }
+            }
+            //System.out.println("");
+        }
         return dataToExit;
     }
 
@@ -576,6 +576,7 @@ public class Plateau
     /*================================= MAIN ==============================*/
 
   //  public static void main(String[] args)
+
   //  {
   //      Plateau test1 = new Plateau(7, 7);
   //

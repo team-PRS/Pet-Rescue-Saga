@@ -113,7 +113,7 @@ public class Jeu
                     else
                     {
                         LinkedList<Point> blocGroupe = plateau.getGroup(x, y);
-                        // delete group and shift down all upstairs elements
+                        // delete group and syhift down all upstairs elements
                         for (Point p : blocGroupe)
                         {
                             int xCoord = p.getCoordX();
@@ -263,27 +263,27 @@ public class Jeu
         int xCoord = 0; int yCoord = 0;
 
         String CoordStr;
-        System.out.print("In which cell do you want to play now? (Exemple: B3) : ");
+        System.out.print("In which cell do you want to play now? (Exemple: b3) : ");
 
         while(!IsValid)
         {
             CoordStr = scanAnswer.next();
             if (CoordStr.length() >= 2)
             {
-                char widthChar = CoordStr.charAt(0);
-
-                for (int i = 'a'; i <= (int)'z'; i++)
+                int input = CoordStr.charAt(0) - 'a';                    // -'a' because all loops started by 0
+                for (int i = 0; i < plateau.getHeight(); i++)
                 {
-                    if (widthChar == i)
+                    if (input == i)
                     {
-                        xCoord = i;
+                        xCoord = input;
                         IsValid = true;
+                        break;
                     }
                 }
 
                 if (IsValid)
                 {
-                    yCoord = Integer.parseInt(CoordStr.substring(1));
+                    yCoord = Integer.parseInt(CoordStr.substring(1)) - 1;  // -1 because all loops started by 0, but table markings by 1
                     if (yCoord < 1)
                     {
                         IsValid = false;
@@ -292,7 +292,7 @@ public class Jeu
             }
             if (!IsValid)
             {
-                System.out.print("wrong input, try again (Exemple: B3) : ");
+                System.out.print("wrong input, try again (Exemple: b3) : ");
             }
         }
         return new int[]{xCoord, yCoord};
@@ -305,7 +305,7 @@ public class Jeu
                 "\n - buy the ballon /cost 3 ingots/ (b) " +
                 "\n - activate your ballon (a) " +
                 "\n - activate bomb (e) " +
-                "\n ?");
+                "\n ? \n");
         String Action = scanAnswer.next();
         return Action.charAt(0);
     }
@@ -400,7 +400,7 @@ public class Jeu
             {
                 if (plateau.gameState().equals("continue"))
                 {
-                    askAction();
+                   // askAction();
                     char action = askAction();
                     if (action == 'c')          //clic
                     {
@@ -423,11 +423,12 @@ public class Jeu
                         int[] coord = askCoordinates();
                         plateau.bombExplosion(coord[0], coord[1]);
                     } else System.out.println("Wrong input, try again");
-
+                    
+                    printPlateau();
                     plateau.rescueAnimals(plateau.getAnimalsOnFloor());
                     plateau.gameState();
                 }
-                if (plateau.gameState().equals("win"))
+                else if (plateau.gameState().equals("win"))
                 {
                     System.out.println("Congratulations, you win !! ");
                 }
