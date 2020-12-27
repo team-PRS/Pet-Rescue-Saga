@@ -6,6 +6,8 @@ import prs.graphics.*;
 import prs.usuel.image;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.Image;
@@ -310,24 +312,51 @@ public class Jeu
     public void createAccount() throws IOException
     {
         System.out.println("Let's register");
-        Joueur newRecord = new Joueur();
         String name = askPseudo();
-        newRecord.setPseudo(name);
+        this.joueur.setPseudo(name);
+
+        ArrayList<Joueur> gamers = new ArrayList<>();
+        //Read
         try
         {
-            FileOutputStream fos = new FileOutputStream("gamers.bin");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            Joueur[] gamers = new Joueur[50];
-            gamers[0] = newRecord;
-            oos.writeObject(gamers);
-            oos.close();
+            FileInputStream fis = new FileInputStream("gamers.bin");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            gamers = (ArrayList<Joueur>) ois.readObject();
+            ois.close();
+            fis.close();
+            try
+            {
+                FileOutputStream fos = new FileOutputStream("gamers.bin");
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                gamers.add(joueur);
+                oos.writeObject(gamers);
+                oos.close();
+                fos.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
-        catch (IOException e)
+        catch (IOException | ClassNotFoundException e)
         {
-            e.printStackTrace();
+            gamers.add(joueur);
+            try
+            {
+                FileOutputStream fos = new FileOutputStream("gamers.bin");
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                gamers.add(joueur);
+                oos.writeObject(gamers);
+                oos.close();
+                fos.close();
+            }
+            catch (IOException m)
+            {
+                m.printStackTrace();
+            }
         }
     }
-
+    
     public Joueur loadFromAccount() throws IOException
     {
         System.out.println("Please, enter your pseudo : ");
@@ -336,8 +365,7 @@ public class Jeu
         {
             FileInputStream fis = new FileInputStream("gamers.bin");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            Joueur[] gamers = new Joueur[50];
-            gamers = (Joueur[])ois.readObject();
+            ArrayList<Joueur> gamers = (ArrayList<Joueur>) ois.readObject();
             for (Joueur gamer : gamers)
             {
                 try
@@ -350,7 +378,7 @@ public class Jeu
                 }
                 catch (NullPointerException e)
                 {
-                    System.out.println("There is not such pseudo, please try agane");
+                    System.out.println("There is not such pseudo, please try again");
                 }
             }
             ois.close();
@@ -362,20 +390,42 @@ public class Jeu
         return joueur;
     }
 
+    public String gamersToPrint()
+    {
+        String str = "";
+        try
+        {
+            FileInputStream fis = new FileInputStream("gamers.bin");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<Joueur> gamers = (ArrayList<Joueur>) ois.readObject();
+            ois.close();
+            str = Arrays.toString(new ArrayList[]{gamers});
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
     public boolean wantPlay()
     {
         boolean answer = false;
-        System.out.print("Do you want to play (yes/no) ? ");
-        String answerPlay = scanAnswer.next().toLowerCase();
-        if ((answerPlay.equals("yes")) || (answerPlay.equals("y")))
+        boolean isCorrectAnswer = false;
+        while (!isCorrectAnswer)
         {
-            answer = true;
+            System.out.print("Do you want to play (yes/no) ? ");
+            String answerPlay = scanAnswer.next().toLowerCase();
+            if ((answerPlay.equals("yes")) || (answerPlay.equals("y")))
+            {
+                isCorrectAnswer = true;
+                answer = true;
+            } else if ((answerPlay.equals("no")) || (answerPlay.equals("n")) || (answerPlay.equals("non")))
+            {
+                isCorrectAnswer = true;
+                answer = false;
+            } else System.out.println("Wrong input, try again");
         }
-        else if ((answerPlay.equals("no")) || (answerPlay.equals("n")) || (answerPlay.equals("non")))
-        {
-            answer = false;
-        }
-        else System.out.println("Wrong input, try again");
         return answer;
     }
 
@@ -420,7 +470,7 @@ public class Jeu
                 if (IsValid)
                 {
                     yCoord = Integer.parseInt(CoordStr.substring(1)) - 1;  // -1 because all loops started by 0, but table markings by 1
-                    if (yCoord < 1)
+                    if (yCoord < 0)
                     {
                         IsValid = false;
                     }
@@ -456,16 +506,22 @@ public class Jeu
 
     public void receptionConsole() throws IOException
     {
-        String answer = hasAccount();
-        if (answer.equals("y") || (answer).equals("yes"))
+        boolean isCorrectAnswer = false;
+        while (!isCorrectAnswer)
         {
-            loadFromAccount();
+            String answer = hasAccount();
+            if (answer.equals("y") || (answer).equals("yes"))
+            {
+                isCorrectAnswer = true;
+                loadFromAccount();
+            }
+            else if (answer.equals("n") || answer.equals("no"))
+            {
+                isCorrectAnswer = true;
+                createAccount();
+            }
+            else System.out.println("Wrong input, try again");
         }
-        else if (answer.equals("n") || answer.equals("no"))
-        {
-            createAccount();
-        }
-        else System.out.println("Wrong input, try again");
     }
 
     public void printPlateau()		                                    // print Plateau
@@ -530,7 +586,7 @@ public class Jeu
             System.out.println("LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals (a)\n" +
                     "so they will go down and will be rescued\n");
             printPlateau();
-            System.out.println(plateau.gameState());
+            System.out.println(gamersToPrint());
 
             while (! plateau.gameState().equals("lost"))
             {
