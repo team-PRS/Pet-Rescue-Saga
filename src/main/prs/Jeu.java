@@ -319,6 +319,7 @@ public class Jeu
         //Read
         try
         {
+            // if where are already records in file
             FileInputStream fis = new FileInputStream("gamers.bin");
             ObjectInputStream ois = new ObjectInputStream(fis);
             gamers = (ArrayList<Joueur>) ois.readObject();
@@ -340,6 +341,7 @@ public class Jeu
         }
         catch (IOException | ClassNotFoundException e)
         {
+            // if where are neither records nor array in file (file is empty)
             gamers.add(joueur);
             try
             {
