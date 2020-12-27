@@ -191,6 +191,8 @@ public class Jeu
             System.out.println("Out of bounds of plateau");
         }
     }
+
+
     /*============================= graphics functions ==========================*/
     public boolean addFrame(){
       try {
@@ -410,6 +412,11 @@ public class Jeu
         return str;
     }
 
+    public void saveToAccount()           //TODO
+    {
+
+    }
+
     public boolean wantPlay()
     {
         boolean answer = false;
@@ -493,14 +500,10 @@ public class Jeu
                 "\n - buy the ballon /cost 3 ingots/ (b) " +
                 "\n - activate your ballon (a) " +
                 "\n - activate bomb (e) " +
+                "\n - convert score to gold /1 ingot = 100 points/ (g) " +
                 "\n ? \n");
         String Action = scanAnswer.next();
         return Action.charAt(0);
-    }
-
-    public void saveToAccount()
-    {
-
     }
 
     public void finish() { this.scanAnswer.close(); }
@@ -528,6 +531,8 @@ public class Jeu
 
     public void printPlateau()		                                    // print Plateau
     {
+        System.out.println("Points: " + joueur.getCompte().getScore(1) + " / Gold: " + joueur.getCompte().getGold() +
+                        " / Ballon: " + joueur.getCompte().getBallon());
         System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
         System.out.println("");
         //print y-scale
@@ -581,14 +586,16 @@ public class Jeu
 
     public void consoleGame() throws IOException
     {
+        
         if (wantPlay())
         {
             receptionConsole();
-            createPlateau(this.configLevel, this.joueur);
+            createPlateau(this.configLevel, this.joueur); 
             System.out.println("LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals (a)\n" +
                     "so they will go down and will be rescued\n");
+            System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
             printPlateau();
-            System.out.println(gamersToPrint());
+            //System.out.println(gamersToPrint());
 
             while (! plateau.gameState().equals("lost"))
             {
@@ -600,26 +607,37 @@ public class Jeu
                     {
                         int[] coord = askCoordinates();
                         pressCell(coord[0], coord[1]);
-                    } else if (action == 'b')    //buy ballon
+                    }
+                    else if (action == 'b')    //buy ballon
                     {
                         joueur.buyBallon();
-                    } else if (action == 'a')    //activate ballon
+                    }
+                    else if (action == 'a')    //activate ballon
                     {
-                        if (compte.getBallon() > 0)
+                        if (this.joueur.getCompte().getBallon() > 0)
                         {
                             int[] coord = askCoordinates();
                             String color = plateau.getColorOfBloc(coord[0], coord[1]);
                             plateau.ballonExplosion(color);
-                            compte.setBallon(compte.getBallon() - 1);
+                            joueur.activateBallon();
                         }
-                    } else if (action == 'e')    //activate bombe
+                    }
+                    else if (action == 'e')    //activate bombe
                     {
                         int[] coord = askCoordinates();
                         plateau.bombExplosion(coord[0], coord[1]);
-                    } else System.out.println("Wrong input, try again");
+                    }
+                    else if (action == 'g')    //convert score to gold
+                    {
+                        //TODO   1 ingot = 100 points
+                        joueur.convertPointsToGold();
+                    }
+                    else System.out.println("Wrong input, try again");
 
                     printPlateau();
+                    plateau.shiftLeft();
                     plateau.rescueAnimals(plateau.getAnimalsOnFloor());
+                    printPlateau();
                     plateau.gameState();
                 }
                 else if (plateau.gameState().equals("win"))

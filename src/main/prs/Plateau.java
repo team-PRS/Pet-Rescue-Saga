@@ -1,6 +1,7 @@
 package prs;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class Plateau
@@ -426,9 +427,144 @@ public class Plateau
         }
     }
 
+    public boolean isEmptyColumn(int x, int y)                   //check if column over (x,y) consist of empty cells
+    {
+        boolean isEmpty = false;
+        if (plateau[x - 1][y] == null)
+        {
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
+
+    public int[] mostLeftEmptyColumn_Floor(int x, int y)          //find the most left empty column from the floor
+    {
+        int i = height - 1;
+        int j = y - 1;
+        boolean isFind = true;
+        while(isFind)
+        {
+            if (isEmptyColumn(i, j))
+            {
+                isFind = true;
+                j--;
+            }
+            else
+            {
+                isFind = false;
+            }
+
+        }
+       return new int[]{i, j+1};
+    }
+
+    public int[] nextRightNotEmptyColumn_Floor(int x, int y)          //find nearest right NOT empty column from the floor
+    {                                                                  // if find deco return null
+        int i = height - 1;
+        int j = y + 1;
+        boolean isFind = false;
+        while(!isFind)
+        {
+            if (plateau[i][j] != null)
+            {
+                ObjectSurCase obj = getObject(i, j);
+                //if deco = do not remove at all
+                if (!obj.isClicable())
+                {
+                    return null;
+                }
+                else
+                {
+                    //if not deco = need to remove, so return coordinates
+                    isFind = true;
+                }
+            }
+            else
+            {
+                //TODO REMOVE       isFind = false;
+                j++;
+            }
+        }
+        return new int[]{i, j};
+    }
+
+    public void moveColumn(int y1, int y2)                        //move columns from (floor,y2) to (floor,y1)
+    {
+        if ((y1 < y2) && (plateau[height - 1][y2] != null))
+        {
+            //can move
+            int len = findLengthOfColumn(height - 1, y2);
+            int x = height - 1;
+            for (int i = 0; i < len; i++)
+            {
+                ObjectSurCase obj = getObject(x, y2);
+                setObject(obj, x, y1);
+                x--;  
+            }
+        }
+        else //can't move column
+        {
+            System.out.println("Can't move column");
+        }
+    }
+
+    public int findLengthOfColumn(int x, int y)                    //find the length of column INCLUDING (x, y)
+    {                                                                 //TODO make -1 if on (x,y) will be deco
+        int len = 0;
+        for (int i = x; i <= 0; i--)
+        {
+            if (plateau[i][y] != null)
+            {
+                ObjectSurCase obj = getObject(i, y);
+                if (obj.isClicable())
+                {
+                    len++;
+                } else
+                {
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        return len;
+    }
+
     public void shiftLeft()
     {
-        //TODO left shift of element if it is on top unmovable bloc
+        int i = height - 1;
+        for (int j = 0; j < width - 1; j++)
+        {
+            // find null on the floor
+            if (plateau[i][j] == null)
+            {
+                //find next right non null
+                int[] next = nextRightNotEmptyColumn_Floor(i, j);
+                int coordX = next[0];
+                int coordY = next[1];
+                ObjectSurCase obj = getObject(coordX, coordY);
+                if (obj.isClicable())
+                {
+                    int lenToMove = findLengthOfColumn(coordX, coordY);
+                    int lenWhereToMove = findLengthOfColumn(i, j);
+                    if (lenWhereToMove <= lenToMove)
+                    {
+                        moveColumn(j, coordY);
+                    }
+                    else  //if it is deco
+                    {
+                        //skip do nothing
+                    }
+                }
+            }
+            else
+            {
+                //find next NOT null on the flor
+                continue;           //skip to j++
+            }
+        }
     }
 
     /*================================= Object's behaviour ==============================*/
@@ -562,6 +698,14 @@ public class Plateau
         else { state = "continue"; }
 
         return state;
+    }
+
+    /*================================= Points ==================================*/
+
+    public int calculatePoints(LinkedList<Point> blocs)             //TODO      1 bloc deleted = 10 points
+    {
+        int len = blocs.size();
+        return len*10;
     }
 
     /*============================= Add Elements During the Set ==========================*/
