@@ -311,7 +311,7 @@ public class Jeu
 
     /*============================= Console UI functions ==========================*/
 
-    public void createAccount() throws IOException
+    public void createAccount()
     {
         System.out.println("Let's register");
         String name = askPseudo();
@@ -361,7 +361,7 @@ public class Jeu
         }
     }
     
-    public Joueur loadFromAccount() throws IOException
+    public Joueur loadFromAccount()
     {
         System.out.println("Please, enter your pseudo : ");
         String answer = scanAnswer.next().toLowerCase();
@@ -509,7 +509,7 @@ public class Jeu
     public void finish() { this.scanAnswer.close(); }
 
 
-    public void receptionConsole() throws IOException
+    public void receptionConsole()
     {
         boolean isCorrectAnswer = false;
         while (!isCorrectAnswer)
@@ -584,7 +584,7 @@ public class Jeu
     }
 
 
-    public void consoleGame() throws IOException
+    public void consoleGame()
     {
         
         if (wantPlay())
@@ -637,6 +637,7 @@ public class Jeu
                     printPlateau();
                     plateau.shiftLeft();
                     plateau.rescueAnimals(plateau.getAnimalsOnFloor());
+                    plateau.shiftLeft();
                     printPlateau();
                     plateau.gameState();
                 }

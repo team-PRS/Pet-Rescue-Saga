@@ -427,43 +427,31 @@ public class Plateau
         }
     }
 
-    public boolean isEmptyColumn(int x, int y)                   //check if column over (x,y) consist of empty cells
+    public int lengthFreeSpace(int x, int y)                        //find the length of free space INCLUDING (x, y)
     {
-        boolean isEmpty = false;
-        if (plateau[x - 1][y] == null)
+        int counter = 0;
+        int j = y;
+        for (int i = x; i >= 0; i--)
         {
-            isEmpty = true;
-        }
-        return isEmpty;
-    }
-
-    public int[] mostLeftEmptyColumn_Floor(int x, int y)          //find the most left empty column from the floor
-    {
-        int i = height - 1;
-        int j = y - 1;
-        boolean isFind = true;
-        while(isFind)
-        {
-            if (isEmptyColumn(i, j))
+            if (plateau[i][j] == null)
             {
-                isFind = true;
-                j--;
+                counter++;
             }
             else
             {
-                isFind = false;
+                break;
             }
-
         }
-       return new int[]{i, j+1};
+        return counter;
     }
 
     public int[] nextRightNotEmptyColumn_Floor(int x, int y)          //find nearest right NOT empty column from the floor
     {                                                                  // if find deco return null
         int i = height - 1;
         int j = y + 1;
-        boolean isFind = false;
-        while(!isFind)
+        boolean isFound = false;
+        int counter = 0;
+        while ((!isFound) && (j < width))
         {
             if (plateau[i][j] != null)
             {
@@ -476,14 +464,18 @@ public class Plateau
                 else
                 {
                     //if not deco = need to remove, so return coordinates
-                    isFind = true;
+                    counter++;
+                    isFound = true;
                 }
             }
             else
             {
-                //TODO REMOVE       isFind = false;
                 j++;
             }
+        }
+        if (counter == 0)
+        {
+            return null;
         }
         return new int[]{i, j};
     }
@@ -498,8 +490,17 @@ public class Plateau
             for (int i = 0; i < len; i++)
             {
                 ObjectSurCase obj = getObject(x, y2);
-                setObject(obj, x, y1);
-                x--;  
+                if (obj.isClicable())
+                {
+                    setObject(obj, x, y1);
+                    cleanCase(x, y2);
+                    x--;
+                }
+                else
+                {
+                    //skip
+                }
+                printMap();
             }
         }
         else //can't move column
@@ -511,7 +512,7 @@ public class Plateau
     public int findLengthOfColumn(int x, int y)                    //find the length of column INCLUDING (x, y)
     {                                                                 //TODO make -1 if on (x,y) will be deco
         int len = 0;
-        for (int i = x; i <= 0; i--)
+        for (int i = x; i >= 0; i--)
         {
             if (plateau[i][y] != null)
             {
@@ -542,20 +543,28 @@ public class Plateau
             {
                 //find next right non null
                 int[] next = nextRightNotEmptyColumn_Floor(i, j);
-                int coordX = next[0];
-                int coordY = next[1];
-                ObjectSurCase obj = getObject(coordX, coordY);
-                if (obj.isClicable())
+                if (next != null)
                 {
-                    int lenToMove = findLengthOfColumn(coordX, coordY);
-                    int lenWhereToMove = findLengthOfColumn(i, j);
-                    if (lenWhereToMove <= lenToMove)
+                    int coordX = next[0];
+                    int coordY = next[1];
+                    ObjectSurCase obj = getObject(coordX, coordY);
+                    if (obj.isClicable())
                     {
-                        moveColumn(j, coordY);
-                    }
-                    else  //if it is deco
-                    {
-                        //skip do nothing
+                        int lenColumnToMove = findLengthOfColumn(coordX, coordY);
+                        if (lenColumnToMove > 0)
+                        {
+                            int lenFreeSpace = lengthFreeSpace(i, j);
+                            if (lenFreeSpace >= lenColumnToMove)
+                            {
+                                moveColumn(j, coordY);
+                            } else  //if it is deco
+                            {
+                                //skip do nothing
+                            }
+                        } else
+                        {
+                            break;
+                        }
                     }
                 }
             }
@@ -720,11 +729,26 @@ public class Plateau
     /*================================= MAIN ==============================*/
 
   //  public static void main(String[] args)
-
+  //
   //  {
-  //      Plateau test1 = new Plateau(7, 7);
+  //      Plateau test1 = new Plateau(5, 5);
   //
   //      test1.remplirPlateau(3, 34, 4, 1);
+
+  //      Bloc b1 = new Bloc("BLUE");                                         //test shiftLeft();
+  //      Bloc b2 = new Bloc("NONE");
+  //      Bloc b3 = new Bloc("BLUE");
+  //      Bloc b4 = new Bloc("BLUE");
+  //
+  //      test1.setObject(b1, 4, 1);
+  //      test1.setObject(b2, 3, 1);
+  //      test1.setObject(b3, 4, 3);
+  //      test1.setObject(b4, 3, 3);
+  //
+  //      test1.printMap();
+  //
+  //      test1.shiftLeft();
+  //
   //      test1.printMap();
   //      System.out.println("");
   //
@@ -801,7 +825,5 @@ public class Plateau
   //      //  System.out.println("");
   //      //  test1.getGroup(3, 4);
   //
-  //     // System.out.println(test1.levelLost());
-  //     // System.out.println(test1.levelWon());
-  //  }
+   // }
 }
