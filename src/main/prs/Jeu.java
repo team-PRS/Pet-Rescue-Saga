@@ -81,13 +81,7 @@ public class Jeu
 
 
     }
-    // GET SET -------------------------------------------------------------------
-    public Frame getFrame(){return frame;}
-    public int getWidthMax(){return getFrame().getWidth();}
-    public int getHeightMax(){return getFrame().getHeight();}
-    public PanelPlateau getPPlateau(){return pPlateau;}
-    public static Data getData(){return data;}
-    public void addPlateau(Plateau p){plateau=p;}
+
     /*============================= Common functions ==========================*/
 
     private void createPlateau(Configuration config, Joueur gamer)
@@ -99,7 +93,7 @@ public class Jeu
         this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals,initialBallons);
     }
     /**
-    function that caculate coordinates of a clic & launch pressCell
+    function that calculate coordinates of a click & launch pressCell
     */
     public void clicOnPlateau(int x, int y)
     {
@@ -130,9 +124,9 @@ public class Jeu
                 if (obj instanceof Bloc)
                 {
                     // if only one bloc
-                    if (plateau.getGroup(x, y).size() == 1)
+                    if (plateau.getGroup(x, y).size() == 0)
                     {
-                        System.out.println("Can't delete single bloc");
+                        System.out.println("\n Can't delete single bloc \n");
                     }
                     // if group of blocs
                     else
@@ -194,6 +188,15 @@ public class Jeu
 
 
     /*============================= graphics functions ==========================*/
+
+    // GET SET -------------------------------------------------------------------
+    public Frame getFrame(){return frame;}
+    public int getWidthMax(){return getFrame().getWidth();}
+    public int getHeightMax(){return getFrame().getHeight();}
+    public PanelPlateau getPPlateau(){return pPlateau;}
+    public static Data getData(){return data;}
+    public void addPlateau(Plateau p){plateau=p;}
+
     public boolean addFrame(){
       try {
         frame = new Frame();
@@ -361,7 +364,7 @@ public class Jeu
         }
     }
     
-    public Joueur loadFromAccount()
+    public Joueur downloadAccount()
     {
         boolean isCorrect = false;
         while (!isCorrect)
@@ -530,7 +533,7 @@ public class Jeu
             if (answer.equals("y") || (answer).equals("yes"))
             {
                 isCorrectAnswer = true;
-                loadFromAccount();
+                downloadAccount();
             }
             else if (answer.equals("n") || answer.equals("no"))
             {
@@ -543,7 +546,7 @@ public class Jeu
 
     public void printPlateau()		                                    // print Plateau
     {
-        System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
+       // System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
         System.out.println("Score: " + joueur.getCompte().getScore(1) + " / Gold: " + joueur.getCompte().getGold() +
                         " / Ballon: " + joueur.getCompte().getBallon());
         System.out.println("");
@@ -586,6 +589,8 @@ public class Jeu
                 }
                 else if (obj instanceof Bomb)
                     System.out.print(" * ");
+                else if (obj instanceof Ballon)
+                    System.out.print(" օ ");
                 else if (obj instanceof Animal)
                     System.out.print(" @ ");
                 else
@@ -595,6 +600,8 @@ public class Jeu
         }
     }
 
+
+    /*============================= PRINCIPAL FUNCTIONS (Console UI & GUI) ==========================*/
 
     public void consoleGame()
     {              
@@ -645,7 +652,6 @@ public class Jeu
                     }
                     else System.out.println("Wrong input, try again");
 
-                    printPlateau();
                     plateau.rescueAnimals(plateau.getAnimalsOnFloor());
                     plateau.shiftLeft();
                     printPlateau();
@@ -667,6 +673,10 @@ public class Jeu
         }
     }
 
+    public void GUIGame()
+    {
+        //TODO
+    }
 
     /*================================= MAIN ===================================*/
 

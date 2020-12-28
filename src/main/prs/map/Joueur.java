@@ -33,12 +33,12 @@ public class Joueur implements Serializable{
        System.out.println(getCompte().getBallon());
   }
 
-  public void convertPointsToGold()          //TODO  1 ingot = 100 points
+  public void convertPointsToGold()          //TODO  1 ingot = 50 points
   {
     int points = this.getCompte().getScore(1);           //TODO verify what is the score
-    if (points >= 100)
+    if (points >= 50)
     {
-        points -= 100;
+        points -= 50;
         this.getCompte().getScore(points);
         this.getCompte().setGold(this.getCompte().getGold() + 1);
     }
