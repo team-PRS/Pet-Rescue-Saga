@@ -363,33 +363,45 @@ public class Jeu
     
     public Joueur loadFromAccount()
     {
-        System.out.println("Please, enter your pseudo : ");
-        String answer = scanAnswer.next().toLowerCase();
-        try
+        boolean isCorrect = false;
+        while (!isCorrect)
         {
-            FileInputStream fis = new FileInputStream("gamers.bin");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            ArrayList<Joueur> gamers = (ArrayList<Joueur>) ois.readObject();
-            for (Joueur gamer : gamers)
+            System.out.println("Start the game. Please, enter your pseudo : ");
+            String answer = scanAnswer.next().toLowerCase();
+            try
             {
-                try
+                FileInputStream fis = new FileInputStream("gamers.bin");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                ArrayList<Joueur> gamers = (ArrayList<Joueur>) ois.readObject();
+                for (Joueur gamer : gamers)
                 {
-                    if (gamer.getPseudo().equals(answer))
+                    try
                     {
-                        this.joueur = gamer;
-                        break;
+                        if (gamer.getPseudo().equals(answer))
+                        {
+                            this.joueur = gamer;
+                            isCorrect = true;
+                        }
+                        else
+                        {
+                            System.out.println("There is not such pseudo, please try again");
+                            receptionConsole();
+                            isCorrect = false;
+                        }
+                    } catch (NullPointerException e)
+                    {
+                        System.out.println("You need to register.");
+                        createAccount();
+                        isCorrect = false;
                     }
                 }
-                catch (NullPointerException e)
-                {
-                    System.out.println("There is not such pseudo, please try again");
-                }
+                ois.close();
+                fis.close();
+            } catch (IOException | ClassNotFoundException e)
+            {
+                System.out.println("There is not any record. You need to register.");
+                createAccount();
             }
-            ois.close();
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            e.printStackTrace();
         }
         return joueur;
     }
@@ -531,9 +543,9 @@ public class Jeu
 
     public void printPlateau()		                                    // print Plateau
     {
-        System.out.println("Points: " + joueur.getCompte().getScore(1) + " / Gold: " + joueur.getCompte().getGold() +
-                        " / Ballon: " + joueur.getCompte().getBallon());
         System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
+        System.out.println("Score: " + joueur.getCompte().getScore(1) + " / Gold: " + joueur.getCompte().getGold() +
+                        " / Ballon: " + joueur.getCompte().getBallon());
         System.out.println("");
         //print y-scale
         System.out.print("  | ");
@@ -560,22 +572,22 @@ public class Jeu
                 if (plateau.getObject(i, j) instanceof Bloc)
                 {
                     if (((Bloc) obj).getColor() == "NONE")
-                        System.out.print(" nn");
+                        System.out.print(" ≡ ");
                     else if (((Bloc) obj).getColor() == "BLUE")
-                        System.out.print(" bb");
+                        System.out.print(" α ");
                     else if (((Bloc) obj).getColor() == "YELLOW")
-                        System.out.print(" by");
+                        System.out.print(" β ");
                     else if (((Bloc) obj).getColor() == "RED")
-                        System.out.print(" br");
+                        System.out.print(" γ ");
                     else if (((Bloc) obj).getColor() == "GREEN")
-                        System.out.print(" bg");
+                        System.out.print(" δ ");
                     else
-                        System.out.print(" bp");
+                        System.out.print(" ε ");
                 }
-                else if (obj instanceof Outil)
-                    System.out.print(" u ");
+                else if (obj instanceof Bomb)
+                    System.out.print(" * ");
                 else if (obj instanceof Animal)
-                    System.out.print(" a ");
+                    System.out.print(" @ ");
                 else
                     System.out.print(" - ");
             }
@@ -585,13 +597,12 @@ public class Jeu
 
 
     public void consoleGame()
-    {
-        
+    {              
         if (wantPlay())
         {
             receptionConsole();
             createPlateau(this.configLevel, this.joueur); 
-            System.out.println("LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals (a)\n" +
+            System.out.println("LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals (@)\n" +
                     "so they will go down and will be rescued\n");
             System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
             printPlateau();
@@ -635,7 +646,6 @@ public class Jeu
                     else System.out.println("Wrong input, try again");
 
                     printPlateau();
-                    plateau.shiftLeft();
                     plateau.rescueAnimals(plateau.getAnimalsOnFloor());
                     plateau.shiftLeft();
                     printPlateau();
@@ -660,7 +670,7 @@ public class Jeu
 
     /*================================= MAIN ===================================*/
 
-    public static void main (String[] args) throws IOException
+    public static void main (String[] args)
     {
         Jeu test = new Jeu();
         test.consoleGame();

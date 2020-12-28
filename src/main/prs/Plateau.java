@@ -500,7 +500,6 @@ public class Plateau
                 {
                     //skip
                 }
-                printMap();
             }
         }
         else //can't move column
