@@ -138,11 +138,11 @@ public class Jeu
     public void launchLevel(int i)
     {
         if(getLevel() == 1){
-                createPlateau();
-                if(GUImode){
-                    addPanelPlateau();
-                }
+            createPlateau();
+            if(GUImode){
+                addPanelPlateau();
             }
+        }
     }
 
     private void createPlateau()
@@ -694,15 +694,16 @@ public class Jeu
             this.gamers = getListOfJoueurs();
             accountAdministration();
 
-            launchLevel(getLevel());
+            createPlateau();
+
+            System.out.println(gamers.toArray().toString());
             
             System.out.println(showMessage(levelInfo(getLevel())));
             printPlateau();
 
             while (! plateau.gameState().equals("lost"))
             {
-                if (plateau.gameState().equals("continue"))
-                {
+
                     char action = askAction();
                     if (action == 'c')          //clic
                     {
@@ -730,7 +731,6 @@ public class Jeu
                     }
                     else if (action == 'g')    //convert score to gold
                     {
-                        //TODO   1 ingot = 100 points
                         joueur.convertPointsToGold();
                     }
                     else System.out.println("Wrong input, try again");
@@ -740,18 +740,18 @@ public class Jeu
                     printPlateau();
 
                     plateau.gameState();
-                }
-                else if (plateau.gameState().equals("win"))
-                {
-                    System.out.println("\nCongratulations, you win !! \n");
-                    playOrExit();
-                    launchLevel(this.level);
-                }
-                else
-                {
-                    System.out.println("The level is lost. Try again.. ");
-                    playOrExit();
-                }
+
+                    if (plateau.gameState().equals("win"))
+                    {
+                        System.out.println("\nCongratulations, you win !! \n");
+                        playOrExit();
+                        createPlateau();
+                    }
+                    else if (plateau.gameState().equals("lost"))
+                    {
+                        System.out.println("The level is lost. Try again.. ");
+                        playOrExit();
+                    }
             }
         }
         else
@@ -783,11 +783,13 @@ public class Jeu
     {
         Jeu jeu = new Jeu();
 
-        jeu.consoleGame();
-        //if(args.length>0 && args[1].equals("text")){
-        //    jeu.consoleGame();
-        //}else{
-        //    jeu.GUIGame();
-        //}
+        //jeu.consoleGame();
+
+
+        if(args.length>0 && args[1].equals("text")){
+            jeu.consoleGame();
+        }else{
+            jeu.GUIGame();
+        }
     }
 }
