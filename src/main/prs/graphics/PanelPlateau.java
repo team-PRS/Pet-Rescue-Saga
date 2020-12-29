@@ -23,6 +23,7 @@ public class PanelPlateau extends JPanel implements MouseListener{
     setOpaque(false);
     setLayout(null);
     addMouseListener(this);
+    //setBackground(new Color(255,255,255,150)); don't work.
   }
   // GET SET -------------------------------------------------------------------
   public Plateau getPlateau(){return plateau;}
@@ -31,6 +32,8 @@ public class PanelPlateau extends JPanel implements MouseListener{
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
     if(plateau!=null){
+      g.setColor(new Color(255,255,255,180));
+      g.fillRect(0,0,getWidth(),getHeight());
       paintCase(g);
       paintGrid(g);
     }
