@@ -41,15 +41,17 @@ public class PanelPlateau extends JPanel implements MouseListener{
   public void paintCase(Graphics g){
     for (int i = 0; i < plateau.getWidth(); i++){
       for (int j = 0; j < plateau.getHeight(); j++){
+        int xTemp = j*jeu.getData().getTailleDUneCase();
+        int yTemp = i*jeu.getData().getTailleDUneCase();
         if(plateau.getObject(j,i) instanceof Bloc){
           Bloc b = (Bloc) plateau.getObject(j,i);
           if(b.getColor()!="NONE"){
             drawColorRect(i,j,b.getColor2(),g);
           }else{
-            //g.drawImage(...);
+            g.drawImage(jeu.getData().getInmovable(),yTemp,xTemp,this);
           }
         }else if(plateau.getObject(j,i) instanceof Animal){
-          g.drawImage(jeu.getData().getAnimal(),0,0,this);
+          g.drawImage(jeu.getData().getAnimal(),yTemp,xTemp,this);
         }else if(plateau.getObject(j,i) instanceof Outil){
           //g.drawImage(...);
         }

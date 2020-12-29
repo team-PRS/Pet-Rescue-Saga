@@ -10,6 +10,7 @@ public class Data {
   private Image pMapImg;
   private Image pPlateauImg;
   private Image animal;
+  private Image inmovable;
   private static int screenDimX;
   private static int screenDimY;
   private static int nbrLevelAviable=4;
@@ -24,6 +25,8 @@ public class Data {
   public void setPPlateauImg(Image i){pPlateauImg = i;}
   public Image getAnimal(){return animal;}
   public void setAnimal(Image i){animal = i;}
+  public Image getInmovable(){return inmovable;}
+  public void setInmovable(Image i){inmovable = i;}
   public static int getScreenDimX(){return screenDimX;}
   public static void setScreenDimX(int x){screenDimX=x;}
   public static int getScreenDimY(){return screenDimY;}

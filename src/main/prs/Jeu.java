@@ -309,6 +309,14 @@ public class Jeu
       }catch (Exception e) {
         ok=false;
       }
+      img = image.getImage("inmovable.jpg");
+      try {
+        img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
+        if(img==null){throw new NullPointerException();}
+        getData().setInmovable(img);
+      }catch (Exception e) {
+        ok=false;
+      }
       return ok;
     }
     public void repaint(){
