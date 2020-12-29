@@ -74,6 +74,7 @@ public class Compte implements Serializable{
   *@return true if the level is unlock.
   */
   public boolean isLevelUnlock(int i){
+      i--; //to start with level 1.
     if(i<0 || i>=levelScore.length){System.out.println("i n'est pas correcte");return false;}
     return levelScore[i]!=-1;
   }
@@ -83,6 +84,7 @@ public class Compte implements Serializable{
   *@return true if it worked.
   */
   public boolean unlockLevel(int i){
+      i--; //to start with level 1.
     if(i<0 || i>=levelScore.length){System.out.println("i n'est pas correcte");return false;}
     if(levelScore[i]==-1){
       levelScore[i]=0;

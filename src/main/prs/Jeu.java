@@ -12,7 +12,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.Image;
-
+/**
+* Main class / controller class
+*/
 public class Jeu
 {
     private Map map;
@@ -29,6 +31,7 @@ public class Jeu
     private PanelPlateau pPlateau;
     private PanelGame pGame;
     private static Data data;
+    private boolean GUImode;
 
 
     /*================================= Constructor ==============================*/
@@ -86,9 +89,9 @@ public class Jeu
 
     /*============================= Common functions ==========================*/
 
-    private void createPlateau(Configuration config, Joueur gamer)
+    private void createPlateau(Configuration config)
     {
-        this.joueur = gamer;
+        //this.joueur = gamer; // we already set joueur
         this.level = joueur.getCompte().getUnlockLevel();
         this.plateau = new Plateau(Integer.parseInt(configLevel.getLevelValue(level, "height")),
                 Integer.parseInt(configLevel.getLevelValue(level, "width")));
@@ -185,6 +188,19 @@ public class Jeu
         else
         {
             System.out.println("Out of bounds of plateau");
+        }
+    }
+    public void launchLevel(int i){
+        if(joueur.isLevelUnlock(i)){
+            //TODO get config information
+            if(i==1){
+                createPlateau(this.configLevel);
+                if(GUImode){
+                    addPanelPlateau();
+                }
+            }
+        }else{
+            System.out.println("Level "+i+" is locked.");
         }
     }
 
@@ -617,10 +633,11 @@ public class Jeu
 
     public void consoleGame()
     {
+        GUImode=false;
         if (wantPlay())
         {
             receptionConsole();
-            createPlateau(this.configLevel, this.joueur);
+            launchLevel(1);
             System.out.println("LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals (@)\n" +
                     "so they will go down and will be rescued\n");
             System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
@@ -687,6 +704,7 @@ public class Jeu
 
     public void GUIGame()
     {
+        GUImode=true;
         data = new Data();
         joueur = new Joueur();
         map = new Map(joueur);
