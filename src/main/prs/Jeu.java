@@ -313,7 +313,7 @@ public class Jeu
     }
 
     /*============================= Console UI functions ==========================*/
-
+    @SuppressWarnings("unchecked")
     public void createAccount()
     {
         System.out.println("Let's register");
@@ -327,7 +327,11 @@ public class Jeu
             // if where are already records in file
             FileInputStream fis = new FileInputStream("gamers.bin");
             ObjectInputStream ois = new ObjectInputStream(fis);
+            //if (gamers instanceof ArrayList<Joueur>) {
             gamers = (ArrayList<Joueur>) ois.readObject();
+            /*}else{
+                error.error("bad type of Object for the file gamers.gin");
+            }*/
             ois.close();
             fis.close();
             try
@@ -363,7 +367,7 @@ public class Jeu
             }
         }
     }
-
+    @SuppressWarnings("unchecked")
     public Joueur downloadAccount()
     {
         boolean isCorrect = false;
@@ -408,7 +412,7 @@ public class Jeu
         }
         return joueur;
     }
-
+    @SuppressWarnings("unchecked")
     public String gamersToPrint()
     {
         String str = "";
