@@ -4,14 +4,13 @@ import java.io.*;
 
 
 public class Joueur implements Serializable{
-  private final Compte compte;
+  private Compte compte;
   private String pseudo;
-
 
 
   // CONSTRUCTEUR ---------------------------------------------------------------
   public Joueur(){
-    compte = new Compte();
+    this.compte = new Compte();
     this.pseudo = "Anonime";
   }
   // GET SET --------------------------------------------------------------------
@@ -20,9 +19,7 @@ public class Joueur implements Serializable{
   public void setPseudo(String p) {this.pseudo = p; }
 
   // Fonctions propre -----------------------------------------------------------
-  public String toString(){
-    return "Player: \n"+compte.toString();
-  }
+  public String toString(){return "Player: " + pseudo + " " + compte.toString();}
   public boolean unlockLevel(int i){ return compte.unlockLevel(i);}
   public boolean isLevelUnlock(int i){return compte.isLevelUnlock(i);}
 
@@ -30,12 +27,11 @@ public class Joueur implements Serializable{
   {
        getCompte().setGold(getCompte().getGold() - 10);
        getCompte().setBallon(getCompte().getBallon() + 1);
-       System.out.println(getCompte().getBallon());
   }
 
   public void convertPointsToGold()          //TODO  1 ingot = 50 points
   {
-    int points = this.getCompte().getScore(1);           //TODO verify what is the score
+    int points = this.getCompte().getPoints();           //TODO verify what is the score
     if (points >= 50)
     {
         points -= 50;
@@ -51,5 +47,10 @@ public class Joueur implements Serializable{
   public void activateBallon()                                          // make -1 ballon in Compte
   {
       this.getCompte().setBallon(this.getCompte().getBallon() - 1);
+  }
+
+  public String toString1()
+  {
+      return "Player: " + this.pseudo + " " + this.compte.toString1();
   }
 }

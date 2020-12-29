@@ -30,12 +30,13 @@ L2_width=10
 
 L2_blocs=true
 L2_animals=true
-L2_outils=false
+L2_outils=true
 L2_immovable=true
-	
-L2_initialBlocs=18
+
+L2_initialBlocs=58
 L2_initialAnimals=3
-L2_initialBombs=0
+L2_initialImmoBlocs=4
+L2_initialBombs=2
 L2_initialBallons=0
 
 L2_addBlocs=true
@@ -43,7 +44,7 @@ L2_addAnimals=false
 L2_addBombs=false
 L2_addBallons=false
 
-L2_additionalBlocs=4
+L2_additionalBlocs=53
 L2_additionalAnimals=0
 L2_additionalBombs=0
 L2_additionalBallons=0
@@ -57,10 +58,11 @@ L3_width=10
 L3_blocs=true
 L3_animals=true
 L3_outils=true
-L3_immovable=false
-	
-L3_initialBlocs=14
+L3_immovable=true
+
+L3_initialBlocs=58
 L3_initialAnimals=5
+L3_initialImmoBlocs=4
 L3_initialBombs=0
 L3_initialBallons=2
 
@@ -69,7 +71,7 @@ L3_addAnimals=false
 L3_addBombs=false
 L3_addBallons=true
 
-L3_additionalBlocs=4
+L3_additionalBlocs=53
 L3_additionalAnimals=0
 L3_additionalBombs=0
 L3_additionalBallons=2

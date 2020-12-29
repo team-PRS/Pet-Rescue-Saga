@@ -61,7 +61,7 @@ public class PanelMap extends JPanel{
     //mouse action
     public void mouseClicked(MouseEvent e){
       System.out.println("launch of "+id+" level.");//@a
-      jeu.launchLevel(id);
+      jeu.launchLevel(jeu.getLevel());
     }
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}

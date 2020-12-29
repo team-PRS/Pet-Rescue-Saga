@@ -10,6 +10,7 @@ public class Plateau
     private int width;
     private ObjectSurCase[][] plateau;
     private boolean isOnFloor = false;
+    private boolean isRescued = false;
     private int nbrOfMaxColor = 5; //it can be 2,3,4 or 5.
 
     /*================================= Constructor ==============================*/
@@ -68,6 +69,8 @@ public class Plateau
         }
         return colorBloc;
     }
+
+    public boolean getIsRescued() {return isRescued;}
 
     /*================================ Cleaning ==============================*/
     public void cleanCase(int x, int y)                                //delete ObjectSurCase ons position (x,y)
@@ -228,8 +231,8 @@ public class Plateau
                 }
             }
         }
-        System.out.println("need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
-                "  animaux: " + c + ":" + ic + "  ballons: " + d + ":" + id);
+        //System.out.println("need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
+        //        "  animaux: " + c + ":" + ic + "  ballons: " + d + ":" + id);
         System.out.println("");
     }
 
@@ -386,22 +389,6 @@ public class Plateau
     /*================================= Object's Mouvements ==============================*/
 
     //function for instance of ObjectSurCase: delete from one place, insert to another one
-    public void moveObject(int depX, int depY, int arrX, int arrY)
-    {
-        if (isOnPlateau(depX, depY) && isOnPlateau(arrX, arrY))
-        {
-            ObjectSurCase obj = this.getObject(depX, depY);
-            this.cleanCase(depX, depY);
-            if (this.isEmpty(arrX, arrY))                              //TODO add intermediate cases between dep and arr?
-            {
-                this.setObject(obj, arrX, arrY);
-            }
-            else
-                System.out.println("This place is occupied");
-        }
-        else
-            System.out.println("Out of bounds of tableau");
-    }
 
     public void shiftDown(int x, int y)
     {
@@ -656,6 +643,7 @@ public class Plateau
 
     public void rescueAnimals(LinkedList<Point> animalsToRescue)
     {
+        this.isRescued = false;
         if (animalsToRescue != null)
         {
             for (Point animalCoord : animalsToRescue)
@@ -664,6 +652,7 @@ public class Plateau
                 int y = animalCoord.getCoordY();
                 cleanCase(x, y);
                 shiftDown(x, y);
+                isRescued = true;
                 //System.out.println("            1 animal rescued");                    //debug code
             }
         }
@@ -721,7 +710,6 @@ public class Plateau
 
     public void addBlocsInGame(int nmbBlocs)            //TODO need the logic how and were to add the blocs
     {
-
     }
 
 

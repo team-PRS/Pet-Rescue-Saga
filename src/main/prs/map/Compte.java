@@ -9,11 +9,13 @@ public class Compte implements Serializable{
   */
   private int gold;
   private int ballon;
-  //private int unlockLevel;
+  private int unlockLevel;
   /**
   *{@summary Containt the score for every level.}
   *If score = -1 level is lock. If score = 0 level is unlock but not done yet. If score > 0 level have been done.
   */
+
+  private int points;
   private int [] levelScore;
   public static final int NUMBER_OF_LEVEL = 4;
   // CONSTRUCTEUR ---------------------------------------------------------------
@@ -21,9 +23,10 @@ public class Compte implements Serializable{
   *{@summary Creates a Compte with 100 gold and evry level to lock exept the 1a.}
   */
   public Compte () {
-    gold = 100;
-    ballon = 0;
-    //unlockLevel = 1;
+    this.gold = 100;
+    this.ballon = 0;
+    this.unlockLevel = 1;
+    this.points = 0;
     levelScore = new int [NUMBER_OF_LEVEL];
     levelScore[0]=0; //1a level is unlocked
     for (int i=1;i<NUMBER_OF_LEVEL ;i++ ) {
@@ -42,6 +45,27 @@ public class Compte implements Serializable{
       }
       return k;
   }
+
+  // sorry Emilien !
+  //------------------ Natalia's function to test serialisation --------------
+
+  public int getUnlockLevel1() { return unlockLevel;}
+
+  public int getPoints(){return points;}
+
+  public void setPoints(int points){ this.points = points;}
+
+  public String toString1()
+  {
+    String str = "Ballons : " + Integer.toString(ballon) + "  Gold : " + Integer.toString(gold)
+            + "  UnlockLevel : " + Integer.toString(unlockLevel)  + "  Points : " + Integer.toString(points);
+    return str;
+  }
+
+  // END-- Natalia's function to test serialisation --------------
+
+  
+
   //public void setUnlockLevel(int l){unlockLevel = l;}
   public int getScore(int i){return levelScore[i];}
   /**

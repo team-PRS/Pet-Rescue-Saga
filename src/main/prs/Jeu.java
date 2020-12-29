@@ -24,6 +24,7 @@ public class Jeu
     private int additionalBlocs, additionalAnimals, additionalBombs, additionalBallons;
     private Configuration configLevel;
     private int level;
+    private ArrayList<Joueur> gamers;
     private Compte compte;
     private Scanner scanAnswer;
     private Frame frame;
@@ -42,6 +43,8 @@ public class Jeu
         this.joueur = new Joueur();
         this.compte = joueur.getCompte();
         this.level = compte.getUnlockLevel();
+        this.gamers = new ArrayList<Joueur>();
+        
         //initialisation of start values of number of blocs, animals etc.
         initialBlocs = Integer.parseInt(configLevel.getLevelValue(level, "initialBlocs"));
         initialAnimals = Integer.parseInt(configLevel.getLevelValue(level, "initialAnimals"));
@@ -89,24 +92,69 @@ public class Jeu
 
     /*============================= Common functions ==========================*/
 
-    private void createPlateau(Configuration config)
+    public int getLevel()
     {
-        //this.joueur = gamer; // we already set joueur
-        this.level = joueur.getCompte().getUnlockLevel();
-        this.plateau = new Plateau(Integer.parseInt(configLevel.getLevelValue(level, "height")),
-                Integer.parseInt(configLevel.getLevelValue(level, "width")));
+        int level = 0;
+        if (this.joueur.getCompte().getUnlockLevel1() == 1)
+        {
+            level = 1;
+        }
+        else
+        {
+            level = downloadAccount().getCompte().getUnlockLevel1() + 1;
+        }
+        return level;
+    }
+
+    public String showMessage(String request)
+    {
+        String message = "";
+
+        String l1 = "LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals ( @ )\n" +
+                "so they will go down and will be rescued";
+
+        String l2 = "LEVEL 2\nOn this level you can explode bombs ( * )\n" +
+                "to destroy the cubes surrounding. Animals will not lost.";
+
+        String l3 = "LEVEL 3\n         \n" +
+                "      ";
+        
+        String l4 = "LEVEL 4\nGo ahead!";
+
+        String pr = "\nOne pet is rescued";
+
+        if (request.equals("level1")) {message = l1;}
+        else if (request.equals("level2")) {message = l2;}
+        else if (request.equals("level3")) {message = l3;}
+        else if (request.equals("level4")) {message = l4;}
+        else if (request.equals("petRescued"))
+        {
+            message = pr;
+        }
+
+        return message;
+    }
+
+    public void launchLevel(int i)
+    {
+        if(getLevel() == 1){
+                createPlateau();
+                if(GUImode){
+                    addPanelPlateau();
+                }
+            }
+    }
+
+    private void createPlateau()
+    {
+        this.level = getLevel();      // this helps create plateau in all cases cause getLevel check getUnlockLevel
+                                    // and make + 1.. or give 1 if where is not account yet
+
+        this.plateau = new Plateau(Integer.parseInt(this.configLevel.getLevelValue(this.level, "height")),
+                Integer.parseInt(this.configLevel.getLevelValue(level, "width")));
         this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals,initialBallons);
     }
-    /**
-    function that calculate coordinates of a click & launch pressCell
-    */
-    public void clicOnPlateau(int x, int y)
-    {
-      if(x<0 || y<0){return;}
-      //if(x>Data.getScreenDimX() || y>Data.getScreenDimY()){return;}
-      pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
-      //TODO add a sound ?
-    }
+
     /**
       {@summary function which provide reactions for clic:}<br>
      - if group of blocs, delete them all<br>
@@ -190,17 +238,67 @@ public class Jeu
             System.out.println("Out of bounds of plateau");
         }
     }
-    public void launchLevel(int i){
-        if(joueur.isLevelUnlock(i)){
-            //TODO get config information
-            if(i==1){
-                createPlateau(this.configLevel);
-                if(GUImode){
-                    addPanelPlateau();
+
+    /*================= Joueur: Serialisation / DeSerialisation ====================*/
+
+    public ArrayList<Joueur> getListOfJoueurs()                         // get list of players and save it in array gamers
+    {
+        ArrayList<Joueur> gamers = null;
+        try
+        {
+            FileInputStream fis = new FileInputStream("gamers.bin");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            gamers = (ArrayList<Joueur>) ois.readObject();
+            ois.close();
+            fis.close();
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            return new ArrayList<Joueur>();
+        }
+        return gamers;
+    }
+
+    public Joueur downloadAccount()                                     // download account from array gamers
+    {
+        try
+        {
+            for (Joueur gamer : this.gamers)
+            {
+                if (this.joueur.getPseudo().equals(gamer.getPseudo()))
+                {
+                    return gamer;
                 }
             }
-        }else{
-            System.out.println("Level "+i+" is locked.");
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println("Can't find record" + this.joueur.getPseudo());
+        }
+        return null;
+    }
+
+    public void createNewAccount(ArrayList<Joueur> gamers, String name)  // set pseudo which gamer give and add joueur to array gamers
+    {
+        this.joueur.setPseudo(name);
+        this.gamers.add(this.joueur);
+        System.out.println(this.joueur.toString1());
+    }
+
+    public void saveToFile(ArrayList<Joueur> gamers)                     //save joueur to file - to use in the and of game, before exit
+    {
+        this.gamers.add(this.joueur);
+        try
+        {
+            FileOutputStream fos = new FileOutputStream("gamers.bin");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(gamers);
+            oos.close();
+            fos.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Can't write to file");
         }
     }
 
@@ -351,132 +449,20 @@ public class Jeu
           //error.error("fail to pause "+ms);
       }
     }
+    /**
+     function that calculate coordinates of a click & launch pressCell
+     */
+    public void clicOnPlateau(int x, int y)
+    {
+        if(x<0 || y<0){return;}
+        //if(x>Data.getScreenDimX() || y>Data.getScreenDimY()){return;}
+        pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
+        //TODO add a sound ?
+    }
 
     /*============================= Console UI functions ==========================*/
-    @SuppressWarnings("unchecked")
-    public void createAccount()
-    {
-        System.out.println("Let's register");
-        String name = askPseudo();
-        this.joueur.setPseudo(name);
 
-        ArrayList<Joueur> gamers = new ArrayList<>();
-        //Read
-        try
-        {
-            // if where are already records in file
-            FileInputStream fis = new FileInputStream("gamers.bin");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            //if (gamers instanceof ArrayList<Joueur>) {
-            gamers = (ArrayList<Joueur>) ois.readObject();
-            /*}else{
-                error.error("bad type of Object for the file gamers.gin");
-            }*/
-            ois.close();
-            fis.close();
-            try
-            {
-                FileOutputStream fos = new FileOutputStream("gamers.bin");
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                gamers.add(joueur);
-                oos.writeObject(gamers);
-                oos.close();
-                fos.close();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            // if where are neither records nor array in file (file is empty)
-            gamers.add(joueur);
-            try
-            {
-                FileOutputStream fos = new FileOutputStream("gamers.bin");
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                gamers.add(joueur);
-                oos.writeObject(gamers);
-                oos.close();
-                fos.close();
-            }
-            catch (IOException m)
-            {
-                m.printStackTrace();
-            }
-        }
-    }
-    @SuppressWarnings("unchecked")
-    public Joueur downloadAccount()
-    {
-        boolean isCorrect = false;
-        while (!isCorrect)
-        {
-            System.out.println("Start the game. Please, enter your pseudo : ");
-            String answer = scanAnswer.next().toLowerCase();
-            try
-            {
-                FileInputStream fis = new FileInputStream("gamers.bin");
-                ObjectInputStream ois = new ObjectInputStream(fis);
-                ArrayList<Joueur> gamers = (ArrayList<Joueur>) ois.readObject();
-                for (Joueur gamer : gamers)
-                {
-                    try
-                    {
-                        if (gamer.getPseudo().equals(answer))
-                        {
-                            this.joueur = gamer;
-                            isCorrect = true;
-                        }
-                        else
-                        {
-                            System.out.println("There is not such pseudo, please try again");
-                            receptionConsole();
-                            isCorrect = false;
-                        }
-                    } catch (NullPointerException e)
-                    {
-                        System.out.println("You need to register.");
-                        createAccount();
-                        isCorrect = false;
-                    }
-                }
-                ois.close();
-                fis.close();
-            } catch (IOException | ClassNotFoundException e)
-            {
-                System.out.println("There is not any record. You need to register.");
-                createAccount();
-            }
-        }
-        return joueur;
-    }
-    @SuppressWarnings("unchecked")
-    public String gamersToPrint()
-    {
-        String str = "";
-        try
-        {
-            FileInputStream fis = new FileInputStream("gamers.bin");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            ArrayList<Joueur> gamers = (ArrayList<Joueur>) ois.readObject();
-            ois.close();
-            str = Arrays.toString(new ArrayList[]{gamers});
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        return str;
-    }
-
-    public void saveToAccount()           //TODO
-    {
-
-    }
-
-    public boolean wantPlay()
+    public boolean wantPlay()                                           // first reception - want to play or not?
     {
         boolean answer = false;
         boolean isCorrectAnswer = false;
@@ -497,16 +483,38 @@ public class Jeu
         return answer;
     }
 
-    public String hasAccount()
+    public String hasAccount()                                          // ask if gamer has account
     {
         System.out.print("Do you have an account ? y / n ");
         String rep = scanAnswer.next().toLowerCase();
         return rep;
     }
 
+    public void accountAdministration()                               // ask create or download account
+    {
+        boolean isCorrectAnswer = false;
+        while (!isCorrectAnswer)
+        {
+            String answer = hasAccount();
+            if (answer.equals("y") || (answer).equals("yes"))
+            {
+                isCorrectAnswer = true;
+                downloadAccount();
+            }
+            else if (answer.equals("n") || answer.equals("no"))
+            {
+                isCorrectAnswer = true;
+                String pseudo = askPseudo();
+                createNewAccount(this.gamers, pseudo);
+
+            }
+            else System.out.println("Wrong input, try again");
+        }
+    }
+
     public String askPseudo()
     {
-        System.out.print("Please enter you pseudo : ");
+        System.out.print("Please enter your pseudo : ");
         String nameJoueur = scanAnswer.next();
         return nameJoueur;
     }
@@ -552,10 +560,10 @@ public class Jeu
         return new int[]{xCoord, yCoord};
     }
 
-    public char askAction()
+    public char askAction()                                       // ask that gamer want to do
     {
 
-        System.out.print("Do you want \n - click on the cell (c)" +
+        System.out.print("\nDo you want \n - click on the cell (c)" +
                 "\n - buy the ballon /cost 3 ingots/ (b) " +
                 "\n - activate your ballon (a) " +
                 "\n - activate bomb (e) " +
@@ -565,33 +573,15 @@ public class Jeu
         return Action.charAt(0);
     }
 
-    public void finish() { this.scanAnswer.close(); }
-
-
-    public void receptionConsole()
+    public String levelInfo(int l)                              // compose level to call message level
     {
-        boolean isCorrectAnswer = false;
-        while (!isCorrectAnswer)
-        {
-            String answer = hasAccount();
-            if (answer.equals("y") || (answer).equals("yes"))
-            {
-                isCorrectAnswer = true;
-                downloadAccount();
-            }
-            else if (answer.equals("n") || answer.equals("no"))
-            {
-                isCorrectAnswer = true;
-                createAccount();
-            }
-            else System.out.println("Wrong input, try again");
-        }
+        return "level" + Integer.toString(l);
     }
 
-    public void printPlateau()		                                    // print Plateau
+    public void printPlateau()		                            // print Plateau
     {
        // System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
-        System.out.println("Score: " + joueur.getCompte().getScore(1) + " / Gold: " + joueur.getCompte().getGold() +
+        System.out.println("\nPoints: " + joueur.getCompte().getScore(1) + " / Gold: " + joueur.getCompte().getGold() +
                         " / Ballon: " + joueur.getCompte().getBallon());
         System.out.println("");
         //print y-scale
@@ -644,6 +634,55 @@ public class Jeu
         }
     }
 
+    public void rescue()                                   // check animal on the floor, rescue them and print message for each of them
+    {
+        LinkedList<Point> animals = plateau.getAnimalsOnFloor();
+        plateau.rescueAnimals(animals);
+        if (plateau.getIsRescued())
+        {
+            for (int i = 0; i < animals.size(); i++)
+                System.out.println(showMessage("petRescued"));
+        }
+    }
+
+    public String askPlayOrExit()                                // ask if gamer want to exit
+    {
+        System.out.print("Do you want exit or play ? (ex/pl)");
+        String answer = scanAnswer.next();
+        return answer.toLowerCase();
+    }
+
+
+    public void playOrExit()                                 // save account to file and close the program
+    {
+        boolean IsValid = false;
+        while (!IsValid)
+        if (askPlayOrExit().equals("ex") || askPlayOrExit().equals("e") || askPlayOrExit().equals("exit"))
+        {
+            IsValid = true;
+            System.out.println("See you !! ");
+            exit();
+        }
+        else if (askPlayOrExit().equals("pl") || askPlayOrExit().equals("p") || askPlayOrExit().equals("play"))
+        {
+            IsValid = true;
+            saveToFile(gamers);
+            launchLevel(getLevel());
+        }
+        else
+        {
+            System.out.println("Wrong input, try again");
+        }
+    }
+
+    public void exit()                                 // save account to file and close the program
+    {
+        saveToFile(gamers);
+        finish();
+    }
+
+    public void finish() { this.scanAnswer.close(); }      //close console UI
+
 
     /*============================= PRINCIPAL FUNCTIONS (Console UI & GUI) ==========================*/
 
@@ -652,19 +691,18 @@ public class Jeu
         GUImode=false;
         if (wantPlay())
         {
-            receptionConsole();
-            launchLevel(1);
-            System.out.println("LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals (@)\n" +
-                    "so they will go down and will be rescued\n");
-            System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
+            this.gamers = getListOfJoueurs();
+            accountAdministration();
+
+            launchLevel(getLevel());
+            
+            System.out.println(showMessage(levelInfo(getLevel())));
             printPlateau();
-            //System.out.println(gamersToPrint());
 
             while (! plateau.gameState().equals("lost"))
             {
                 if (plateau.gameState().equals("continue"))
                 {
-                   // askAction();
                     char action = askAction();
                     if (action == 'c')          //clic
                     {
@@ -696,19 +734,23 @@ public class Jeu
                         joueur.convertPointsToGold();
                     }
                     else System.out.println("Wrong input, try again");
-
-                    plateau.rescueAnimals(plateau.getAnimalsOnFloor());
+                    rescue();
                     plateau.shiftLeft();
+                    rescue();
                     printPlateau();
+
                     plateau.gameState();
                 }
                 else if (plateau.gameState().equals("win"))
                 {
-                    System.out.println("Congratulations, you win !! ");
+                    System.out.println("\nCongratulations, you win !! \n");
+                    playOrExit();
+                    launchLevel(this.level);
                 }
                 else
                 {
                     System.out.println("The level is lost. Try again.. ");
+                    playOrExit();
                 }
             }
         }
@@ -740,10 +782,12 @@ public class Jeu
     public static void main (String[] args)
     {
         Jeu jeu = new Jeu();
-        if(args.length>0 && args[1].equals("text")){
-            jeu.consoleGame();
-        }else{
-            jeu.GUIGame();
-        }
+
+        jeu.consoleGame();
+        //if(args.length>0 && args[1].equals("text")){
+        //    jeu.consoleGame();
+        //}else{
+        //    jeu.GUIGame();
+        //}
     }
 }
