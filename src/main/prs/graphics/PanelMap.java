@@ -51,14 +51,11 @@ public class PanelMap extends JPanel{
       setFont(Data.getFont());
       addMouseListener(this);
       setVisible(true);
-      System.out.println(getDimX()+" "+getDimY());
-      System.out.println("new Button "+id+" "+this);//@a
     }
     // GET SET -------------------------------------------------------------------
 
     // FUNCTIONS -----------------------------------------------------------------
     public void paintComponent(Graphics g){
-        System.out.println("repaint of button "+id);//@a
       super.paintComponent(g);
     }
     //mouse action

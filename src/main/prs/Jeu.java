@@ -690,7 +690,6 @@ public class Jeu
         data = new Data();
         joueur = new Joueur();
         map = new Map(joueur);
-        System.out.println(joueur);//@a
         System.out.println(addFrame());
         System.out.println(iniImage());
         //TODO faire changer ou creer un compte graphiquement.
