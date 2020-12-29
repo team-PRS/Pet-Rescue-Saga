@@ -363,7 +363,7 @@ public class Jeu
             }
         }
     }
-    
+
     public Joueur downloadAccount()
     {
         boolean isCorrect = false;
@@ -604,11 +604,11 @@ public class Jeu
     /*============================= PRINCIPAL FUNCTIONS (Console UI & GUI) ==========================*/
 
     public void consoleGame()
-    {              
+    {
         if (wantPlay())
         {
             receptionConsole();
-            createPlateau(this.configLevel, this.joueur); 
+            createPlateau(this.configLevel, this.joueur);
             System.out.println("LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals (@)\n" +
                     "so they will go down and will be rescued\n");
             System.out.println("h:" + plateau.getHeight() + " l:" + plateau.getWidth());
@@ -675,14 +675,22 @@ public class Jeu
 
     public void GUIGame()
     {
-        //TODO
+        iniImage();
+        addFrame();
+        //TODO faire changer ou creer un compte graphiquement.
+        addPanelMap();
+        System.out.println("fin du main de GUIGame");
     }
 
     /*================================= MAIN ===================================*/
 
     public static void main (String[] args)
     {
-        Jeu test = new Jeu();
-        test.consoleGame();
+        Jeu jeu = new Jeu();
+        if(args.length>0 && args[1].equals("text")){
+            jeu.consoleGame();
+        }else{
+            jeu.GUIGame();
+        }
     }
 }
