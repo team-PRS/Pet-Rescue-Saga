@@ -293,11 +293,19 @@ public class Jeu
       }catch (Exception e) {
         ok=false;
       }
-      Image img2 = image.getImage("background2.jpg");
+      img = image.getImage("background2.jpg");
       try {
-        img2 = img2.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
+        img = img.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
-        getData().setPPlateauImg(img2);
+        getData().setPPlateauImg(img);
+      }catch (Exception e) {
+        ok=false;
+      }
+      img = image.getImage("animal.jpg");
+      try {
+        img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
+        if(img==null){throw new NullPointerException();}
+        getData().setAnimal(img);
       }catch (Exception e) {
         ok=false;
       }
