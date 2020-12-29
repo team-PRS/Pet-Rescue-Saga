@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import prs.Data;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
+import java.awt.Color;
 
 /**
 {@summary Represent the map on the Frame.}
@@ -17,14 +18,17 @@ public class PanelMap extends JPanel{
   public PanelMap(Jeu j){
     setLayout(null);
     jeu=j;
+    setBackground(new Color(255,255,255,200));
     //setExtendedState(JPanel.MAXIMIZED_BOTH);
   }
   // GET SET -------------------------------------------------------------------
   public int getNbrButton(){return nbrButton;}
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
+    super.paintComponent(g);
     System.out.println("paint map");//@a
     if(jeu.getData().getPMapImg() != null){
+        System.out.println("paint map with image");//@a
       g.drawImage(jeu.getData().getPMapImg(),0,0,this);
     }
   }
@@ -46,13 +50,17 @@ public class PanelMap extends JPanel{
       setText(id+"");
       setFont(Data.getFont());
       addMouseListener(this);
+      setVisible(true);
+      System.out.println(getDimX()+" "+getDimY());
+      System.out.println("new Button "+id+" "+this);//@a
     }
     // GET SET -------------------------------------------------------------------
 
     // FUNCTIONS -----------------------------------------------------------------
-    /*public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g){
+        System.out.println("repaint of button "+id);//@a
       super.paintComponent(g);
-    }*/
+    }
     //mouse action
     public void mouseClicked(MouseEvent e){
       System.out.println("launch of "+id+" level.");

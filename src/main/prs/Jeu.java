@@ -2,6 +2,7 @@ package prs;
 
 import prs.map.Compte;
 import prs.map.Joueur;
+import prs.map.Map;
 import prs.graphics.*;
 import prs.usuel.image;
 
@@ -14,6 +15,7 @@ import java.awt.Image;
 
 public class Jeu
 {
+    private Map map;
     private Joueur joueur;
     private Plateau plateau;
     private int initialBlocs, initialAnimals, initialImmoBlocs, initialBombs, initialBallons;
@@ -26,7 +28,7 @@ public class Jeu
     private PanelMap pMap;
     private PanelPlateau pPlateau;
     private PanelGame pGame;
-    private static Data data = new Data();
+    private static Data data;
 
 
     /*================================= Constructor ==============================*/
@@ -194,7 +196,8 @@ public class Jeu
     public int getWidthMax(){return getFrame().getWidth();}
     public int getHeightMax(){return getFrame().getHeight();}
     public PanelPlateau getPPlateau(){return pPlateau;}
-    public static Data getData(){return data;}
+    public Data getData(){return data;}
+    public static void setData(Data d){data=d;}
     public void addPlateau(Plateau p){plateau=p;}
 
     public boolean addFrame(){
@@ -208,6 +211,7 @@ public class Jeu
     public boolean addPanelMap(){
       try {
         pMap = new PanelMap(this);
+        pMap.setSize(getWidthMax(),getHeightMax());
         frame.setContentPane(pMap);
         return true;
       }catch (Exception e) {
@@ -260,13 +264,15 @@ public class Jeu
       }
     }
     /**
-    *Load game images.
+    *{@summary Load game images.}
+    *It need to have getFrame()!=null
     */
     public boolean iniImage(){
       boolean ok = true;
       Image img = image.getImage("background.jpg");
       try {
         img = img.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
+        if(img==null){throw new NullPointerException();}
         getData().setPMapImg(img);
       }catch (Exception e) {
         ok=false;
@@ -274,14 +280,16 @@ public class Jeu
       Image img2 = image.getImage("background2.jpg");
       try {
         img2 = img2.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
+        if(img==null){throw new NullPointerException();}
         getData().setPPlateauImg(img2);
       }catch (Exception e) {
         ok=false;
       }
-      return true;
+      return ok;
     }
     public void repaint(){
       frame.repaint();
+      //frame.printAll(frame.getGraphics());
     }
     /**
     * Unlock the next level
@@ -679,10 +687,18 @@ public class Jeu
 
     public void GUIGame()
     {
-        iniImage();
-        addFrame();
+        data = new Data();
+        joueur = new Joueur();
+        map = new Map(joueur);
+        System.out.println(joueur);//@a
+        System.out.println(addFrame());
+        System.out.println(iniImage());
         //TODO faire changer ou creer un compte graphiquement.
-        addPanelMap();
+        System.out.println(addPanelMap());
+        System.out.println("addLevel "+addLevel());
+        repaint();
+        boolean b=true;
+        while(b){pause(100);}
         System.out.println("fin du main de GUIGame");
     }
 
