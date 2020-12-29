@@ -10,6 +10,7 @@ public class Plateau
     private int width;
     private ObjectSurCase[][] plateau;
     private boolean isOnFloor = false;
+    private int nbrOfMaxColor = 5; //it can be 2,3,4 or 5.
 
     /*================================= Constructor ==============================*/
     public Plateau(int h, int w)
@@ -137,7 +138,7 @@ public class Plateau
                             {
                                 if (nmbBlocs > 0)
                                 {
-                                    plateau[i][j] = new Bloc();
+                                    plateau[i][j] = new Bloc(nbrOfMaxColor);
                                     nmbBlocs--;
                                     ib ++;
                                 }
@@ -169,7 +170,7 @@ public class Plateau
                                 {
                                     if (nmbBlocs > 0)
                                     {
-                                        plateau[i][j] = new Bloc();
+                                        plateau[i][j] = new Bloc(nbrOfMaxColor);
                                         nmbBlocs--;
                                         ib ++;
                                     }
@@ -187,7 +188,7 @@ public class Plateau
                                 {
                                     if (nmbBlocs > 0)
                                     {
-                                        plateau[i][j] = new Bloc();
+                                        plateau[i][j] = new Bloc(nbrOfMaxColor);
                                         nmbBlocs--;
                                         ib ++;
                                     }
@@ -203,7 +204,7 @@ public class Plateau
                         {
                             if (nmbBlocs > 0)
                             {
-                                plateau[i][j] = new Bloc();
+                                plateau[i][j] = new Bloc(nbrOfMaxColor);
                                 nmbBlocs--;
                                 ib ++;
                             }
@@ -218,7 +219,7 @@ public class Plateau
                             else
                             if (nmbBlocs > 0)                                      //it helps to fill without gaps
                             {
-                                plateau[i][j] = new Bloc();
+                                plateau[i][j] = new Bloc(nbrOfMaxColor);
                                 nmbBlocs--;
                                 ib ++;
                             }
@@ -275,7 +276,7 @@ public class Plateau
             {
                 for (int j = y - 1; j <= y + 1; j++)
                 {
-                    if ((i == x) && (j == y)) 
+                    if ((i == x) && (j == y))
                     {
                         // skip - do not examine himself
                     }
@@ -353,7 +354,7 @@ public class Plateau
         {
             char ch = (char) ('a' + i);
             System.out.print(ch + " | ");
- 
+
             for (int j = 0; j < width; j++)
             {
                 if (plateau[i][j] instanceof Bloc)
@@ -385,7 +386,7 @@ public class Plateau
     /*================================= Object's Mouvements ==============================*/
 
     //function for instance of ObjectSurCase: delete from one place, insert to another one
-    public void moveObject(int depX, int depY, int arrX, int arrY) 
+    public void moveObject(int depX, int depY, int arrX, int arrY)
     {
         if (isOnPlateau(depX, depY) && isOnPlateau(arrX, arrY))
         {

@@ -16,9 +16,11 @@ public class Bloc extends ObjectSurCase
 
     //random color bloc's constructor (to fill at the beginning of game-set or for additional blocs during the game-set)
     //doesn't concern blocs without color (NONE)
-    public Bloc()
+    public Bloc(int nbrOfMaxColor)
     {
-        int index = new Random().nextInt(colors.length - 1);
+        if(nbrOfMaxColor<2){nbrOfMaxColor=2;}
+        if(nbrOfMaxColor>colors.length - 1){nbrOfMaxColor=colors.length - 1;}
+        int index = new Random().nextInt(nbrOfMaxColor);
         this.color = colors[index];
         this.color2 = colors2[index];
     }
