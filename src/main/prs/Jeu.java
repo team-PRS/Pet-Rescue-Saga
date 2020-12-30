@@ -101,7 +101,7 @@ public class Jeu
         }
         else
         {
-            level = downloadAccount().getCompte().getUnlockLevel1() + 1;
+            level = downloadAccount().getCompte().getUnlockLevel1();
         }
         return level;
     }
@@ -135,13 +135,17 @@ public class Jeu
         return message;
     }
 
-    public void launchLevel(int i)
-    {
-        if(getLevel() == 1){
-            createPlateau();
-            if(GUImode){
-                addPanelPlateau();
+    public void launchLevel(int i){
+        if(joueur.isLevelUnlock(i)){
+            //TODO get config information
+            if(i==1){
+                createPlateau();
+                if(GUImode){
+                    addPanelPlateau();
+                }
             }
+        }else{
+            System.out.println("Level "+i+" is locked.");
         }
     }
 
@@ -243,12 +247,12 @@ public class Jeu
 
     public ArrayList<Joueur> getListOfJoueurs()                         // get list of players and save it in array gamers
     {
-        ArrayList<Joueur> gamers = null;
+        //ArrayList<Joueur> gamers = null;
         try
         {
             FileInputStream fis = new FileInputStream("gamers.bin");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            gamers = (ArrayList<Joueur>) ois.readObject();
+            this.gamers = (ArrayList<Joueur>) ois.readObject();
             ois.close();
             fis.close();
         }
@@ -256,7 +260,7 @@ public class Jeu
         {
             return new ArrayList<Joueur>();
         }
-        return gamers;
+        return this.gamers;
     }
 
     public Joueur downloadAccount()                                     // download account from array gamers
@@ -656,16 +660,22 @@ public class Jeu
     public void playOrExit()                                 // save account to file and close the program
     {
         boolean IsValid = false;
+        String answer = askPlayOrExit();
         while (!IsValid)
-        if (askPlayOrExit().equals("ex") || askPlayOrExit().equals("e") || askPlayOrExit().equals("exit"))
+        if (answer.equals("ex") || answer.equals("e") || answer.equals("exit"))
         {
             IsValid = true;
+            this.joueur.getCompte().setUnlockLevel(this.level + 1);
+            // TODO save points, ballons etc
             System.out.println("See you !! ");
-            exit();
+            saveToFile(gamers);
+            finish();
         }
-        else if (askPlayOrExit().equals("pl") || askPlayOrExit().equals("p") || askPlayOrExit().equals("play"))
+        else if (answer.equals("pl") || answer.equals("p") || answer.equals("play"))
         {
             IsValid = true;
+            this.joueur.getCompte().setUnlockLevel(this.level + 1);
+            // TODO save points, ballons etc
             saveToFile(gamers);
             launchLevel(getLevel());
         }
@@ -675,11 +685,12 @@ public class Jeu
         }
     }
 
-    public void exit()                                 // save account to file and close the program
-    {
-        saveToFile(gamers);
-        finish();
-    }
+ //  public void exit()                                 // save account to file and close the program
+ //  {
+ //
+ //      saveToFile(gamers);
+ //      finish();
+ //  }
 
     public void finish() { this.scanAnswer.close(); }      //close console UI
 
@@ -783,13 +794,13 @@ public class Jeu
     {
         Jeu jeu = new Jeu();
 
-        //jeu.consoleGame();
+      //  jeu.consoleGame();
 
 
-        if(args.length>0 && args[1].equals("text")){
-            jeu.consoleGame();
-        }else{
-            jeu.GUIGame();
-        }
+       if(args.length>0 && args[1].equals("text")){
+           jeu.consoleGame();
+       }else{
+           jeu.GUIGame();
+       }
     }
 }

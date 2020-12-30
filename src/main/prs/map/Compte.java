@@ -51,6 +51,11 @@ public class Compte implements Serializable{
 
   public int getUnlockLevel1() { return unlockLevel;}
 
+  public void setUnlockLevel(int unlock)
+  {
+    this.unlockLevel = unlock;
+  }
+
   public int getPoints(){return points;}
 
   public void setPoints(int points){ this.points = points;}
@@ -61,6 +66,8 @@ public class Compte implements Serializable{
             + "  UnlockLevel : " + Integer.toString(unlockLevel)  + "  Points : " + Integer.toString(points);
     return str;
   }
+  
+  
 
   // END-- Natalia's function to test serialisation --------------
 
