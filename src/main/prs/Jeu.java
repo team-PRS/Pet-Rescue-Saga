@@ -675,27 +675,37 @@ public class Jeu
     {
         boolean IsValid = false;
         String answer = askPlayOrExit();
-        while (!IsValid)
-        if (answer.equals("ex") || answer.equals("e") || answer.equals("exit") || answer.equals("quit"))
-        {
-            IsValid = true;
-            this.joueur.getCompte().unlockNextLevel();
-            // TODO save points, ballons etc
+        while (!IsValid){
+            if (answer.equals("ex") || answer.equals("e") || answer.equals("exit") || answer.equals("quit"))
+            {
+                IsValid = true;
+                playOrExit(false);
+            }
+            else if (answer.equals("pl") || answer.equals("p") || answer.equals("play"))
+            {
+                IsValid = true;
+                playOrExit(true);
+            }
+            else
+            {
+                System.out.println("Wrong input, try again");
+            }
+        }
+    }
+    public void playOrExit(boolean play){
+        this.joueur.getCompte().unlockNextLevel();
+        saveToFile(gamers);
+        // TODO save points, ballons etc
+        if(play){
+            if(GUImode){
+                finish();
+                GUIGame();
+            }else{
+                launchLevel(getLevel());
+            }
+        }else{
             System.out.println("See you !! ");
-            saveToFile(gamers);
             finish();
-        }
-        else if (answer.equals("pl") || answer.equals("p") || answer.equals("play"))
-        {
-            IsValid = true;
-            this.joueur.getCompte().unlockNextLevel();
-            // TODO save points, ballons etc
-            saveToFile(gamers);
-            launchLevel(getLevel());
-        }
-        else
-        {
-            System.out.println("Wrong input, try again");
         }
     }
 
@@ -706,7 +716,13 @@ public class Jeu
  //      finish();
  //  }
 
-    public void finish() { this.scanAnswer.close(); }      //close console UI
+    public void finish() {
+        if(GUImode){
+            frame.dispose();
+        }else{
+            this.scanAnswer.close();
+        }
+    }      //close console UI
 
 
     /*============================= PRINCIPAL FUNCTIONS (Console UI & GUI) ==========================*/
@@ -840,14 +856,15 @@ public class Jeu
         plateau.gameState();
         if (plateau.gameState().equals("win"))
         {
-            JOptionPane.showMessageDialog(frame,"\nCongratulations, you win !! \n");
-            playOrExit();
-            createPlateau();
+            JOptionPane.showMessageDialog(frame,"Congratulations, you win !");
+            int answer = JOptionPane.showConfirmDialog​(frame,"do you want to replay ?");
+            playOrExit(answer==0);
         }
         else if (plateau.gameState().equals("lost"))
         {
             JOptionPane.showMessageDialog(frame,"The level is lost. Try again.. ");
-            playOrExit();
+            int answer = JOptionPane.showConfirmDialog​(frame,"do you want to try again ?");
+            playOrExit(answer==0);
         }
     }
 
