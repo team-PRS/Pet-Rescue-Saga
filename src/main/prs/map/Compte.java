@@ -44,23 +44,30 @@ public class Compte implements Serializable{
   /**
   *Return the number of unlocked level.
   */
-  public int getUnlockLevel(){
+  public int getLastUnlockLevel(){
       int k=0;
       for (int i=0;i<NUMBER_OF_LEVEL ;i++ ) {
           if(levelScore[i]>=0){k++;}
+          else{return k;}
       }
       return k;
+  }
+  /**
+  *Unlock the next level.
+  */
+  public void unlockNextLevel(){
+      unlockLevel(getLastUnlockLevel()+1);
   }
 
   // sorry Emilien !
   //------------------ Natalia's function to test serialisation --------------
 
-  public int getUnlockLevel1() { return unlockLevel;}
+  /*public int getUnlockLevel1() { return unlockLevel;}
 
   public void setUnlockLevel(int unlock)
   {
-    this.unlockLevel = unlock;
-  }
+      this.unlockLevel = unlock;
+  }*/
 
   public int getPoints(){return points;}
 

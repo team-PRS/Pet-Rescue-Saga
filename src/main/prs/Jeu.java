@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.Image;
+import javax.swing.JOptionPane;
 /**
 * Main class / controller class
 */
@@ -33,6 +34,7 @@ public class Jeu
     private PanelGame pGame;
     private static Data data;
     private boolean GUImode;
+    private boolean clic;
 
 
     /*================================= Constructor ==============================*/
@@ -42,7 +44,7 @@ public class Jeu
         this.scanAnswer = new Scanner(System.in);
         this.joueur = new Joueur();
         this.compte = joueur.getCompte();
-        this.level = compte.getUnlockLevel();
+        this.level = compte.getLastUnlockLevel();
         this.gamers = new ArrayList<Joueur>();
 
         //initialisation of start values of number of blocs, animals etc.
@@ -91,17 +93,17 @@ public class Jeu
     }
 
     /*============================= Common functions ==========================*/
-
+    public void setClic(boolean b){clic=b;}
     public int getLevel()
     {
         int level = 0;
-        if (this.joueur.getCompte().getUnlockLevel1() == 1)
+        if (this.joueur.getCompte().getLastUnlockLevel() == 1)
         {
             level = 1;
         }
         else
         {
-            level = downloadAccount().getCompte().getUnlockLevel1();
+            level = downloadAccount().getCompte().getLastUnlockLevel();
         }
         return level;
     }
@@ -134,19 +136,26 @@ public class Jeu
 
         return message;
     }
+    public void showMessageGUI(String key){
+        JOptionPane.showMessageDialog(frame,showMessage(key));
+    }
 
     public void launchLevel(int i){
+        System.out.println("launch level "+i);//@a
         if(joueur.isLevelUnlock(i)){
             //TODO get config information
             if(i==1){
                 createPlateau();
                 if(GUImode){
                     addPanelPlateau();
+                    showMessageGUI("level"+i);
                 }
             }
         }else{
             System.out.println("Level "+i+" is locked.");
         }
+        System.out.println("plateau : "+plateau);//@a
+        printPlateau();//@a
     }
 
     private void createPlateau()
@@ -170,6 +179,7 @@ public class Jeu
      */
     public void pressCell(int x, int y)
     {
+        System.out.println("pressCell: "+x+" "+y);//@a
         // player has clicked on plateau
         if (plateau.isOnPlateau(x, y))
         {
@@ -645,7 +655,11 @@ public class Jeu
         if (plateau.getIsRescued())
         {
             for (int i = 0; i < animals.size(); i++)
+            if(GUImode){
+
+            }else{
                 System.out.println(showMessage("petRescued"));
+            }
         }
     }
 
@@ -665,7 +679,7 @@ public class Jeu
         if (answer.equals("ex") || answer.equals("e") || answer.equals("exit") || answer.equals("quit"))
         {
             IsValid = true;
-            this.joueur.getCompte().setUnlockLevel(this.level + 1);
+            this.joueur.getCompte().unlockNextLevel();
             // TODO save points, ballons etc
             System.out.println("See you !! ");
             saveToFile(gamers);
@@ -674,7 +688,7 @@ public class Jeu
         else if (answer.equals("pl") || answer.equals("p") || answer.equals("play"))
         {
             IsValid = true;
-            this.joueur.getCompte().setUnlockLevel(this.level + 1);
+            this.joueur.getCompte().unlockNextLevel();
             // TODO save points, ballons etc
             saveToFile(gamers);
             launchLevel(getLevel());
@@ -714,7 +728,6 @@ public class Jeu
 
             while (! plateau.gameState().equals("lost"))
             {
-
                     char action = askAction();
                     if (action == 'c')          //clic
                     {
@@ -770,12 +783,14 @@ public class Jeu
             finish();               //close scanner (en mode textuel)
         }
     }
-
-    public void GUIGame()
-    {
+    public void iniGUIMode(){
         GUImode=true;
         data = new Data();
         joueur = new Joueur();
+    }
+    public void GUIGame()
+    {
+        if(data==null){iniGUIMode();}
         map = new Map(joueur);
         System.out.println(addFrame());
         System.out.println(iniImage());
@@ -783,9 +798,57 @@ public class Jeu
         System.out.println(addPanelMap());
         System.out.println("addLevel "+addLevel());
         repaint();
-        boolean b=true;
-        while(b){pause(100);}
-        System.out.println("fin du main de GUIGame");
+        /*clic=false;
+        while (!plateau.gameState().equals("lost")){
+            if(clic){//do all action needed after a clic.
+                System.out.println("clic");
+                GUIClicAction();
+                repaint();
+            }
+            pause(20);
+        }*/
+        System.out.println("end of main of GUIGame");
+    }
+    //TODO add all of this for GUI
+    /*else if (action == 'b')    //buy ballon
+    {
+        joueur.buyBallon();
+    }
+    else if (action == 'a')    //activate ballon
+    {
+        if (this.joueur.getCompte().getBallon() > 0)
+        {
+            int[] coord = askCoordinates();
+            String color = plateau.getColorOfBloc(coord[GUImode=true;
+        data = new Data();
+        joueur = new Joueur();0], coord[1]);
+            plateau.ballonExplosion(color);
+            joueur.activateBallon();
+        }
+    }
+    else if (action == 'e')    //activate bombe
+    {
+        int[] coord = askCoordinates();
+        plateau.bombExplosion(coord[0], coord[1]);
+    }*/
+
+    public void GUIClicAction(){
+        rescue();
+        plateau.shiftLeft();
+        rescue();
+        repaint();
+        plateau.gameState();
+        if (plateau.gameState().equals("win"))
+        {
+            JOptionPane.showMessageDialog(frame,"\nCongratulations, you win !! \n");
+            playOrExit();
+            createPlateau();
+        }
+        else if (plateau.gameState().equals("lost"))
+        {
+            JOptionPane.showMessageDialog(frame,"The level is lost. Try again.. ");
+            playOrExit();
+        }
     }
 
     /*================================= MAIN ===================================*/
@@ -794,13 +857,10 @@ public class Jeu
     {
         Jeu jeu = new Jeu();
 
-      //  jeu.consoleGame();
-
-
-       if(args.length>0 && args[1].equals("text")){
-           jeu.consoleGame();
-       }else{
-           jeu.GUIGame();
-       }
+        if(args.length>0 && args[0].equals("text")){
+            jeu.consoleGame();
+        }else{
+            jeu.GUIGame();
+        }
     }
 }
