@@ -96,7 +96,11 @@ public class Plateau
 
     public boolean isEmpty(int x, int y)                             //check if cell is empty
     {
-        return (getObject(x, y).equals(null) ? true : false);
+        try {
+            return (getObject(x, y).equals(null) ? true : false);
+        }catch (Exception e) {
+            return true;
+        }
     }
 
     /*================================= Filling by elements ==============================*/
