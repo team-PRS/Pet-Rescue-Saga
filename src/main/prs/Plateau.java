@@ -522,6 +522,8 @@ public class Plateau
 
     public void shiftLeft()
     {
+        //TODO shiftLeft need to be call 2 time if 2 collumns are empty.
+        //we can try to do shiftLeft while there have been a move done.
         int i = height - 1;
         for (int j = 0; j < width - 1; j++)
         {

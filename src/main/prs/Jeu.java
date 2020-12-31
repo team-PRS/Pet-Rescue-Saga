@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.Image;
 import javax.swing.JOptionPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 /**
 * Main class / controller class
 */
@@ -32,6 +34,7 @@ public class Jeu
     private PanelMap pMap;
     private PanelPlateau pPlateau;
     private PanelGame pGame;
+    private PanelInfo pInfo;
     private static Data data;
     private boolean GUIMode;
     private boolean clic;
@@ -350,33 +353,34 @@ public class Jeu
     /**
     *Add a Panel to represent a level.
     */
-    /*public boolean addPanelPlateau(int id){
-      try {
-        pGame = new PanelGame();
-        frame.setContentPane(pGame);
-        pGame.setJeu(this);
-        //TODO load the save of the id level & ask pPlateau to print it.
-        return true;
-      }catch (Exception e) {
-        return false;
-      }
-    }*/
-    /**
-    *Add a Panel to represent a level.
-    */
     public boolean addPanelPlateau(){
       try {
         pPlateau = new PanelPlateau();
         pPlateau.setPlateau(plateau);
-        pGame = new PanelGame(pPlateau);
+        pInfo = new PanelInfo(compte);
+        pGame = new PanelGame(pPlateau,pInfo);
         pGame.setJeu(this);
         frame.setContentPane(pGame);
         setPanelPlateauSize();
-        //TODO load the save of the id level & ask pPlateau to print it.
+        addActionToButton();
         return true;
       }catch (Exception e) {
         return false;
       }
+    }
+    public void addActionToButton(){
+        //button action
+        pInfo.getAddBallon().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                joueur.buyBallon();
+                repaint();
+            }
+        });
+        pInfo.getPlaceBallon().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                //...
+            }
+        });
     }
     public boolean setPanelPlateauSize(){
       try {
@@ -385,7 +389,7 @@ public class Jeu
         int xCenter = (getWidthMax()-dimX)/2;
         int yCenter = (getHeightMax()-dimY)/2;
         pPlateau.setBounds(xCenter,yCenter,dimX,dimY);
-        System.out.println(xCenter+" "+yCenter);
+        pInfo.setBounds(pPlateau.getWidth()+xCenter+10,yCenter,300,300);
         pGame.revalidate();
         return true;
       }catch (Exception e) {
