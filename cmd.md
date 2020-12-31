@@ -1,0 +1,1 @@
+alias javacp='./javac.sh'

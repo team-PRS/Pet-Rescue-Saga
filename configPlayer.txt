@@ -1,0 +1,6 @@
+Name=
+Level=1
+Points=
+Gold=
+Bombs=
+Ballons=
