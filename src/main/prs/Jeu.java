@@ -44,7 +44,7 @@ public class Jeu
         this.compte = joueur.getCompte();
         this.level = compte.getUnlockLevel();
         this.gamers = new ArrayList<Joueur>();
-        
+
         //initialisation of start values of number of blocs, animals etc.
         initialBlocs = Integer.parseInt(configLevel.getLevelValue(level, "initialBlocs"));
         initialAnimals = Integer.parseInt(configLevel.getLevelValue(level, "initialAnimals"));
@@ -118,7 +118,7 @@ public class Jeu
 
         String l3 = "LEVEL 3\n         \n" +
                 "      ";
-        
+
         String l4 = "LEVEL 4\nGo ahead!";
 
         String pr = "\nOne pet is rescued";
@@ -662,7 +662,7 @@ public class Jeu
         boolean IsValid = false;
         String answer = askPlayOrExit();
         while (!IsValid)
-        if (answer.equals("ex") || answer.equals("e") || answer.equals("exit"))
+        if (answer.equals("ex") || answer.equals("e") || answer.equals("exit") || answer.equals("quit"))
         {
             IsValid = true;
             this.joueur.getCompte().setUnlockLevel(this.level + 1);
@@ -708,7 +708,7 @@ public class Jeu
             createPlateau();
 
             System.out.println(gamers.toArray().toString());
-            
+
             System.out.println(showMessage(levelInfo(getLevel())));
             printPlateau();
 

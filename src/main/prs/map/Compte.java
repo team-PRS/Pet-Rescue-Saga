@@ -2,7 +2,10 @@ package prs.map;
 
 import java.io.Serializable;
 import prs.usuel.tableau;
-
+/**
+*{@summary Class that contain all player information}
+*Level are aviable in [1,4].
+*/
 public class Compte implements Serializable{
   /**
   *{@summary Number of gold, the vip monney.}
@@ -10,12 +13,11 @@ public class Compte implements Serializable{
   private int gold;
   private int ballon;
   private int unlockLevel;
+  private int points;
   /**
   *{@summary Containt the score for every level.}
   *If score = -1 level is lock. If score = 0 level is unlock but not done yet. If score > 0 level have been done.
   */
-
-  private int points;
   private int [] levelScore;
   public static final int NUMBER_OF_LEVEL = 4;
   // CONSTRUCTEUR ---------------------------------------------------------------
@@ -32,12 +34,16 @@ public class Compte implements Serializable{
     for (int i=1;i<NUMBER_OF_LEVEL ;i++ ) {
       levelScore[i]=-1;
     }
+    System.out.println(this);
   }
   // GET SET --------------------------------------------------------------------
   public int getGold(){ return gold;}
   public void setGold(int g){gold = g;}
   public int getBallon(){ return ballon;}
   public void setBallon(int b){ballon = b;}
+  /**
+  *Return the number of unlocked level.
+  */
   public int getUnlockLevel(){
       int k=0;
       for (int i=0;i<NUMBER_OF_LEVEL ;i++ ) {
@@ -60,24 +66,22 @@ public class Compte implements Serializable{
 
   public void setPoints(int points){ this.points = points;}
 
-  public String toString1()
-  {
-    String str = "Ballons : " + Integer.toString(ballon) + "  Gold : " + Integer.toString(gold)
-            + "  UnlockLevel : " + Integer.toString(unlockLevel)  + "  Points : " + Integer.toString(points);
-    return str;
-  }
-  
-  
+  public String toString1(){return toString();} //toString do the same.
+
 
   // END-- Natalia's function to test serialisation --------------
 
-  
 
-  //public void setUnlockLevel(int l){unlockLevel = l;}
-  public int getScore(int i){return levelScore[i];}
+
   /**
   *{@summary setScore.}
-  *@param i the id of the level and his place in levelScore [].
+  *@param i the id of the level in [1,4].
+  *@return the score of the level i.
+  */
+  public int getScore(int i){return levelScore[i--];}
+  /**
+  *{@summary setScore.}
+  *@param i the id of the level in [1,4].
   *@param score the score to set.
   *@return true if it worked.
   */
@@ -90,14 +94,15 @@ public class Compte implements Serializable{
       System.out.println("Impossible to set as score to a lock level.");
       return false;
     }
-    levelScore[i]=score;
+    levelScore[i--]=score;
     return true;
   }
   // Fonctions propre -----------------------------------------------------------
   public String toString(){
-    String r = "gold: "+gold+"\n";
-    r+=tableau.tableauToString(levelScore);
-    return r;
+      String str = "Ballons : " + Integer.toString(ballon) + "  Gold : " + Integer.toString(gold)
+              + "  UnlockLevel : " + Integer.toString(unlockLevel)  + "  Points : " + Integer.toString(points);
+        str+="\n"+tableau.tableauToString(levelScore);
+      return str;
   }
   /**
   *{@summary Check if a level is unlock.}
@@ -106,7 +111,7 @@ public class Compte implements Serializable{
   */
   public boolean isLevelUnlock(int i){
       i--; //to start with level 1.
-    if(i<0 || i>=levelScore.length){System.out.println("i n'est pas correcte");return false;}
+    if(i<0 || i>=levelScore.length){System.out.println("i n'est pas correcte i:"+i);return false;}
     return levelScore[i]!=-1;
   }
   /**
@@ -116,7 +121,7 @@ public class Compte implements Serializable{
   */
   public boolean unlockLevel(int i){
       i--; //to start with level 1.
-    if(i<0 || i>=levelScore.length){System.out.println("i n'est pas correcte");return false;}
+    if(i<0 || i>=levelScore.length){System.out.println("i n'est pas correcte i:"+i);return false;}
     if(levelScore[i]==-1){
       levelScore[i]=0;
       return true;
