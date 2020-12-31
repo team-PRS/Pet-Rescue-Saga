@@ -66,8 +66,6 @@ public class Compte implements Serializable{
 
   public void setPoints(int points){ this.points = points;}
 
-  public String toString1(){return toString();} //toString do the same.
-
 
   // END-- Natalia's function to test serialisation --------------
 
