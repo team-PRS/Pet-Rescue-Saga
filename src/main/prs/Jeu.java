@@ -33,7 +33,7 @@ public class Jeu
     private PanelPlateau pPlateau;
     private PanelGame pGame;
     private static Data data;
-    private boolean GUImode;
+    private boolean GUIMode;
     private boolean clic;
 
 
@@ -124,15 +124,16 @@ public class Jeu
         String l4 = "LEVEL 4\nGo ahead!";
 
         String pr = "\nOne pet is rescued";
+        String haveAccount="Do you have an account ? y / n ";
+        String pseudo="Please enter your pseudo : ";
 
         if (request.equals("level1")) {message = l1;}
         else if (request.equals("level2")) {message = l2;}
         else if (request.equals("level3")) {message = l3;}
         else if (request.equals("level4")) {message = l4;}
-        else if (request.equals("petRescued"))
-        {
-            message = pr;
-        }
+        else if (request.equals("petRescued")){message = pr;}
+        else if (request.equals("haveAccount")){message = haveAccount;}
+        else if (request.equals("pseudo")){message = pseudo;}
 
         return message;
     }
@@ -146,7 +147,7 @@ public class Jeu
             //TODO get config information
             if(i==1){
                 createPlateau();
-                if(GUImode){
+                if(GUIMode){
                     addPanelPlateau();
                     showMessageGUI("level"+i);
                 }
@@ -499,7 +500,7 @@ public class Jeu
 
     public String hasAccount()                                          // ask if gamer has account
     {
-        System.out.print("Do you have an account ? y / n ");
+        System.out.print(showMessage("haveAccount"));
         String rep = scanAnswer.next().toLowerCase();
         return rep;
     }
@@ -513,22 +514,34 @@ public class Jeu
             if (answer.equals("y") || (answer).equals("yes"))
             {
                 isCorrectAnswer = true;
-                downloadAccount();
+                accountAdministration(true);
             }
             else if (answer.equals("n") || answer.equals("no"))
             {
                 isCorrectAnswer = true;
-                String pseudo = askPseudo();
-                createNewAccount(this.gamers, pseudo);
-
+                accountAdministration(false);
             }
             else System.out.println("Wrong input, try again");
         }
     }
+    public void accountAdministration(Boolean b){
+        if(b){
+            downloadAccount();
+        }else{
+            String pseudo = "null";
+            if(GUIMode){
+                pseudo = JOptionPane.showInputDialog(showMessage("pseudo"));
+            }else{
+                pseudo = askPseudo();
+            }
+            createNewAccount(this.gamers, pseudo);
+        }
+
+    }
 
     public String askPseudo()
     {
-        System.out.print("Please enter your pseudo : ");
+        System.out.print(showMessage("pseudo"));
         String nameJoueur = scanAnswer.next();
         return nameJoueur;
     }
@@ -655,7 +668,7 @@ public class Jeu
         if (plateau.getIsRescued())
         {
             for (int i = 0; i < animals.size(); i++)
-            if(GUImode){
+            if(GUIMode){
 
             }else{
                 System.out.println(showMessage("petRescued"));
@@ -697,7 +710,7 @@ public class Jeu
         saveToFile(gamers);
         // TODO save points, ballons etc
         if(play){
-            if(GUImode){
+            if(GUIMode){
                 finish();
                 GUIGame();
             }else{
@@ -717,28 +730,32 @@ public class Jeu
  //  }
 
     public void finish() {
-        if(GUImode){
+        if(GUIMode){
             frame.dispose();
         }else{
             this.scanAnswer.close();
         }
     }      //close console UI
-
+    public void loadPlayerInfo(){
+        this.gamers = getListOfJoueurs();
+        if(GUIMode){
+            int answer = JOptionPane.showConfirmDialog​(frame,showMessage("haveAccount"));
+            accountAdministration(answer==0);
+        }else{
+            accountAdministration();
+        }
+        createPlateau();
+    }
 
     /*============================= PRINCIPAL FUNCTIONS (Console UI & GUI) ==========================*/
 
     public void consoleGame()
     {
-        GUImode=false;
+        GUIMode=false;
         if (wantPlay())
         {
-            this.gamers = getListOfJoueurs();
-            accountAdministration();
-
-            createPlateau();
-
+            loadPlayerInfo();
             System.out.println(gamers.toArray().toString());
-
             System.out.println(showMessage(levelInfo(getLevel())));
             printPlateau();
 
@@ -800,17 +817,18 @@ public class Jeu
         }
     }
     public void iniGUIMode(){
-        GUImode=true;
+        GUIMode=true;
         data = new Data();
-        joueur = new Joueur();
+        //joueur = new Joueur();
     }
     public void GUIGame()
     {
         if(data==null){iniGUIMode();}
-        map = new Map(joueur);
         System.out.println(addFrame());
-        System.out.println(iniImage());
         //TODO faire changer ou creer un compte graphiquement.
+        loadPlayerInfo();
+        map = new Map(joueur);
+        System.out.println(iniImage());
         System.out.println(addPanelMap());
         System.out.println("addLevel "+addLevel());
         repaint();
@@ -835,7 +853,7 @@ public class Jeu
         if (this.joueur.getCompte().getBallon() > 0)
         {
             int[] coord = askCoordinates();
-            String color = plateau.getColorOfBloc(coord[GUImode=true;
+            String color = plateau.getColorOfBloc(coord[GUIMode=true;
         data = new Data();
         joueur = new Joueur();0], coord[1]);
             plateau.ballonExplosion(color);
