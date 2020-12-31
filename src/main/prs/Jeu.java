@@ -27,6 +27,7 @@ public class Jeu
     private int additionalBlocs, additionalAnimals, additionalBombs, additionalBallons;
     private Configuration configLevel;
     private int level;
+    //private int curentLevel;
     private ArrayList<Joueur> gamers;
     private Compte compte;
     private Scanner scanAnswer;
@@ -97,9 +98,10 @@ public class Jeu
 
     /*============================= Common functions ==========================*/
     public void setClic(boolean b){clic=b;}
-    public int getLevel()
+    public int getCurentLevel(){return level;}
+    public int iniLevel()
     {
-        int level = 0;
+        level = 0;
         if (this.joueur.getCompte().getLastUnlockLevel() == 1)
         {
             level = 1;
@@ -164,7 +166,7 @@ public class Jeu
 
     private void createPlateau()
     {
-        this.level = getLevel();      // this helps create plateau in all cases cause getLevel check getUnlockLevel
+        this.level = iniLevel();      // this helps create plateau in all cases cause iniLevel check getUnlockLevel
                                     // and make + 1.. or give 1 if where is not account yet
 
         this.plateau = new Plateau(Integer.parseInt(this.configLevel.getLevelValue(this.level, "height")),
@@ -357,7 +359,7 @@ public class Jeu
       try {
         pPlateau = new PanelPlateau();
         pPlateau.setPlateau(plateau);
-        pInfo = new PanelInfo(compte);
+        pInfo = new PanelInfo(compte,this);
         pGame = new PanelGame(pPlateau,pInfo);
         pGame.setJeu(this);
         frame.setContentPane(pGame);
@@ -718,7 +720,7 @@ public class Jeu
                 finish();
                 GUIGame();
             }else{
-                launchLevel(getLevel());
+                launchLevel(iniLevel());
             }
         }else{
             System.out.println("See you !! ");
@@ -760,7 +762,7 @@ public class Jeu
         {
             loadPlayerInfo();
             System.out.println(gamers.toArray().toString());
-            System.out.println(showMessage(levelInfo(getLevel())));
+            System.out.println(showMessage(levelInfo(iniLevel())));
             printPlateau();
 
             while (! plateau.gameState().equals("lost"))

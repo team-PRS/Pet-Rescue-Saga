@@ -12,26 +12,32 @@ import prs.map.Compte;
 */
 public class PanelInfo extends JPanel{
     private Compte compte;
+    private JLabel score;
     private JLabel gold;
     //private JLabel bomb;
     private JLabel ballon;
     private JButton addBallon;
     private JButton placeBallon;
     //private JButton retry;
+    private Jeu jeu;
     // CONSTRUCTORS --------------------------------------------------------------
-    public PanelInfo(Compte c){
+    public PanelInfo(Compte c, Jeu j){
+        jeu=j;
         compte=c;
+        score = new JLabel();
         gold = new JLabel();
         //bomb = new JLabel();
         ballon = new JLabel();
         addBallon = new JButton();
         placeBallon = new JButton();
+        add(score);
         add(gold);
         add(ballon);
         add(addBallon);
         add(placeBallon);
         //font
         Font font = new Font("Arial",Font.BOLD,30);
+        score.setFont(font);
         gold.setFont(font);
         ballon.setFont(font);
         addBallon.setFont(font);
@@ -44,13 +50,16 @@ public class PanelInfo extends JPanel{
     public void paintComponent(Graphics g){
       super.paintComponent(g);
       //setSize(200,60);
+      score.setText("score: "+compte.getScore(jeu.getCurentLevel()));
       gold.setText("gold: "+compte.getGold());
       ballon.setText("ballon: "+compte.getBallon());
       addBallon.setText("Buy 1 ballon");
       placeBallon.setText("Place 1 ballon");
-      gold.setLocation(0,0);
-      ballon.setLocation(0,40);
-      addBallon.setLocation(0,80);
-      placeBallon.setLocation(0,120);
+      int k=0;
+      score.setLocation(0,40*k);k++;
+      gold.setLocation(0,40*k);k++;
+      ballon.setLocation(0,40*k);k++;
+      addBallon.setLocation(0,40*k);k++;
+      placeBallon.setLocation(0,40*k);k++;
     }
 }
