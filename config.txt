@@ -4,7 +4,7 @@ L1_width=7
 L1_blocs=true
 L1_animals=true
 L1_outils=false
-L1_immovable=false
+L1_immovable=true
 
 L1_initialBlocs=38
 L1_initialAnimals=5

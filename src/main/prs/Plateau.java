@@ -114,11 +114,14 @@ public class Plateau
                 {
                     int x = new Random().nextInt(height - 1);
                     int y = new Random().nextInt(width - 1);
-                    if (plateau[x][y] == null)
+                    if (y != 0)
                     {
-                        Bloc immo = new Bloc("NONE");
-                        setObject(immo, x, y);
-                        ia++;
+                        if (plateau[x][y] == null)
+                        {
+                            Bloc immo = new Bloc("NONE");
+                            setObject(immo, x, y);
+                            ia++;
+                        }
                     }
                 }
             }
@@ -231,8 +234,8 @@ public class Plateau
                 }
             }
         }
-        //System.out.println("need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
-        //        "  animaux: " + c + ":" + ic + "  ballons: " + d + ":" + id);
+        System.out.println("need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
+                "  animaux: " + c + ":" + ic + "  ballons: " + d + ":" + id);
         System.out.println("");
     }
 
@@ -565,9 +568,12 @@ public class Plateau
 
     /*================================= Object's behaviour ==============================*/
 
-    public void bombExplosion(int x, int y)
+    public int bombExplosion(int x, int y)
     {
         ObjectSurCase obj = getObject(x, y);
+
+        int points = 0;
+
         if (obj instanceof Bomb)
         {
             for (int i = x - 1; i <= x + 1; i++)
@@ -578,6 +584,7 @@ public class Plateau
                     {
                         cleanCase(i, j);
                         shiftDown(i, j);
+                        points++;
                     } else
                     {
                         //skip
@@ -586,10 +593,12 @@ public class Plateau
             }
         }
         else { System.out.println("It is not a bomb"); }
+        return points;
     }
 
-    public void ballonExplosion(String ballonColor)
+    public int ballonExplosion(String ballonColor)
     {
+        int points = 0;
         for (int i = height - 1; i >= 0; i--)
         {
             for (int j = width - 1; j >= 0; j--)
@@ -603,6 +612,7 @@ public class Plateau
                         {
                             cleanCase(i, j);
                             shiftDown(i, j);
+                            points ++;
                             //return on the same place to check if shifted element will not a bloc of the same color
                             j++;
                         }
@@ -622,6 +632,7 @@ public class Plateau
                 }
             }
         }
+        return points;
     }
 
     public LinkedList<Point> getAnimalsOnFloor()
