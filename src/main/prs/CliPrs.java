@@ -1,0 +1,415 @@
+package prs;
+
+import prs.map.Compte;
+import prs.map.Joueur;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+
+public class CliPrs
+{
+    private Scanner scanAnswer;
+    private Jeu Motor;
+
+    public CliPrs()
+    {
+        this.scanAnswer = new Scanner(System.in);
+        Motor = new Jeu(false);
+    }
+
+    public void CliClose()
+    {
+        this.scanAnswer.close();
+        this.Motor.Close();
+    }
+
+    public String showMessage(String request)
+    {
+        String message = "";
+
+        String l1 = "LEVEL 1" + "\n " +
+                "\nTry to eliminate the groups of blocs (greek letters) of the same color under animals ( @ )\n" +
+                "so they will go down and will be rescued";
+
+        String l2 = "LEVEL 2\nOn this level you can explode bombs ( * )\n" +
+                "to destroy the cubes surrounding. Animals will not lost.";
+
+        String l3 = "LEVEL 3\n         \n" +
+                "      ";
+
+        String l4 = "LEVEL 4\nGo ahead!";
+
+        String pr = "\nOne pet is rescued";
+
+        if (request.equals("level1")) {message = l1;}
+        else if (request.equals("level2")) {message = l2;}
+        else if (request.equals("level3")) {message = l3;}
+        else if (request.equals("level4")) {message = l4;}
+        else if (request.equals("petRescued"))
+        {
+            message = pr;
+        }
+
+        return message;
+    }
+
+    public boolean wantPlay()                                           // first reception - want to play or not?
+    {
+        boolean answer = false;
+        boolean isCorrectAnswer = false;
+        while (!isCorrectAnswer)
+        {
+            System.out.print("Do you want to play (yes/no) ? ");
+            String answerPlay = scanAnswer.next().toLowerCase();
+            if ((answerPlay.equals("yes")) || (answerPlay.equals("y")))
+            {
+                isCorrectAnswer = true;
+                answer = true;
+            } else if ((answerPlay.equals("no")) || (answerPlay.equals("n")) || (answerPlay.equals("non")))
+            {
+                isCorrectAnswer = true;
+                answer = false;
+            } else System.out.println("Wrong input, try again");
+        }
+        return answer;
+    }
+
+
+    public void accountAdministration()                               // ask create or download account
+    {
+        final int CreateNewAccountId = 0;
+        int Id = CreateNewAccountId;
+        ArrayList<Joueur> gamers = Motor.getListOfJoueurs();
+
+        if (    (null != gamers)
+             && (0 < gamers.size())
+           )
+        {
+            boolean bCorrupted = false;
+            System.out.println("To start game you need to select or create new account");
+
+            System.out.println("0: Create new");
+
+            int index = 1;
+            try
+            {
+                for (Joueur gamer : gamers)
+                {
+                    System.out.println(String.valueOf(index) + ": load " + gamer.getPseudo());
+                    index ++;
+                }
+            }
+            catch (NullPointerException e)
+            {
+                System.out.println("ERROR: Account data is corrupted, new account has to be created");
+                bCorrupted = true;
+            }
+
+            if (!bCorrupted)
+            {
+                System.out.print("Please enter action nubmer:");
+                while (true)
+                {
+                    String strId = scanAnswer.next();
+                    try
+                    {
+                        Id = Integer.parseInt(strId);
+                    } catch (NumberFormatException e)
+                    {
+                        Id = -1;
+                    }
+                    if ((Id >= 0) && (Id <= gamers.size()))
+                    {
+                        break;
+                    } else
+                    {
+                        System.out.print("numer error, value should be in range: [0 .. " + String.valueOf(gamers.size()) + "]");
+                        System.out.print("Please try again:");
+                    }
+                }
+            }
+        }
+
+        if (Id == CreateNewAccountId)
+        {
+            boolean bCreateNew = true;
+            String pseudo = askPseudo();
+            if (null != gamers)
+            {
+                for (Joueur j : gamers)
+                {
+                    if (j.getPseudo().equals(pseudo))
+                    {
+                        Motor.selectJoueur(j);
+
+                        bCreateNew = false;
+                    }
+                }
+            }
+
+            if (bCreateNew)
+            {
+                Motor.createNewJoueur(pseudo);
+            }
+        }
+        else
+        {
+            Motor.selectJoueur(gamers.get(Id - 1));
+        }
+
+    }
+
+    private String askPseudo()
+    {
+        System.out.print("Please enter your pseudo : ");
+        String nameJoueur = scanAnswer.next();
+        return nameJoueur;
+    }
+
+    public int[] askCoordinates()
+    {
+        boolean IsValid = false;
+        int xCoord = 0; int yCoord = 0;
+
+        String CoordStr;
+        System.out.print("\nIn which cell do you want to play now? (Exemple: b3) : ");
+
+        while(!IsValid)
+        {
+            CoordStr = scanAnswer.next();
+            if (CoordStr.length() >= 2)
+            {
+                int input = CoordStr.charAt(0) - 'a';                    // -'a' because all loops started by 0
+                for (int i = 0; i < Motor.getPlateauHeight(); i++)
+                {
+                    if (input == i)
+                    {
+                        xCoord = input;
+                        IsValid = true;
+                        break;
+                    }
+                }
+
+                if (IsValid)
+                {
+                    yCoord = Integer.parseInt(CoordStr.substring(1)) - 1;  // -1 because all loops started by 0, but table markings by 1
+                    if ((yCoord < 0) && (yCoord >= Motor.getPlateauWidth()))
+                    {
+                        IsValid = false;
+                    }
+                }
+            }
+            if (!IsValid)
+            {
+                System.out.print("wrong input, try again (Exemple: b3) : ");
+            }
+        }
+        return new int[]{xCoord, yCoord};
+    }
+
+    public char askAction()                                       // ask that gamer want to do
+    {
+        System.out.print("\nActions:\n" +
+                "a - activate your ballon\n" +
+                "b - buy the ballon /cost " + String.valueOf(Compte.ballonPrix) + " golds/\n" +
+                "c - click on the cell\n" +
+                "e - activate bomb\n" +
+                "g - convert score to gold /1 ingot = " + String.valueOf(Compte.PointsPerGoldCoin) + " points/\n" +
+                "q - quite game (q)\n" +
+                "Select (a/b/c/e/g/q):\n");
+        String Action = scanAnswer.next();
+        return Action.charAt(0);
+    }
+
+    public String levelInfo(int l)                              // compose level to call message level
+    {
+        return "level" + Integer.toString(l);
+    }
+
+    public void printPlateau()		                            // print Plateau
+    {
+        //print y-scale
+        System.out.print("  | ");
+        for (int k = 0; k < Motor.getPlateauHeight(); k++)
+        {
+            System.out.print(" " + (k + 1) + " ");
+        }
+        System.out.println("");
+        System.out.print("-----");
+        for (int l = 0; l < Motor.getPlateauWidth(); l++)
+        {
+            System.out.print("---");
+        }
+        System.out.println("");
+
+        //print table
+        for (int i = 0; i < Motor.getPlateauHeight(); i++)
+        {
+            char ch = (char) ('a' + i);
+            System.out.print(ch + " | ");
+
+            for (int j = 0; j < Motor.getPlateauWidth(); j++)
+            {
+                ObjectSurCase obj = Motor.getCell(i, j);
+                if (obj instanceof Bloc)
+                {
+                    if (((Bloc) obj).getColor() == "NONE")
+                        System.out.print(" + ");
+                    else if (((Bloc) obj).getColor() == "BLUE")
+                        System.out.print(" α ");
+                    else if (((Bloc) obj).getColor() == "YELLOW")
+                        System.out.print(" β ");
+                    else if (((Bloc) obj).getColor() == "RED")
+                        System.out.print(" γ ");
+                    else if (((Bloc) obj).getColor() == "GREEN")
+                        System.out.print(" δ ");
+                    else
+                        System.out.print(" ε ");
+                }
+                else if (obj instanceof Bomb)
+                    System.out.print(" * ");
+                else if (obj instanceof Ballon)
+                    System.out.print(" օ ");
+                else if (obj instanceof Animal)
+                    System.out.print(" @ ");
+                else
+                    System.out.print(" - ");
+            }
+            System.out.println("");
+        }
+    }
+
+    public String askPlayOrExit()                                // ask if gamer want to exit
+    {
+        System.out.print("Do you want exit or play ? (ex/pl)");
+        String answer = scanAnswer.next();
+        return answer.toLowerCase();
+    }
+
+    public boolean isExit()
+    {
+        boolean IsValid = false;
+        boolean IsExit = false;
+        String answer = askPlayOrExit();
+        while (!IsValid)
+            if (answer.equals("ex") || answer.equals("e") || answer.equals("exit"))
+            {
+                IsValid = true;
+                IsExit = true;
+                System.out.println("See you !! \n");
+            }
+            else if (answer.equals("pl") || answer.equals("p") || answer.equals("play"))
+            {
+                IsValid = true;
+            }
+            else
+            {
+                System.out.println("Wrong input, try again\n");
+            }
+
+        return IsExit;
+    }
+
+    public void afficheAccountInfo(Compte userAccount)
+    {
+        System.out.println("\nPoints: " + userAccount.getPoints() + " / Gold: " + userAccount.getGold() +
+                " / Ballon: " + userAccount.getBallon());
+        System.out.println("");
+    }
+
+    /**
+     * 
+     */
+    public void consoleGame()
+    {
+        // GUImode=false;
+        if (wantPlay())
+        {
+            accountAdministration();
+            String gameStatus = "continue";
+            boolean endLevel = false;
+            boolean forcequite = false;
+            while ( (!endLevel) && (!forcequite))
+            {
+                System.out.println(showMessage(levelInfo(Motor.getCurrentJoueur().getCompte().getUnlockLevel())));
+                System.out.println("");
+                Motor.createPlateau();
+                gameStatus = "continue";
+
+                while (!gameStatus.equals("lost") && !gameStatus.equals("win") && (!forcequite))
+                {
+                    afficheAccountInfo(Motor.getCurrentJoueur().getCompte());
+                    printPlateau();
+
+                    char action = askAction();
+                    if (action == 'c')          //clic
+                    {
+                        int[] coord = askCoordinates();
+                        Motor.pressCell(coord[0], coord[1]);
+                    } else if (action == 'b')    //buy ballon
+                    {
+                        Motor.getCurrentJoueur().buyBallon();
+                    } else if (action == 'a')    //activate ballon
+                    {
+                        if (Motor.getCurrentJoueur().getCompte().getBallon() > 0)
+                        {
+                            int[] coord = askCoordinates();
+                            Motor.ballonExplosion(coord[0], coord[1]);
+                        }
+                    } else if (action == 'e')    //activate bombe
+                    {
+                        int[] coord = askCoordinates();
+                        Motor.bombExplosion(coord[0], coord[1]);
+                    } else if (action == 'g')    //convert score to gold
+                    {
+                        Motor.getCurrentJoueur().convertPointsToGold();
+                    } else if (action == 'q')    //convert score to gold
+                    {
+                        forcequite = true;
+                    } else System.out.println("Wrong input, try again");
+
+                    gameStatus = Motor.getCurrentLevelStatus();
+                } //while (!gameStatus.equals("lost") && !gameStatus.equals("win") && (!forcequite))
+
+                if (!forcequite)
+                {
+                    if (gameStatus.equals("win"))
+                    {
+                        Motor.getCurrentJoueur().getCompte().setUnlockLevel(Motor.getCurrentJoueur().getCompte().getUnlockLevel() + 1);
+
+                        System.out.println("\n===========================================");
+                        System.out.println("======= Congratulations, you win !! =======");
+                        System.out.println("\n===========================================");
+
+                        afficheAccountInfo(Motor.getCurrentJoueur().getCompte());
+                        printPlateau();
+
+                        endLevel = isExit();
+                    } else if (gameStatus.equals("lost"))
+                    {
+                        System.out.println("The level is lost. Try again.. ");
+
+                        System.out.println("\n==============================================");
+                        System.out.println("======= The level is lost. Try again.. =======");
+                        System.out.println("\n==============================================");
+
+                        afficheAccountInfo(Motor.getCurrentJoueur().getCompte());
+                        printPlateau();
+
+                        endLevel = isExit();
+                    }
+                }
+            } //while (!endLevel)
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static void main (String[] args)
+    {
+        CliPrs jeu = new CliPrs();
+        jeu.consoleGame();
+        jeu.CliClose();
+    }
+}

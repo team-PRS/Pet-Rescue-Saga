@@ -33,14 +33,4 @@ public class Configuration
         }
         return null;
     }
-
-    public String getPlayerValue(String key)
-    {
-        if (this.prop != null)
-        {
-            return this.prop.getProperty(key);
-        }
-        return null;
-    }
-
 }
