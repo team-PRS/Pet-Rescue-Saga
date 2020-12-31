@@ -43,4 +43,19 @@ public class CompteTest extends TestCase{
     assertTrue(!c.isLevelUnlock(-1));
     assertTrue(!c.isLevelUnlock(-3));
   }
+  @Test
+  public void testScore(){
+    Compte c = new Compte();
+    System.out.println(c);
+    assertEquals(0,c.getScore(1));
+    assertTrue(c.setScore(1,101));
+    assertEquals(101,c.getScore(1));
+    //level lock
+    assertTrue(!c.setScore(2,101));
+    // <0 score
+    assertTrue(!c.setScore(1,-101));
+    assertTrue(!c.setScore(1,-1));
+    assertTrue(c.setScore(1,0));
+
+  }
 }

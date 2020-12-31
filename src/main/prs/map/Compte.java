@@ -78,7 +78,13 @@ public class Compte implements Serializable{
   *@param i the id of the level in [1,4].
   *@return the score of the level i.
   */
-  public int getScore(int i){return levelScore[i--];}
+  public int getScore(int i){
+      if(i>0 && i<=NUMBER_OF_LEVEL){
+          System.out.println("score de level "+(i-1));
+          return levelScore[i-1];
+      }
+      return -2;
+  }
   /**
   *{@summary setScore.}
   *@param i the id of the level in [1,4].
@@ -94,7 +100,7 @@ public class Compte implements Serializable{
       System.out.println("Impossible to set as score to a lock level.");
       return false;
     }
-    levelScore[i--]=score;
+    levelScore[i-1]=score;
     return true;
   }
   // Fonctions propre -----------------------------------------------------------

@@ -286,7 +286,7 @@ public class Jeu
     {
         this.joueur.setPseudo(name);
         this.gamers.add(this.joueur);
-        System.out.println(this.joueur.toString1());
+        System.out.println(this.joueur.toString());
     }
 
     public void saveToFile(ArrayList<Joueur> gamers)                     //save joueur to file - to use in the and of game, before exit
