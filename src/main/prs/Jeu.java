@@ -20,6 +20,7 @@ public class Jeu
     private ArrayList<Joueur> gamers;
     private Compte compte;
     private boolean IsGui;
+    private static Data data;
 
 
     /*============================== Constructor & close function ===================================================*/
@@ -195,7 +196,7 @@ public class Jeu
 
 
     /**
-     * return game board width 
+     * return game board width
      * @return width
      */
     public int getPlateauWidth()
@@ -230,7 +231,7 @@ public class Jeu
         {
             return 0;
         }
-        
+
         return plateau.getAnimalsOnFloor().size();
     }
 
@@ -328,7 +329,7 @@ public class Jeu
         {
             return false;
         }
-        
+
         return true;
     }
 
