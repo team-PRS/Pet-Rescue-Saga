@@ -30,16 +30,16 @@ public class Jeu
     //private int curentLevel;
     private ArrayList<Joueur> gamers;
     private Compte compte;
+    private boolean IsGui;
+    private static Data data;
+
     private Scanner scanAnswer;
-    private Frame frame;
+
     private PanelMap pMap;
     private PanelPlateau pPlateau;
     private PanelGame pGame;
     private PanelInfo pInfo;
-    private static Data data;
-    private boolean GUIMode;
     private boolean clic;
-
 
     /*================================= Constructor ==============================*/
     public Jeu()
@@ -143,7 +143,7 @@ public class Jeu
         return message;
     }
     public void showMessageGUI(String key){
-        JOptionPane.showMessageDialog(frame,showMessage(key));
+        JOptionPane.showMessageDialog(getData().getFrame(),showMessage(key));
     }
 
     public void launchLevel(int i){
@@ -152,7 +152,7 @@ public class Jeu
             //TODO get config information
             if(i==1){
                 createPlateau();
-                if(GUIMode){
+                if(IsGui){
                     addPanelPlateau();
                     showMessageGUI("level"+i);
                 }
@@ -326,9 +326,8 @@ public class Jeu
     /*============================= graphics functions ==========================*/
 
     // GET SET -------------------------------------------------------------------
-    public Frame getFrame(){return frame;}
-    public int getWidthMax(){return getFrame().getWidth();}
-    public int getHeightMax(){return getFrame().getHeight();}
+    public int getWidthMax(){return getData().getFrame().getWidth();}
+    public int getHeightMax(){return getData().getFrame().getHeight();}
     public PanelPlateau getPPlateau(){return pPlateau;}
     public Data getData(){return data;}
     public static void setData(Data d){data=d;}
@@ -336,7 +335,7 @@ public class Jeu
 
     public boolean addFrame(){
       try {
-        frame = new Frame();
+        getData().setFrame(new Frame());
         return true;
       }catch (Exception e) {
         return false;
@@ -346,7 +345,7 @@ public class Jeu
       try {
         pMap = new PanelMap(this);
         pMap.setSize(getWidthMax(),getHeightMax());
-        frame.setContentPane(pMap);
+        getData().getFrame().setContentPane(pMap);
         return true;
       }catch (Exception e) {
         return false;
@@ -362,7 +361,7 @@ public class Jeu
         pInfo = new PanelInfo(compte,this);
         pGame = new PanelGame(pPlateau,pInfo);
         pGame.setJeu(this);
-        frame.setContentPane(pGame);
+        getData().getFrame().setContentPane(pGame);
         setPanelPlateauSize();
         addActionToButton();
         return true;
@@ -439,8 +438,8 @@ public class Jeu
       return ok;
     }
     public void repaint(){
-      frame.repaint();
-      //frame.printAll(frame.getGraphics());
+      getData().getFrame().repaint();
+      //paintAll();
     }
     /**
     * Unlock the next level
@@ -454,7 +453,7 @@ public class Jeu
     }
     public boolean paintAll(){
       try {
-        frame.paintAll(frame.getGraphics());
+        getData().getFrame().paintAll(getData().getFrame().getGraphics());
         return true;
       }catch (Exception e) {
         //error.error("fail repaintAll");
@@ -535,7 +534,7 @@ public class Jeu
             downloadAccount();
         }else{
             String pseudo = "null";
-            if(GUIMode){
+            if(IsGui){
                 pseudo = JOptionPane.showInputDialog(showMessage("pseudo"));
             }else{
                 pseudo = askPseudo();
@@ -674,7 +673,7 @@ public class Jeu
         if (plateau.getIsRescued())
         {
             for (int i = 0; i < animals.size(); i++)
-            if(GUIMode){
+            if(IsGui){
 
             }else{
                 System.out.println(showMessage("petRescued"));
@@ -716,7 +715,7 @@ public class Jeu
         saveToFile(gamers);
         // TODO save points, ballons etc
         if(play){
-            if(GUIMode){
+            if(IsGui){
                 finish();
                 GUIGame();
             }else{
@@ -736,16 +735,16 @@ public class Jeu
  //  }
 
     public void finish() {
-        if(GUIMode){
-            frame.dispose();
+        if(IsGui){
+            getData().getFrame().dispose();
         }else{
             this.scanAnswer.close();
         }
     }      //close console UI
     public void loadPlayerInfo(){
         this.gamers = getListOfJoueurs();
-        if(GUIMode){
-            int answer = JOptionPane.showConfirmDialog​(frame,showMessage("haveAccount"));
+        if(IsGui){
+            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),showMessage("haveAccount"));
             accountAdministration(answer==0);
         }else{
             accountAdministration();
@@ -757,7 +756,7 @@ public class Jeu
 
     public void consoleGame()
     {
-        GUIMode=false;
+        IsGui=false;
         if (wantPlay())
         {
             loadPlayerInfo();
@@ -822,14 +821,14 @@ public class Jeu
             finish();               //close scanner (en mode textuel)
         }
     }
-    public void iniGUIMode(){
-        GUIMode=true;
+    public void iniIsGui(){
+        IsGui=true;
         data = new Data();
         //joueur = new Joueur();
     }
     public void GUIGame()
     {
-        if(data==null){iniGUIMode();}
+        if(data==null){iniIsGui();}
         System.out.println(addFrame());
         //TODO faire changer ou creer un compte graphiquement.
         loadPlayerInfo();
@@ -859,7 +858,7 @@ public class Jeu
         if (this.joueur.getCompte().getBallon() > 0)
         {
             int[] coord = askCoordinates();
-            String color = plateau.getColorOfBloc(coord[GUIMode=true;
+            String color = plateau.getColorOfBloc(coord[IsGui=true;
         data = new Data();
         joueur = new Joueur();0], coord[1]);
             plateau.ballonExplosion(color);
@@ -880,14 +879,14 @@ public class Jeu
         plateau.gameState();
         if (plateau.gameState().equals("win"))
         {
-            JOptionPane.showMessageDialog(frame,"Congratulations, you win !");
-            int answer = JOptionPane.showConfirmDialog​(frame,"do you want to replay ?");
+            JOptionPane.showMessageDialog(getData().getFrame(),"Congratulations, you win !");
+            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to replay ?");
             playOrExit(answer==0);
         }
         else if (plateau.gameState().equals("lost"))
         {
-            JOptionPane.showMessageDialog(frame,"The level is lost. Try again.. ");
-            int answer = JOptionPane.showConfirmDialog​(frame,"do you want to try again ?");
+            JOptionPane.showMessageDialog(getData().getFrame(),"The level is lost. Try again.. ");
+            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to try again ?");
             playOrExit(answer==0);
         }
     }

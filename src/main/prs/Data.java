@@ -1,6 +1,7 @@
 package prs;
 import java.awt.Image;
 import java.awt.Font;
+import prs.graphics.*;
 
 /**
 *{@summary Contain all data (images) that will be used by the graphic interface.}
@@ -16,6 +17,8 @@ public class Data {
   private static int nbrLevelAviable=4;
   private static Font font=new Font("FreeSans",Font.BOLD,60);
   private static int tailleDUneCase = 100;
+
+  private Frame frame;
   // CONSTRUCTORS --------------------------------------------------------------
 
   // GET SET -------------------------------------------------------------------
@@ -34,6 +37,9 @@ public class Data {
   public static int getNbrLevelAviable(){return nbrLevelAviable;}
   public static Font getFont(){return font;}
   public static int getTailleDUneCase(){return tailleDUneCase;}
+
+  public Frame getFrame(){return frame;}
+  public void setFrame(Frame f){frame=f;}
   // FUNCTIONS -----------------------------------------------------------------
 
   // SUB-CLASS -----------------------------------------------------------------
