@@ -89,9 +89,24 @@ public class Jeu
 
 
     }
+    public Jeu(boolean IsGui)
+    {
+        this.configLevel = new Configuration("config.txt");
+        this.joueur = new Joueur();
+        this.compte = joueur.getCompte();
+        this.IsGui = IsGui;
+
+        this.plateau = null;
+        this.gamers = null;
+
+        //loadUserAccountFromFile();
+    }
 
     /*============================= Common functions ==========================*/
     public int getCurentLevel(){return level;}
+    public Plateau getPlateau(){return plateau;}
+    public Joueur getJoueur(){return joueur;}
+    public Compte getCompte(){return compte;}
     public int iniLevel()
     {
         level = 0;
@@ -135,36 +150,67 @@ public class Jeu
 
         return message;
     }
-    public void showMessageGUI(String key){
-        JOptionPane.showMessageDialog(getData().getFrame(),showMessage(key));
-    }
 
-    public void launchLevel(int i){
-        System.out.println("launch level "+i);//@a
-        if(joueur.isLevelUnlock(i)){
-            //TODO get config information
-            if(i==1){
-                createPlateau();
-                if(IsGui){
-                    addPanelPlateau();
-                    showMessageGUI("level"+i);
-                }
-            }
-        }else{
-            System.out.println("Level "+i+" is locked.");
-        }
-        System.out.println("plateau : "+plateau);//@a
-        printPlateau();//@a
-    }
-
-    private void createPlateau()
+    /**
+     * Recreate game board using current user level parameter.
+     */
+    public void createPlateau()
     {
-        this.level = iniLevel();      // this helps create plateau in all cases cause iniLevel check getUnlockLevel
-                                    // and make + 1.. or give 1 if where is not account yet
+        // this helps create plateau in all cases cause getLevel check getUnlockLevel
+        int level = 1;//this.joueur.getCompte().getUnlockLevel();
 
-        this.plateau = new Plateau(Integer.parseInt(this.configLevel.getLevelValue(this.level, "height")),
-                Integer.parseInt(this.configLevel.getLevelValue(level, "width")));
-        this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals,initialBallons);
+        this.plateau = new Plateau(Integer.parseInt(this.configLevel.getLevelValue(level, "height")), Integer.parseInt(this.configLevel.getLevelValue(level, "width")));
+
+        //initialisation of start values of number of blocs, animals etc.
+        initialBlocs = Integer.parseInt(configLevel.getLevelValue(level, "initialBlocs"));
+        initialAnimals = Integer.parseInt(configLevel.getLevelValue(level, "initialAnimals"));
+        initialImmoBlocs = Integer.parseInt(configLevel.getLevelValue(level, "initialImmoBlocs"));
+
+        // if level with outils
+        if (configLevel.getLevelValue(level, "outils") == "true")
+        {
+            initialBombs = Integer.parseInt(configLevel.getLevelValue(level, "initialBombs"));
+            initialBallons = Integer.parseInt(configLevel.getLevelValue(level, "initialBallons"));
+        } else
+        {
+            initialBombs = 0;
+            initialBallons = 0;
+        }
+
+        //initialisation of additional values which would be added during the game according the level
+        if (configLevel.getLevelValue(level, "addBlocs") == "true")
+        {
+            additionalBlocs = Integer.parseInt(configLevel.getLevelValue(level, "additionalBlocs"));
+        } else
+        {
+            additionalBlocs = 0;
+        }
+
+        if (configLevel.getLevelValue(level, "addAnimals") == "true")
+        {
+            additionalAnimals = Integer.parseInt(configLevel.getLevelValue(level, "additionalAnimals"));
+        } else
+        {
+            additionalAnimals = 0;
+        }
+
+        if (configLevel.getLevelValue(level, "addBombs") == "true")
+        {
+            additionalBombs = Integer.parseInt(configLevel.getLevelValue(level, "additionalBombs"));
+        } else
+        {
+            additionalBombs = 0;
+        }
+
+        if (configLevel.getLevelValue(level, "addBallons") == "true")
+        {
+            additionalBallons = Integer.parseInt(configLevel.getLevelValue(level, "additionalBallons"));
+        } else
+        {
+            additionalBallons = 0;
+        }
+
+        this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals, initialBallons);
     }
 
     /**
@@ -322,7 +368,7 @@ public class Jeu
     public Data getData(){return data;}
     public static void setData(Data d){data=d;}
 
-    public boolean addFrame(){
+    /*public boolean addFrame(){
       try {
         getData().setFrame(new Frame());
         return true;
@@ -343,7 +389,7 @@ public class Jeu
     /**
     *Add a Panel to represent a level.
     */
-    public boolean addPanelPlateau(){
+    /*public boolean addPanelPlateau(){
       try {
         getData().setPPlateau(new PanelPlateau());
         getData().getPPlateau().setPlateau(plateau);
@@ -390,7 +436,7 @@ public class Jeu
     *{@summary Load game images.}
     *It need to have getFrame()!=null
     */
-    public boolean iniImage(){
+    /*public boolean iniImage(){
       boolean ok = true;
       Image img = image.getImage("background.jpg");
       try {
@@ -433,14 +479,14 @@ public class Jeu
     /**
     * Unlock the next level
     */
-    public boolean addLevel(){
+    /*public boolean addLevel(){
       if(getData().getPMap().getNbrButton() < data.getNbrLevelAviable()){
         getData().getPMap().addLevel();
         return true;
       }
       return false;
-    }
-    public boolean paintAll(){
+  }*/
+    /*public boolean paintAll(){
       try {
         getData().getFrame().paintAll(getData().getFrame().getGraphics());
         return true;
@@ -448,7 +494,7 @@ public class Jeu
         //error.error("fail repaintAll");
         return false;
       }
-    }
+  }*/
     //static
     public static void pause(int ms){
       //if(ms<1){error.error("fail to pause "+ms);}
@@ -492,19 +538,13 @@ public class Jeu
         return answer;
     }
 
-    public String hasAccount()                                          // ask if gamer has account
-    {
-        System.out.print(showMessage("haveAccount"));
-        String rep = scanAnswer.next().toLowerCase();
-        return rep;
-    }
 
     public void accountAdministration()                               // ask create or download account
     {
         boolean isCorrectAnswer = false;
         while (!isCorrectAnswer)
         {
-            String answer = hasAccount();
+            String answer = "y";//hasAccount();
             if (answer.equals("y") || (answer).equals("yes"))
             {
                 isCorrectAnswer = true;
@@ -686,12 +726,12 @@ public class Jeu
             if (answer.equals("ex") || answer.equals("e") || answer.equals("exit") || answer.equals("quit"))
             {
                 IsValid = true;
-                playOrExit(false);
+                //playOrExit(false);PlayOr
             }
             else if (answer.equals("pl") || answer.equals("p") || answer.equals("play"))
             {
                 IsValid = true;
-                playOrExit(true);
+                //playOrExit(true);
             }
             else
             {
@@ -699,20 +739,25 @@ public class Jeu
             }
         }
     }
-    public void playOrExit(boolean play){
-        this.joueur.getCompte().unlockNextLevel();
-        saveToFile(gamers);
-        // TODO save points, ballons etc
-        if(play){
-            if(IsGui){
-                finish();
-                GUIGame();
-            }else{
-                launchLevel(iniLevel());
+    /**
+     * Save list of players to binary file
+     */
+    public void saveUserAccountsToFile()
+    {
+        try
+        {
+            FileOutputStream fos = new FileOutputStream("gamers.bin");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this.gamers);
+            oos.close();
+            fos.close();
+        }
+        catch (IOException e)
+        {
+            if (!this.IsGui)
+            {
+                System.out.println("Can't write to file");
             }
-        }else{
-            System.out.println("See you !! ");
-            finish();
         }
     }
 
@@ -810,67 +855,6 @@ public class Jeu
             finish();               //close scanner (en mode textuel)
         }
     }
-    public void iniIsGui(){
-        IsGui=true;
-        data = new Data();
-        //joueur = new Joueur();
-    }
-    public void GUIGame()
-    {
-        if(data==null){iniIsGui();}
-        System.out.println(addFrame());
-        //TODO faire changer ou creer un compte graphiquement.
-        loadPlayerInfo();
-        map = new Map(joueur);
-        System.out.println(iniImage());
-        System.out.println(addPanelMap());
-        System.out.println("addLevel "+addLevel());
-        repaint();
-        System.out.println("end of main of GUIGame");
-    }
-    //TODO add all of this for GUI
-    /*else if (action == 'b')    //buy ballon
-    {
-        joueur.buyBallon();
-    }
-    else if (action == 'a')    //activate ballon
-    {
-        if (this.joueur.getCompte().getBallon() > 0)
-        {
-            int[] coord = askCoordinates();
-            String color = plateau.getColorOfBloc(coord[IsGui=true;
-        data = new Data();
-        joueur = new Joueur();0], coord[1]);
-            plateau.ballonExplosion(color);
-            joueur.activateBallon();
-        }
-    }
-    else if (action == 'e')    //activate bombe
-    {
-        int[] coord = askCoordinates();
-        plateau.bombExplosion(coord[0], coord[1]);
-    }*/
-
-    public void GUIClicAction(){
-        rescue();
-        plateau.shiftLeft();
-        rescue();
-        repaint();
-        plateau.gameState();
-        if (plateau.gameState().equals("win"))
-        {
-            JOptionPane.showMessageDialog(getData().getFrame(),"Congratulations, you win !");
-            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to replay ?");
-            playOrExit(answer==0);
-        }
-        else if (plateau.gameState().equals("lost"))
-        {
-            JOptionPane.showMessageDialog(getData().getFrame(),"The level is lost. Try again.. ");
-            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to try again ?");
-            playOrExit(answer==0);
-        }
-    }
-
     /*================================= MAIN ===================================*/
 
     public static void main (String[] args)
@@ -878,9 +862,10 @@ public class Jeu
         Jeu jeu = new Jeu();
 
         if(args.length>0 && args[0].equals("text")){
-            jeu.consoleGame();
+            //jeu.consoleGame();
         }else{
-            jeu.GUIGame();
+            GuiPrs gui = new GuiPrs();
+            gui.GUIGame();
         }
     }
 }

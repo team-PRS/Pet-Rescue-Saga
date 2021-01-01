@@ -1,5 +1,5 @@
 package prs.graphics;
-import prs.Jeu;
+import prs.GuiPrs;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 
@@ -9,7 +9,7 @@ import java.awt.Graphics;
 public class PanelGame extends JPanel{
   private PanelPlateau pPlateau;
   private PanelInfo pInfo;
-  private Jeu jeu;
+  private GuiPrs jeu;
 
   // CONSTRUCTORS --------------------------------------------------------------
   public PanelGame(PanelPlateau pp, PanelInfo pi){
@@ -25,7 +25,7 @@ public class PanelGame extends JPanel{
     }*/
   // GET SET -------------------------------------------------------------------
   public void setPPlateau(PanelPlateau pp){pPlateau=pp;}
-  public void setJeu(Jeu j){jeu=j; pPlateau.setJeu(j);}
+  public void setJeu(GuiPrs j){jeu=j; pPlateau.setJeu(j);}
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
     if(jeu.getData().getPPlateauImg() != null){

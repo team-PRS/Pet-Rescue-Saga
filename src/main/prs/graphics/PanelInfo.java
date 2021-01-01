@@ -1,5 +1,5 @@
 package prs.graphics;
-import prs.Jeu;
+import prs.GuiPrs;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -19,9 +19,9 @@ public class PanelInfo extends JPanel{
     private JButton addBallon;
     private JButton placeBallon;
     //private JButton retry;
-    private Jeu jeu;
+    private GuiPrs jeu;
     // CONSTRUCTORS --------------------------------------------------------------
-    public PanelInfo(Compte c, Jeu j){
+    public PanelInfo(Compte c, GuiPrs j){
         jeu=j;
         compte=c;
         score = new JLabel();
@@ -50,7 +50,7 @@ public class PanelInfo extends JPanel{
     public void paintComponent(Graphics g){
       super.paintComponent(g);
       //setSize(200,60);
-      score.setText("score: "+compte.getScore(jeu.getCurentLevel()));
+      score.setText("score: "+compte.getScore(jeu.getJeu().getCurentLevel()));
       gold.setText("gold: "+compte.getGold());
       ballon.setText("ballon: "+compte.getBallon());
       addBallon.setText("Buy 1 ballon");

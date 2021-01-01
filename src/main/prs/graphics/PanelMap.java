@@ -1,5 +1,5 @@
 package prs.graphics;
-import prs.Jeu;
+import prs.GuiPrs;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import javax.swing.JButton;
@@ -13,9 +13,9 @@ import java.awt.Color;
 */
 public class PanelMap extends JPanel{
   private int nbrButton = 0;
-  private Jeu jeu;
+  private GuiPrs jeu;
   // CONSTRUCTORS --------------------------------------------------------------
-  public PanelMap(Jeu j){
+  public PanelMap(GuiPrs j){
     setLayout(null);
     jeu=j;
     setBackground(new Color(255,255,255,200));
@@ -61,7 +61,7 @@ public class PanelMap extends JPanel{
     //mouse action
     public void mouseClicked(MouseEvent e){
       System.out.println("launch of "+id+" level.");//@a
-      jeu.launchLevel(jeu.iniLevel());
+      jeu.launchLevel(jeu.getJeu().iniLevel());
     }
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}

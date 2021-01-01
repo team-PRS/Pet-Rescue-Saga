@@ -1,5 +1,5 @@
 package prs.graphics;
-import prs.Jeu;
+import prs.GuiPrs;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 */
 public class PanelPlateau extends JPanel implements MouseListener{
   private Plateau plateau;
-  private Jeu jeu;
+  private GuiPrs jeu;
 
   // CONSTRUCTORS --------------------------------------------------------------
   public PanelPlateau(){
@@ -28,7 +28,7 @@ public class PanelPlateau extends JPanel implements MouseListener{
   // GET SET -------------------------------------------------------------------
   public Plateau getPlateau(){return plateau;}
   public void setPlateau(Plateau p){plateau=p;}
-  public void setJeu(Jeu j){jeu=j;}
+  public void setJeu(GuiPrs j){jeu=j;}
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
     if(plateau!=null){
@@ -95,7 +95,7 @@ public class PanelPlateau extends JPanel implements MouseListener{
   //public class Listener implements MouseListener{
     public void mouseClicked(MouseEvent e){
         System.out.println("clic en "+e.getY()+" "+e.getX());//@a
-        jeu.clicOnPlateau(e.getY(),e.getX()); // /!\ our x & y are revers to the java usualx & y.
+        jeu.getJeu().clicOnPlateau(e.getY(),e.getX()); // /!\ our x & y are revers to the java usualx & y.
         //jeu.setClic(true);
         jeu.GUIClicAction();
         jeu.repaint();

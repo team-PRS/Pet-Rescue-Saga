@@ -60,7 +60,7 @@ public class Data {
   public int getWidthMax(){return getFrame().getWidth();}
   public int getHeightMax(){return getFrame().getHeight();}
   //public void addPlateau(Plateau p){plateau=p;}
-  public Plateau getPlateau(){return pPlateau.getPlateau();}
+  //public Plateau getPlateau(){return pPlateau.getPlateau();}
   // FUNCTIONS -----------------------------------------------------------------
 
   // SUB-CLASS -----------------------------------------------------------------
