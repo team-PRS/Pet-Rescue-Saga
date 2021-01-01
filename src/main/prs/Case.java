@@ -2,22 +2,16 @@ package prs;
 
 public class Case
 {
-  private static int xCoord;
-  private static int yCoord;
+    private int coordX;
+    private int coordY;
 
-  public Case(int x, int y)
-  {
-    this.xCoord = x;
-    this.yCoord = y;
-  }
+    public Case(int x, int y)
+    {
+        this.coordX = x;
+        this.coordY = y;
+    }
 
-  public int getX()
-  {
-    return xCoord;
-  }
+    public int getCoordX(){return coordX;}
+    public int getCoordY(){return coordY;}
 
-  public int getY()
-  {
-    return yCoord;
-  }
 }

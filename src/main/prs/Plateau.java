@@ -1,7 +1,6 @@
 package prs;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 public class Plateau
@@ -35,7 +34,10 @@ public class Plateau
 
     public int getWidth(){return width;}
 
-    public ObjectSurCase getObject(int x, int y)                       //return ObjectSurCase by coordinates
+    /**
+     * Return game object by coordinates
+     */
+    public ObjectSurCase getObject(int x, int y)
     {
         if (isOnPlateau(x, y))
         {
@@ -44,7 +46,11 @@ public class Plateau
         return null;
     }
 
-    public void setObject(ObjectSurCase a, int x, int y)               //set the ObjectSurCase on position (x,y)
+
+    /**
+     * Set game object on position (x,y)
+     */
+    public void setObject(ObjectSurCase a, int x, int y)
     {
         if (isOnPlateau(x, y))
         {
@@ -56,7 +62,10 @@ public class Plateau
         }
     }
 
-    public String getColorOfBloc(int x, int y)                         //return color of colored Blocs (non decoration)
+    /**
+     * Return color of colored Blocs (non decoration)
+     */
+    public String getColorOfBloc(int x, int y)
     {
         String colorBloc = "";
         if (plateau[x][y] != null)
@@ -70,10 +79,17 @@ public class Plateau
         return colorBloc;
     }
 
+    /**
+     * Return true/false if animal was rescued
+     */
     public boolean getIsRescued() {return isRescued;}
 
     /*================================ Cleaning ==============================*/
-    public void cleanCase(int x, int y)                                //delete ObjectSurCase ons position (x,y)
+
+    /**
+     * Delete ObjectSurCase by coordinates (x,y)
+     */
+    public void cleanCase(int x, int y)
     {
         ObjectSurCase obj = getObject(x, y);
         if (obj.isClicable())
@@ -86,7 +102,10 @@ public class Plateau
 
     /*================================= Checkups ==============================*/
 
-    public boolean isOnPlateau(int x, int y)                       //check if Joueur click on Plateau
+    /**
+     * Check if Joueur click on Plateau
+     */
+    public boolean isOnPlateau(int x, int y)
     {
         boolean onPlateau = false;
         if ((x >= 0) && (x < height) && (y >= 0) && (y < width))
@@ -94,20 +113,27 @@ public class Plateau
         return onPlateau;
     }
 
-    public boolean isEmpty(int x, int y)                             //check if cell is empty
+    /**
+     * Check if cell is empty
+     */
+    public boolean isEmpty(int x, int y)
     {
         return (getObject(x, y).equals(null) ? true : false);
     }
 
     /*================================= Filling by elements ==============================*/
 
-    public void remplirPlateau(int nmbImmoBlocs, int nmbBlocs, int nmbAnimals,int nmbBallons)
+    /**
+     * Fill the game board by elements {decorations, blocs, animals, ballons}
+     * firstly deco, after blocs, animals etc
+     */
+    public void remplirPlateau(int nmbImmoBlocs, int nmbBlocs, int nmbAnimals,int nmbBombs)
     {
-        int a=nmbImmoBlocs, b=nmbBlocs, c=nmbAnimals, d=nmbBallons;
+        int a=nmbImmoBlocs, b=nmbBlocs, c=nmbAnimals, d=nmbBombs;
         int ia = 0, ib=0, ic=0, id=0;
         // Set decoration (RANDOM mode)
         if (nmbImmoBlocs != 0)
-        {                                                        //TODO may be need to implement on stable positions
+        { 
             for (int i = nmbImmoBlocs; i > 0; i--)
             {
                 while (nmbImmoBlocs - ia != 0)
@@ -148,10 +174,10 @@ public class Plateau
                                     nmbBlocs--;
                                     ib ++;
                                 }
-                                else if (nmbBallons > 0)                     //it helps to fill without gaps
+                                else if (nmbBombs > 0)                     //it helps to fill without gaps
                                 {
-                                    plateau[i][j] = new Ballon();
-                                    nmbBallons--;
+                                    plateau[i][j] = new Bomb();
+                                    nmbBombs--;
                                     id ++;
                                 }
                                 else if (nmbAnimals > 0)
@@ -165,11 +191,11 @@ public class Plateau
                             else if ((rd >= 80) && (rd < 90))                 // add ballons (10% probability)
 
                             {
-                                // add ballon
-                                if (nmbBallons > 0)
+                                // add bomb
+                                if (nmbBombs > 0)
                                 {
-                                    plateau[i][j] = new Ballon();
-                                    nmbBallons--;
+                                    plateau[i][j] = new Bomb();
+                                    nmbBombs--;
                                     id ++;
                                 }
                                 else                                          //it helps to fill without gaps
@@ -216,10 +242,10 @@ public class Plateau
                             }
                         } else
                         {
-                            if (nmbBallons > 0)                                    // add ballons (10% probability)
+                            if (nmbBombs > 0)                                    // add ballons (10% probability)
                             {
-                                plateau[i][j] = new Ballon();
-                                nmbBallons--;
+                                plateau[i][j] = new Bomb();
+                                nmbBombs--;
                                 id ++;
                             }
                             else
@@ -235,44 +261,50 @@ public class Plateau
             }
         }
         System.out.println("need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
-                "  animaux: " + c + ":" + ic + "  ballons: " + d + ":" + id);
+                "  animaux: " + c + ":" + ic + "  bombs: " + d + ":" + id);
         System.out.println("");
     }
 
     /*================================= Find group of blocs ==============================*/
 
-    /* find all Blocs of the same color, i.e. check if there is a group for the Bloc ----- return LinkedList<Point>
-     */
-    public LinkedList<Point> getGroup(int x, int y)
+    /**
+    * Find all Blocs of the same color, i.e. check if there is a group for the Bloc. Make loop with next function
+     * @return LinkedList<Point> of blocs
+     * @param x,y coordinates of bloc which group need to find
+    */
+    public LinkedList<Case> getGroup(int x, int y)
     {
         int[][] groupe = new int[height][width];
-        LinkedList<Point> dataToExit = new LinkedList<Point>();
+        LinkedList<Case> dataToExit = new LinkedList<Case>();
         getGroup(x, y, groupe);                             // use the RECURSIVE function
         for (int i = 0; i < height; i++)                    // print group founded to console AND create the LIST of cells the blocs of the group
         {
-            //TODO this is service function, REMOVE after implementation GUI and CI
             for (int j = 0; j < width; j++)
             {
                 if (groupe[i][j] == 2)
                 {
-                    //System.out.print(" 2 ");
-                    dataToExit.addLast(new Point(i, j));
+                    //System.out.print(" 2 ");                 // code debug
+                    dataToExit.addLast(new Case(i, j));
                 }
                 else if (groupe[i][j] == 1)
                 {
-                    //System.out.print(" 1 ");
+                    //System.out.print(" 1 ");                // code debug
                 }
                 else if (groupe[i][j] == 0)
                 {
-                    //System.out.print(" 0 ");
+                    //System.out.print(" 0 ");                 // code debug
                 }
             }
-            //System.out.println("");
+            //System.out.println("");                          // code debug
         }
         return dataToExit;
     }
 
-    public void getGroup(int x, int y, int[][] groupe)         // find all Blocs of the same color
+    /**
+     * Find all Blocs of the same color. Make a loop with previous function.
+     * @param x,y - coordinates of click, groupe - list of already founded blocs (or not)      *
+     */
+    public void getGroup(int x, int y, int[][] groupe)
     {
         ObjectSurCase a = this.getObject(x, y);
         // only for blocs:
@@ -337,8 +369,10 @@ public class Plateau
 
     /*================================= Print to Console ==============================*/
 
-    //TODO: this function should not be visible outside. Just for debug!
-    public void printMap()		                                    // print Plateau
+    /**
+     * Print game board. This function should not be visible outside. Just for debug!
+     */
+    private void printMap()
     {
         System.out.println("h:" + height + " l:" + width);
         System.out.println("");
@@ -389,10 +423,12 @@ public class Plateau
         }
     }
 
-    /*================================= Object's Mouvements ==============================*/
+    /*========================================== Object's Mouvements =================================================*/
 
-    //function for instance of ObjectSurCase: delete from one place, insert to another one
-
+    /**
+     * Makes effect of gravity
+     * @param x,y - coordinates of element to apply gravity
+     */
     public void shiftDown(int x, int y)
     {
         if ((plateau[x][y] == null) && (plateau[x - 1][y] != null))
@@ -418,111 +454,9 @@ public class Plateau
         }
     }
 
-    public int lengthFreeSpace(int x, int y)                        //find the length of free space INCLUDING (x, y)
-    {
-        int counter = 0;
-        int j = y;
-        for (int i = x; i >= 0; i--)
-        {
-            if (plateau[i][j] == null)
-            {
-                counter++;
-            }
-            else
-            {
-                break;
-            }
-        }
-        return counter;
-    }
-
-    public int[] nextRightNotEmptyColumn_Floor(int x, int y)          //find nearest right NOT empty column from the floor
-    {                                                                  // if find deco return null
-        int i = height - 1;
-        int j = y + 1;
-        boolean isFound = false;
-        int counter = 0;
-        while ((!isFound) && (j < width))
-        {
-            if (plateau[i][j] != null)
-            {
-                ObjectSurCase obj = getObject(i, j);
-                //if deco = do not remove at all
-                if (!obj.isClicable())
-                {
-                    return null;
-                }
-                else
-                {
-                    //if not deco = need to remove, so return coordinates
-                    counter++;
-                    isFound = true;
-                }
-            }
-            else
-            {
-                j++;
-            }
-        }
-        if (counter == 0)
-        {
-            return null;
-        }
-        return new int[]{i, j};
-    }
-
-    public void moveColumn(int y1, int y2)                        //move columns from (floor,y2) to (floor,y1)
-    {
-        if ((y1 < y2) && (plateau[height - 1][y2] != null))
-        {
-            //can move
-            int len = findLengthOfColumn(height - 1, y2);
-            int x = height - 1;
-            for (int i = 0; i < len; i++)
-            {
-                ObjectSurCase obj = getObject(x, y2);
-                if (obj.isClicable())
-                {
-                    setObject(obj, x, y1);
-                    cleanCase(x, y2);
-                    x--;
-                }
-                else
-                {
-                    //skip
-                }
-            }
-        }
-        else //can't move column
-        {
-            System.out.println("Can't move column");
-        }
-    }
-
-    public int findLengthOfColumn(int x, int y)                    //find the length of column INCLUDING (x, y)
-    {                                                                 //TODO make -1 if on (x,y) will be deco
-        int len = 0;
-        for (int i = x; i >= 0; i--)
-        {
-            if (plateau[i][y] != null)
-            {
-                ObjectSurCase obj = getObject(i, y);
-                if (obj.isClicable())
-                {
-                    len++;
-                } else
-                {
-                    break;
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-        return len;
-    }
-
+    /**
+     * Makes shift to left for column of elements, if there are empty place enough to contain this column
+     */
     public void shiftLeft()
     {
         int i = height - 1;
@@ -566,36 +500,189 @@ public class Plateau
         }
     }
 
-    /*================================= Object's behaviour ==============================*/
+    //--------------- service functions for shiftLeft ----------------------------------------------------------------//
 
-    public int bombExplosion(int x, int y)
+    /**
+     * Finds the length of free space INCLUDING (x, y)
+     */
+    public int lengthFreeSpace(int x, int y)
     {
-        ObjectSurCase obj = getObject(x, y);
-
-        int points = 0;
-
-        if (obj instanceof Bomb)
+        int counter = 0;
+        int j = y;
+        for (int i = x; i >= 0; i--)
         {
-            for (int i = x - 1; i <= x + 1; i++)
+            if (plateau[i][j] == null)
             {
-                for (int j = y - 1; j <= y + 1; j++)
+                counter++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return counter;
+    }
+
+    /**
+     * Finds nearest right NOT empty column from the floor
+     */
+    public int[] nextRightNotEmptyColumn_Floor(int x, int y)
+    {                                                                  // if find deco return null
+        int i = height - 1;
+        int j = y + 1;
+        boolean isFound = false;
+        int counter = 0;
+        while ((!isFound) && (j < width))
+        {
+            if (plateau[i][j] != null)
+            {
+                ObjectSurCase obj = getObject(i, j);
+                //if deco = do not remove at all
+                if (!obj.isClicable())
                 {
-                    if (plateau[i][j] != null)
-                    {
-                        cleanCase(i, j);
-                        shiftDown(i, j);
-                        points++;
-                    } else
-                    {
-                        //skip
-                    }
+                    return null;
+                }
+                else
+                {
+                    //if not deco = need to remove, so return coordinates
+                    counter++;
+                    isFound = true;
+                }
+            }
+            else
+            {
+                j++;
+            }
+        }
+        if (counter == 0)
+        {
+            return null;
+        }
+        return new int[]{i, j};
+    }
+
+    /**
+     * Moves columns from (floor,y2) to (floor,y1)
+     */
+    public void moveColumn(int y1, int y2)
+    {
+        if ((y1 < y2) && (plateau[height - 1][y2] != null))
+        {
+            //can move
+            int len = findLengthOfColumn(height - 1, y2);
+            int x = height - 1;
+            for (int i = 0; i < len; i++)
+            {
+                ObjectSurCase obj = getObject(x, y2);
+                if (obj.isClicable())
+                {
+                    setObject(obj, x, y1);
+                    cleanCase(x, y2);
+                    x--;
+                }
+                else
+                {
+                    //skip
                 }
             }
         }
-        else { System.out.println("It is not a bomb"); }
+        else //can't move column
+        {
+            System.out.println("Can't move column");
+        }
+    }
+
+    /**
+     * Finds the length of column INCLUDING (x, y)
+     */
+    public int findLengthOfColumn(int x, int y)
+    {                                                                 //TODO make -1 if on (x,y) will be deco
+        int len = 0;
+        for (int i = x; i >= 0; i--)
+        {
+            if (plateau[i][y] != null)
+            {
+                ObjectSurCase obj = getObject(i, y);
+                if (obj.isClicable())
+                {
+                    len++;
+                } else
+                {
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        return len;
+    }
+
+
+    /*================================= Object's behaviour ==============================*/
+
+    /**
+     * Provides disappearance of 8 blocs around the bomb
+     * @param x,y - bomb's coordinates
+     * @return number of blocs disappeared
+     */
+    public int bombExplosion(int x, int y)
+    {
+        int points = 0;
+        if (plateau[x][y] != null)
+        {
+            ObjectSurCase obj = getObject(x, y);
+
+            if (obj instanceof Bomb)
+            {
+                for (int i = x - 1; i <= x + 1; i++)
+                {
+                    for (int j = y - 1; j <= y + 1; j++)
+                    {
+                        if ((i >= 1) && (i <= height - 1) && (j >= 1) && (j <= width - 1))
+                        {
+                            if (plateau[i][j] != null)
+                            {
+                                ObjectSurCase obj1 = getObject(i, j);
+                                if ((obj1 instanceof Bloc) && (obj1.isClicable()))
+                                {
+                                    cleanCase(i, j);
+                                    shiftDown(i, j);
+                                    points++;
+                                }
+                                else if (obj1 instanceof Bomb)
+                                {
+                                    cleanCase(i, j);
+                                    shiftDown(i, j);
+                                } else
+                                {
+                                    //skip
+                                }
+                            } else
+                            {
+                                //skip
+                            }
+                        }
+                        else
+                        {
+                            //skip
+                        }
+                    }
+                }
+            } else
+            {
+                System.out.println("It is not a bomb");
+            }
+        }
         return points;
     }
 
+    /**
+     * Provides disappearance of all blocs of the color on game board
+     * @param ballonColor
+     * @return number of blocs disappeared
+     */
     public int ballonExplosion(String ballonColor)
     {
         int points = 0;
@@ -635,29 +722,37 @@ public class Plateau
         return points;
     }
 
-    public LinkedList<Point> getAnimalsOnFloor()
+    /**
+     * Provides the list of coordinates of all animals on the floor
+     * @return LinkedList list of coordinates
+     */
+    public LinkedList<Case> getAnimalsOnFloor()
     {
         this.isOnFloor = false;
-        LinkedList<Point> animalsToRescue = new LinkedList<Point>();
+        LinkedList<Case> animalsToRescue = new LinkedList<Case>();
         for (int j = 0; j < width; j++)
         {
             int i = height - 1;
             if (plateau[i][j] instanceof Animal)
             {
                 isOnFloor = true;
-                Point animalCoord = new Point(i, j);
+                Case animalCoord = new Case(i, j);
                 animalsToRescue.add(animalCoord);
             }
         }
         return animalsToRescue;
     }
 
-    public void rescueAnimals(LinkedList<Point> animalsToRescue)
+    /**
+     * Makes animals disappear
+     * @param animalsToRescue - list of animal's coordinates
+     */
+    public void rescueAnimals(LinkedList<Case> animalsToRescue)
     {
         this.isRescued = false;
         if (animalsToRescue != null)
         {
-            for (Point animalCoord : animalsToRescue)
+            for (Case animalCoord : animalsToRescue)
             {
                 int x = animalCoord.getCoordX();
                 int y = animalCoord.getCoordY();
@@ -669,8 +764,12 @@ public class Plateau
         }
     }
 
-    /*================================= GameSet Screening ==============================*/
+    /*==================================== GameSet Screening =========================================================*/
 
+    /**
+     * Checks the status of the game
+     * @return {continue, win, lost}
+     */
     public String gameState()
     {
         //(animals != 0) && (ballons == 0) && (can't find any group anymore)
@@ -709,17 +808,9 @@ public class Plateau
         return state;
     }
 
-    /*================================= Points ==================================*/
-
-    public int calculatePoints(LinkedList<Point> blocs)             //TODO      1 bloc deleted = 10 points
-    {
-        int len = blocs.size();
-        return len*10;
-    }
-
     /*============================= Add Elements During the Set ==========================*/
 
-    public void addBlocsInGame(int nmbBlocs)            //TODO need the logic how and were to add the blocs
+    public void addBlocsInGame(int nmbBlocs)
     {
     }
 

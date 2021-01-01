@@ -12,7 +12,10 @@ public class Animal extends ObjectSurCase
         this.type = ty;
     }
 
-    public Animal()               //random type Animal's constructor (to fill an the beginning of set or for additional animal)
+    /**
+     *  Random animal's constructor (used in functions of filling game board)
+     */
+    public Animal()
     {
         int index = new Random().nextInt(types.length);
         this.type = types[index];

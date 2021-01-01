@@ -7,7 +7,11 @@ public class Ballon extends Outil
     private String color;
     private String[] colors = new String[]{"YELLOW", "BLUE", "RED", "GREEN", "PURPLE"};
 
-    public Ballon()                       //random color ballon's constructor (to fill an the beginning of set or for additional ballon)
+
+    /**
+     *  Random color ballons's constructor (used in functions of filling game board)
+     */
+    public Ballon()                   
     {
         int index = new Random().nextInt(colors.length);
         this.color = colors[index];

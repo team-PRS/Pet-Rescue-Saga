@@ -11,6 +11,9 @@ public class CliPrs
     private Scanner scanAnswer;
     private Jeu Motor;
 
+
+    /*============================== Constructor & close function ====================================================*/
+
     public CliPrs()
     {
         this.scanAnswer = new Scanner(System.in);
@@ -23,141 +26,7 @@ public class CliPrs
         this.Motor.Close();
     }
 
-    public String showMessage(String request)
-    {
-        String message = "";
-
-        String l1 = "LEVEL 1" + "\n " +
-                "\nTry to eliminate the groups of blocs (greek letters) of the same color under animals ( @ )\n" +
-                "so they will go down and will be rescued";
-
-        String l2 = "LEVEL 2\nOn this level you can explode bombs ( * )\n" +
-                "to destroy the cubes surrounding. Animals will not lost.";
-
-        String l3 = "LEVEL 3\n         \n" +
-                "      ";
-
-        String l4 = "LEVEL 4\nGo ahead!";
-
-        String pr = "\nOne pet is rescued";
-
-        if (request.equals("level1")) {message = l1;}
-        else if (request.equals("level2")) {message = l2;}
-        else if (request.equals("level3")) {message = l3;}
-        else if (request.equals("level4")) {message = l4;}
-        else if (request.equals("petRescued"))
-        {
-            message = pr;
-        }
-
-        return message;
-    }
-
-    public boolean wantPlay()                                           // first reception - want to play or not?
-    {
-        boolean answer = false;
-        boolean isCorrectAnswer = false;
-        while (!isCorrectAnswer)
-        {
-            System.out.print("Do you want to play (yes/no) ? ");
-            String answerPlay = scanAnswer.next().toLowerCase();
-            if ((answerPlay.equals("yes")) || (answerPlay.equals("y")))
-            {
-                isCorrectAnswer = true;
-                answer = true;
-            } else if ((answerPlay.equals("no")) || (answerPlay.equals("n")) || (answerPlay.equals("non")))
-            {
-                isCorrectAnswer = true;
-                answer = false;
-            } else System.out.println("Wrong input, try again");
-        }
-        return answer;
-    }
-
-
-    public void accountAdministration()                               // ask create or download account
-    {
-        final int CreateNewAccountId = 0;
-        int Id = CreateNewAccountId;
-        ArrayList<Joueur> gamers = Motor.getListOfJoueurs();
-
-        if (    (null != gamers)
-             && (0 < gamers.size())
-           )
-        {
-            boolean bCorrupted = false;
-            System.out.println("To start game you need to select or create new account");
-
-            System.out.println("0: Create new");
-
-            int index = 1;
-            try
-            {
-                for (Joueur gamer : gamers)
-                {
-                    System.out.println(String.valueOf(index) + ": load " + gamer.getPseudo());
-                    index ++;
-                }
-            }
-            catch (NullPointerException e)
-            {
-                System.out.println("ERROR: Account data is corrupted, new account has to be created");
-                bCorrupted = true;
-            }
-
-            if (!bCorrupted)
-            {
-                System.out.print("Please enter action nubmer:");
-                while (true)
-                {
-                    String strId = scanAnswer.next();
-                    try
-                    {
-                        Id = Integer.parseInt(strId);
-                    } catch (NumberFormatException e)
-                    {
-                        Id = -1;
-                    }
-                    if ((Id >= 0) && (Id <= gamers.size()))
-                    {
-                        break;
-                    } else
-                    {
-                        System.out.print("numer error, value should be in range: [0 .. " + String.valueOf(gamers.size()) + "]");
-                        System.out.print("Please try again:");
-                    }
-                }
-            }
-        }
-
-        if (Id == CreateNewAccountId)
-        {
-            boolean bCreateNew = true;
-            String pseudo = askPseudo();
-            if (null != gamers)
-            {
-                for (Joueur j : gamers)
-                {
-                    if (j.getPseudo().equals(pseudo))
-                    {
-                        Motor.selectJoueur(j);
-
-                        bCreateNew = false;
-                    }
-                }
-            }
-
-            if (bCreateNew)
-            {
-                Motor.createNewJoueur(pseudo);
-            }
-        }
-        else
-        {
-            Motor.selectJoueur(gamers.get(Id - 1));
-        }
-
-    }
+    /*========================================= User Input ===========================================================*/
 
     private String askPseudo()
     {
@@ -207,7 +76,10 @@ public class CliPrs
         return new int[]{xCoord, yCoord};
     }
 
-    public char askAction()                                       // ask that gamer want to do
+    /**
+     * Ask that gamer want to do
+     */
+    public char askAction()
     {
         System.out.print("\nActions:\n" +
                 "a - activate your ballon\n" +
@@ -221,12 +93,75 @@ public class CliPrs
         return Action.charAt(0);
     }
 
-    public String levelInfo(int l)                              // compose level to call message level
+    /**
+     * Ask if gamer want to exit
+     */
+    public String askPlayOrExit()
+    {
+        System.out.print("Do you want exit or play ? (ex/pl)");
+        String answer = scanAnswer.next();
+        return answer.toLowerCase();
+    }
+
+
+    /*============================================= Output ===========================================================*/
+
+    /**
+     *  Bring the messages: level descriptions and if pet is rescued
+     *  @param request - is made in levelInfo
+     *  @return String - level description or message that pet was rescued
+     */
+    public String showMessage(String request)
+    {
+        String message = "";
+
+        String l1 = "LEVEL 1" + "\n " +
+                "\nTry to eliminate the groups of blocs (greek letters) of the same color under animals ( @ )\n" +
+                "so they will go down and will be rescued";
+
+        String l2 = "LEVEL 2\nOn this level you can explode bombs ( * )\n" +
+                "to destroy the cubes surrounding. Animals will not lost.";
+
+        String l3 = "LEVEL 3\n         \n" +
+                "      ";
+
+        String l4 = "LEVEL 4\nGo ahead!";
+
+        String pr = "\nOne pet is rescued";
+
+        if (request.equals("level1")) {message = l1;}
+        else if (request.equals("level2")) {message = l2;}
+        else if (request.equals("level3")) {message = l3;}
+        else if (request.equals("level4")) {message = l4;}
+        else if (request.equals("petRescued")) {message = pr;}
+
+        return message;
+    }
+
+    /**
+     *  Compose String level for function showMessage
+     *  @param l - number of current level
+     *  @return String - level#
+     */
+    public String levelInfo(int l)
     {
         return "level" + Integer.toString(l);
     }
 
-    public void printPlateau()		                            // print Plateau
+    /**
+    *  Print current parameters of gamer's account {points, gold, ballon}
+    */
+    public void afficheAccountInfo(Compte userAccount)
+    {
+        System.out.println("\nPoints: " + userAccount.getPoints() + " / Gold: " + userAccount.getGold() +
+                " / Ballon: " + userAccount.getBallon());
+        System.out.println("");
+    }
+
+    /**
+    *  Print game board
+    */
+    public void printPlateau()
     {
         //print y-scale
         System.out.print("  | ");
@@ -279,13 +214,122 @@ public class CliPrs
         }
     }
 
-    public String askPlayOrExit()                                // ask if gamer want to exit
+    /*======================================== Personal fonctions ====================================================*/
+
+    /**
+     * Administrate answers of gamer for start of game (if true - account administration and launch, il false - save and close program)
+     */
+    public boolean wantPlay()
     {
-        System.out.print("Do you want exit or play ? (ex/pl)");
-        String answer = scanAnswer.next();
-        return answer.toLowerCase();
+        boolean answer = false;
+        boolean isCorrectAnswer = false;
+        while (!isCorrectAnswer)
+        {
+            System.out.print("Do you want to play (yes/no) ? ");
+            String answerPlay = scanAnswer.next().toLowerCase();
+            if ((answerPlay.equals("yes")) || (answerPlay.equals("y")))
+            {
+                isCorrectAnswer = true;
+                answer = true;
+            } else if ((answerPlay.equals("no")) || (answerPlay.equals("n")) || (answerPlay.equals("non")))
+            {
+                isCorrectAnswer = true;
+                answer = false;
+            } else System.out.println("Wrong input, try again");
+        }
+        return answer;
     }
 
+    /**
+     * Provides load of account from the list or creation of new account
+     */
+    public void accountAdministration()
+    {
+        final int CreateNewAccountId = 0;
+        int Id = CreateNewAccountId;
+        ArrayList<Joueur> gamers = Motor.getListOfJoueurs();
+
+        if (    (null != gamers)
+             && (0 < gamers.size())
+           )
+        {
+            boolean bCorrupted = false;
+            System.out.println("To start game you need to select or create new account");
+
+            System.out.println("0: Create new");
+
+            int index = 1;
+            try
+            {
+                for (Joueur gamer : gamers)
+                {
+                    System.out.println(String.valueOf(index) + ": load " + gamer.getPseudo());
+                    index ++;
+                }
+            }
+            catch (NullPointerException e)
+            {
+                System.out.println("ERROR: Account data is corrupted, new account has to be created");
+                bCorrupted = true;
+            }
+
+            if (!bCorrupted)
+            {
+                System.out.print("Please enter action number:");
+                while (true)
+                {
+                    String strId = scanAnswer.next();
+                    try
+                    {
+                        Id = Integer.parseInt(strId);
+                    } catch (NumberFormatException e)
+                    {
+                        Id = -1;
+                    }
+                    if ((Id >= 0) && (Id <= gamers.size()))
+                    {
+                        break;
+                    } else
+                    {
+                        System.out.print("Number error, value should be in range: [0 .. " + String.valueOf(gamers.size()) + "]");
+                        System.out.print("Please try again:");
+                    }
+                }
+            }
+        }
+
+        if (Id == CreateNewAccountId)
+        {
+            boolean bCreateNew = true;
+            String pseudo = askPseudo();
+            if (null != gamers)
+            {
+                for (Joueur j : gamers)
+                {
+                    if (j.getPseudo().equals(pseudo))
+                    {
+                        Motor.selectJoueur(j);
+
+                        bCreateNew = false;
+                    }
+                }
+            }
+
+            if (bCreateNew)
+            {
+                Motor.createNewJoueur(pseudo);
+            }
+        }
+        else
+        {
+            Motor.selectJoueur(gamers.get(Id - 1));
+        }
+
+    }
+
+    /**
+     * Administrate answers of gamer for end of level (if true - save and close program, it false - load next level)
+     */
     public boolean isExit()
     {
         boolean IsValid = false;
@@ -310,19 +354,13 @@ public class CliPrs
         return IsExit;
     }
 
-    public void afficheAccountInfo(Compte userAccount)
-    {
-        System.out.println("\nPoints: " + userAccount.getPoints() + " / Gold: " + userAccount.getGold() +
-                " / Ballon: " + userAccount.getBallon());
-        System.out.println("");
-    }
-
+    /*======================================= Key function ===========================================================*/
+    
     /**
-     * 
+     * Units together all functions of Console User Interface
      */
     public void consoleGame()
     {
-        // GUImode=false;
         if (wantPlay())
         {
             accountAdministration();
@@ -403,9 +441,8 @@ public class CliPrs
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /*============================================= MAIN =============================================================*/
+
     public static void main (String[] args)
     {
         CliPrs jeu = new CliPrs();

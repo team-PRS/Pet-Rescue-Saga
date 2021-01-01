@@ -125,52 +125,17 @@ public class Jeu
         initialBlocs = Integer.parseInt(configLevel.getLevelValue(level, "initialBlocs"));
         initialAnimals = Integer.parseInt(configLevel.getLevelValue(level, "initialAnimals"));
         initialImmoBlocs = Integer.parseInt(configLevel.getLevelValue(level, "initialImmoBlocs"));
+        initialBombs = Integer.parseInt(configLevel.getLevelValue(level, "initialBombs"));
+        initialBallons = Integer.parseInt(configLevel.getLevelValue(level, "initialBallons"));
 
-        // if level with outils
-        if (configLevel.getLevelValue(level, "outils") == "true")
-        {
-            initialBombs = Integer.parseInt(configLevel.getLevelValue(level, "initialBombs"));
-            initialBallons = Integer.parseInt(configLevel.getLevelValue(level, "initialBallons"));
-        } else
-        {
-            initialBombs = 0;
-            initialBallons = 0;
-        }
 
         //initialisation of additional values which would be added during the game according the level
-        if (configLevel.getLevelValue(level, "addBlocs") == "true")
-        {
-            additionalBlocs = Integer.parseInt(configLevel.getLevelValue(level, "additionalBlocs"));
-        } else
-        {
-            additionalBlocs = 0;
-        }
+        additionalBlocs = Integer.parseInt(configLevel.getLevelValue(level, "additionalBlocs"));
+        additionalAnimals = Integer.parseInt(configLevel.getLevelValue(level, "additionalAnimals"));
+        additionalBombs = Integer.parseInt(configLevel.getLevelValue(level, "additionalBombs"));
+        additionalBallons = Integer.parseInt(configLevel.getLevelValue(level, "additionalBallons"));
 
-        if (configLevel.getLevelValue(level, "addAnimals") == "true")
-        {
-            additionalAnimals = Integer.parseInt(configLevel.getLevelValue(level, "additionalAnimals"));
-        } else
-        {
-            additionalAnimals = 0;
-        }
-
-        if (configLevel.getLevelValue(level, "addBombs") == "true")
-        {
-            additionalBombs = Integer.parseInt(configLevel.getLevelValue(level, "additionalBombs"));
-        } else
-        {
-            additionalBombs = 0;
-        }
-
-        if (configLevel.getLevelValue(level, "addBallons") == "true")
-        {
-            additionalBallons = Integer.parseInt(configLevel.getLevelValue(level, "additionalBallons"));
-        } else
-        {
-            additionalBallons = 0;
-        }
-
-        this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals, initialBallons);
+        this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals, initialBombs);
     }
 
     /**
@@ -196,7 +161,7 @@ public class Jeu
 
 
     /**
-     * return game board width
+     * return game board width 
      * @return width
      */
     public int getPlateauWidth()
@@ -231,7 +196,7 @@ public class Jeu
         {
             return 0;
         }
-
+        
         return plateau.getAnimalsOnFloor().size();
     }
 
@@ -274,10 +239,10 @@ public class Jeu
                     // if group of blocs
                     else
                     {
-                        LinkedList<Point> blocGroupe = plateau.getGroup(x, y);
+                        LinkedList<Case> blocGroupe = plateau.getGroup(x, y);
                         int points = blocGroupe.size();
                         // delete group and shift down all upstairs elements
-                        for (Point p : blocGroupe)
+                        for (Case p : blocGroupe)
                         {
                             int xCoord = p.getCoordX();
                             int yCoord = p.getCoordY();
@@ -329,7 +294,7 @@ public class Jeu
         {
             return false;
         }
-
+        
         return true;
     }
 
@@ -373,7 +338,7 @@ public class Jeu
      */
     private void rescue()
     {
-        LinkedList<Point> animals = plateau.getAnimalsOnFloor();
+        LinkedList<Case> animals = plateau.getAnimalsOnFloor();
         plateau.rescueAnimals(animals);
         if (plateau.getIsRescued())
         {
@@ -381,7 +346,7 @@ public class Jeu
             {
                 for (int i = 0; i < animals.size(); i++)
                 {
-                    System.out.println("petRescued");
+                    System.out.println("One pet rescued");
                 }
             }
         }
