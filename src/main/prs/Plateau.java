@@ -96,7 +96,11 @@ public class Plateau
 
     public boolean isEmpty(int x, int y)                             //check if cell is empty
     {
-        return (getObject(x, y).equals(null) ? true : false);
+        try {
+            return (getObject(x, y).equals(null) ? true : false);
+        }catch (Exception e) {
+            return true;
+        }
     }
 
     /*================================= Filling by elements ==============================*/
@@ -522,6 +526,8 @@ public class Plateau
 
     public void shiftLeft()
     {
+        //TODO shiftLeft need to be call 2 time if 2 collumns are empty.
+        //we can try to do shiftLeft while there have been a move done.
         int i = height - 1;
         for (int j = 0; j < width - 1; j++)
         {

@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.awt.Image;
 import javax.swing.JOptionPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 /**
 * Main class / controller class
 */
@@ -25,6 +27,7 @@ public class Jeu
     private int additionalBlocs, additionalAnimals, additionalBombs, additionalBallons;
     private Configuration configLevel;
     private int level;
+    //private int curentLevel;
     private ArrayList<Joueur> gamers;
     private Compte compte;
     private Scanner scanAnswer;
@@ -32,6 +35,7 @@ public class Jeu
     private PanelMap pMap;
     private PanelPlateau pPlateau;
     private PanelGame pGame;
+    private PanelInfo pInfo;
     private static Data data;
     private boolean GUIMode;
     private boolean clic;
@@ -94,9 +98,10 @@ public class Jeu
 
     /*============================= Common functions ==========================*/
     public void setClic(boolean b){clic=b;}
-    public int getLevel()
+    public int getCurentLevel(){return level;}
+    public int iniLevel()
     {
-        int level = 0;
+        level = 0;
         if (this.joueur.getCompte().getLastUnlockLevel() == 1)
         {
             level = 1;
@@ -161,7 +166,7 @@ public class Jeu
 
     private void createPlateau()
     {
-        this.level = getLevel();      // this helps create plateau in all cases cause getLevel check getUnlockLevel
+        this.level = iniLevel();      // this helps create plateau in all cases cause iniLevel check getUnlockLevel
                                     // and make + 1.. or give 1 if where is not account yet
 
         this.plateau = new Plateau(Integer.parseInt(this.configLevel.getLevelValue(this.level, "height")),
@@ -350,33 +355,34 @@ public class Jeu
     /**
     *Add a Panel to represent a level.
     */
-    /*public boolean addPanelPlateau(int id){
-      try {
-        pGame = new PanelGame();
-        frame.setContentPane(pGame);
-        pGame.setJeu(this);
-        //TODO load the save of the id level & ask pPlateau to print it.
-        return true;
-      }catch (Exception e) {
-        return false;
-      }
-    }*/
-    /**
-    *Add a Panel to represent a level.
-    */
     public boolean addPanelPlateau(){
       try {
         pPlateau = new PanelPlateau();
         pPlateau.setPlateau(plateau);
-        pGame = new PanelGame(pPlateau);
+        pInfo = new PanelInfo(compte,this);
+        pGame = new PanelGame(pPlateau,pInfo);
         pGame.setJeu(this);
         frame.setContentPane(pGame);
         setPanelPlateauSize();
-        //TODO load the save of the id level & ask pPlateau to print it.
+        addActionToButton();
         return true;
       }catch (Exception e) {
         return false;
       }
+    }
+    public void addActionToButton(){
+        //button action
+        pInfo.getAddBallon().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                joueur.buyBallon();
+                repaint();
+            }
+        });
+        pInfo.getPlaceBallon().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                //...
+            }
+        });
     }
     public boolean setPanelPlateauSize(){
       try {
@@ -385,7 +391,7 @@ public class Jeu
         int xCenter = (getWidthMax()-dimX)/2;
         int yCenter = (getHeightMax()-dimY)/2;
         pPlateau.setBounds(xCenter,yCenter,dimX,dimY);
-        System.out.println(xCenter+" "+yCenter);
+        pInfo.setBounds(pPlateau.getWidth()+xCenter+10,yCenter,300,300);
         pGame.revalidate();
         return true;
       }catch (Exception e) {
@@ -714,7 +720,7 @@ public class Jeu
                 finish();
                 GUIGame();
             }else{
-                launchLevel(getLevel());
+                launchLevel(iniLevel());
             }
         }else{
             System.out.println("See you !! ");
@@ -756,7 +762,7 @@ public class Jeu
         {
             loadPlayerInfo();
             System.out.println(gamers.toArray().toString());
-            System.out.println(showMessage(levelInfo(getLevel())));
+            System.out.println(showMessage(levelInfo(iniLevel())));
             printPlateau();
 
             while (! plateau.gameState().equals("lost"))
