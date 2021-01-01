@@ -7,3 +7,5 @@ to compile game on linux/mac:
 ./javac.sh
 to jar .class file on linux/mac:
 ./jar.sh
+to zip on linux/mac:
+./zip.sh
