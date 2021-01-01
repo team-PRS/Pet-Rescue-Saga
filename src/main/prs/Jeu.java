@@ -35,12 +35,6 @@ public class Jeu
 
     private Scanner scanAnswer;
 
-    private PanelMap pMap;
-    private PanelPlateau pPlateau;
-    private PanelGame pGame;
-    private PanelInfo pInfo;
-    private boolean clic;
-
     /*================================= Constructor ==============================*/
     public Jeu()
     {
@@ -97,7 +91,6 @@ public class Jeu
     }
 
     /*============================= Common functions ==========================*/
-    public void setClic(boolean b){clic=b;}
     public int getCurentLevel(){return level;}
     public int iniLevel()
     {
@@ -326,12 +319,8 @@ public class Jeu
     /*============================= graphics functions ==========================*/
 
     // GET SET -------------------------------------------------------------------
-    public int getWidthMax(){return getData().getFrame().getWidth();}
-    public int getHeightMax(){return getData().getFrame().getHeight();}
-    public PanelPlateau getPPlateau(){return pPlateau;}
     public Data getData(){return data;}
     public static void setData(Data d){data=d;}
-    public void addPlateau(Plateau p){plateau=p;}
 
     public boolean addFrame(){
       try {
@@ -343,9 +332,9 @@ public class Jeu
     }
     public boolean addPanelMap(){
       try {
-        pMap = new PanelMap(this);
-        pMap.setSize(getWidthMax(),getHeightMax());
-        getData().getFrame().setContentPane(pMap);
+        getData().setPMap(new PanelMap(this));
+        getData().getPMap().setSize(getData().getWidthMax(),getData().getHeightMax());
+        getData().getFrame().setContentPane(getData().getPMap());
         return true;
       }catch (Exception e) {
         return false;
@@ -356,12 +345,12 @@ public class Jeu
     */
     public boolean addPanelPlateau(){
       try {
-        pPlateau = new PanelPlateau();
-        pPlateau.setPlateau(plateau);
-        pInfo = new PanelInfo(compte,this);
-        pGame = new PanelGame(pPlateau,pInfo);
-        pGame.setJeu(this);
-        getData().getFrame().setContentPane(pGame);
+        getData().setPPlateau(new PanelPlateau());
+        getData().getPPlateau().setPlateau(plateau);
+        getData().setPInfo(new PanelInfo(compte,this));
+        getData().setPGame(new PanelGame(getData().getPPlateau(),getData().getPInfo()));
+        getData().getPGame().setJeu(this);
+        getData().getFrame().setContentPane(getData().getPGame());
         setPanelPlateauSize();
         addActionToButton();
         return true;
@@ -371,13 +360,13 @@ public class Jeu
     }
     public void addActionToButton(){
         //button action
-        pInfo.getAddBallon().addActionListener(new ActionListener(){
+        getData().getPInfo().getAddBallon().addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 joueur.buyBallon();
                 repaint();
             }
         });
-        pInfo.getPlaceBallon().addActionListener(new ActionListener(){
+        getData().getPInfo().getPlaceBallon().addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 //...
             }
@@ -385,13 +374,13 @@ public class Jeu
     }
     public boolean setPanelPlateauSize(){
       try {
-        int dimX = 1+getData().getTailleDUneCase()*pPlateau.getPlateau().getWidth();
-        int dimY = 1+getData().getTailleDUneCase()*pPlateau.getPlateau().getHeight();
-        int xCenter = (getWidthMax()-dimX)/2;
-        int yCenter = (getHeightMax()-dimY)/2;
-        pPlateau.setBounds(xCenter,yCenter,dimX,dimY);
-        pInfo.setBounds(pPlateau.getWidth()+xCenter+10,yCenter,300,300);
-        pGame.revalidate();
+        int dimX = 1+getData().getTailleDUneCase()*getData().getPlateau().getWidth();
+        int dimY = 1+getData().getTailleDUneCase()*getData().getPlateau().getHeight();
+        int xCenter = (getData().getWidthMax()-dimX)/2;
+        int yCenter = (getData().getHeightMax()-dimY)/2;
+        getData().getPPlateau().setBounds(xCenter,yCenter,dimX,dimY);
+        getData().getPInfo().setBounds(getData().getPPlateau().getWidth()+xCenter+10,yCenter,300,300);
+        getData().getPGame().revalidate();
         return true;
       }catch (Exception e) {
         return false;
@@ -405,7 +394,7 @@ public class Jeu
       boolean ok = true;
       Image img = image.getImage("background.jpg");
       try {
-        img = img.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
+        img = img.getScaledInstance(getData().getWidthMax(),getData().getHeightMax() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
         getData().setPMapImg(img);
       }catch (Exception e) {
@@ -413,7 +402,7 @@ public class Jeu
       }
       img = image.getImage("background2.jpg");
       try {
-        img = img.getScaledInstance(getWidthMax(),getHeightMax() ,Image.SCALE_SMOOTH);
+        img = img.getScaledInstance(getData().getWidthMax(),getData().getHeightMax() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
         getData().setPPlateauImg(img);
       }catch (Exception e) {
@@ -445,8 +434,8 @@ public class Jeu
     * Unlock the next level
     */
     public boolean addLevel(){
-      if(pMap.getNbrButton() < data.getNbrLevelAviable()){
-        pMap.addLevel();
+      if(getData().getPMap().getNbrButton() < data.getNbrLevelAviable()){
+        getData().getPMap().addLevel();
         return true;
       }
       return false;
@@ -837,15 +826,6 @@ public class Jeu
         System.out.println(addPanelMap());
         System.out.println("addLevel "+addLevel());
         repaint();
-        /*clic=false;
-        while (!plateau.gameState().equals("lost")){
-            if(clic){//do all action needed after a clic.
-                System.out.println("clic");
-                GUIClicAction();
-                repaint();
-            }
-            pause(20);
-        }*/
         System.out.println("end of main of GUIGame");
     }
     //TODO add all of this for GUI
