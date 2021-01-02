@@ -9,48 +9,23 @@ import java.util.ArrayList;
 public class CliPrs
 {
     private Scanner scanAnswer;
-    private Jeu Motor;
+    private Jeu motor;
 
     public CliPrs()
     {
         this.scanAnswer = new Scanner(System.in);
-        Motor = new Jeu(false);
+        motor = new Jeu(false);
     }
 
     public void CliClose()
     {
         this.scanAnswer.close();
-        this.Motor.Close();
+        this.motor.Close();
     }
 
     public String showMessage(String request)
     {
-        String message = "";
-
-        String l1 = "LEVEL 1" + "\n " +
-                "\nTry to eliminate the groups of blocs (greek letters) of the same color under animals ( @ )\n" +
-                "so they will go down and will be rescued";
-
-        String l2 = "LEVEL 2\nOn this level you can explode bombs ( * )\n" +
-                "to destroy the cubes surrounding. Animals will not lost.";
-
-        String l3 = "LEVEL 3\n         \n" +
-                "      ";
-
-        String l4 = "LEVEL 4\nGo ahead!";
-
-        String pr = "\nOne pet is rescued";
-
-        if (request.equals("level1")) {message = l1;}
-        else if (request.equals("level2")) {message = l2;}
-        else if (request.equals("level3")) {message = l3;}
-        else if (request.equals("level4")) {message = l4;}
-        else if (request.equals("petRescued"))
-        {
-            message = pr;
-        }
-
-        return message;
+        return motor.showMessage(request);
     }
 
     public boolean wantPlay()                                           // first reception - want to play or not?
@@ -79,7 +54,7 @@ public class CliPrs
     {
         final int CreateNewAccountId = 0;
         int Id = CreateNewAccountId;
-        ArrayList<Joueur> gamers = Motor.getListOfJoueurs();
+        ArrayList<Joueur> gamers = motor.getListOfJoueurs();
 
         if (    (null != gamers)
              && (0 < gamers.size())
@@ -140,7 +115,7 @@ public class CliPrs
                 {
                     if (j.getPseudo().equals(pseudo))
                     {
-                        Motor.selectJoueur(j);
+                        motor.selectJoueur(j);
 
                         bCreateNew = false;
                     }
@@ -149,12 +124,12 @@ public class CliPrs
 
             if (bCreateNew)
             {
-                Motor.createNewJoueur(pseudo);
+                motor.createNewJoueur(pseudo);
             }
         }
         else
         {
-            Motor.selectJoueur(gamers.get(Id - 1));
+            motor.selectJoueur(gamers.get(Id - 1));
         }
 
     }
@@ -180,7 +155,7 @@ public class CliPrs
             if (CoordStr.length() >= 2)
             {
                 int input = CoordStr.charAt(0) - 'a';                    // -'a' because all loops started by 0
-                for (int i = 0; i < Motor.getPlateauHeight(); i++)
+                for (int i = 0; i < motor.getPlateauHeight(); i++)
                 {
                     if (input == i)
                     {
@@ -193,7 +168,7 @@ public class CliPrs
                 if (IsValid)
                 {
                     yCoord = Integer.parseInt(CoordStr.substring(1)) - 1;  // -1 because all loops started by 0, but table markings by 1
-                    if ((yCoord < 0) && (yCoord >= Motor.getPlateauWidth()))
+                    if ((yCoord < 0) && (yCoord >= motor.getPlateauWidth()))
                     {
                         IsValid = false;
                     }
@@ -230,27 +205,27 @@ public class CliPrs
     {
         //print y-scale
         System.out.print("  | ");
-        for (int k = 0; k < Motor.getPlateauHeight(); k++)
+        for (int k = 0; k < motor.getPlateauHeight(); k++)
         {
             System.out.print(" " + (k + 1) + " ");
         }
         System.out.println("");
         System.out.print("-----");
-        for (int l = 0; l < Motor.getPlateauWidth(); l++)
+        for (int l = 0; l < motor.getPlateauWidth(); l++)
         {
             System.out.print("---");
         }
         System.out.println("");
 
         //print table
-        for (int i = 0; i < Motor.getPlateauHeight(); i++)
+        for (int i = 0; i < motor.getPlateauHeight(); i++)
         {
             char ch = (char) ('a' + i);
             System.out.print(ch + " | ");
 
-            for (int j = 0; j < Motor.getPlateauWidth(); j++)
+            for (int j = 0; j < motor.getPlateauWidth(); j++)
             {
-                ObjectSurCase obj = Motor.getCell(i, j);
+                ObjectSurCase obj = motor.getCell(i, j);
                 if (obj instanceof Bloc)
                 {
                     if (((Bloc) obj).getColor() == "NONE")
@@ -318,7 +293,7 @@ public class CliPrs
     }
 
     /**
-     * 
+     *
      */
     public void consoleGame()
     {
@@ -331,57 +306,57 @@ public class CliPrs
             boolean forcequite = false;
             while ( (!endLevel) && (!forcequite))
             {
-                System.out.println(showMessage(levelInfo(Motor.getCurrentJoueur().getCompte().getUnlockLevel())));
+                System.out.println(showMessage(levelInfo(motor.getCurrentJoueur().getCompte().getUnlockLevel())));
                 System.out.println("");
-                Motor.createPlateau();
+                motor.createPlateau();
                 gameStatus = "continue";
 
                 while (!gameStatus.equals("lost") && !gameStatus.equals("win") && (!forcequite))
                 {
-                    afficheAccountInfo(Motor.getCurrentJoueur().getCompte());
+                    afficheAccountInfo(motor.getCurrentJoueur().getCompte());
                     printPlateau();
 
                     char action = askAction();
                     if (action == 'c')          //clic
                     {
                         int[] coord = askCoordinates();
-                        Motor.pressCell(coord[0], coord[1]);
+                        motor.pressCell(coord[0], coord[1]);
                     } else if (action == 'b')    //buy ballon
                     {
-                        Motor.getCurrentJoueur().buyBallon();
+                        motor.getCurrentJoueur().buyBallon();
                     } else if (action == 'a')    //activate ballon
                     {
-                        if (Motor.getCurrentJoueur().getCompte().getBallon() > 0)
+                        if (motor.getCurrentJoueur().getCompte().getBallon() > 0)
                         {
                             int[] coord = askCoordinates();
-                            Motor.ballonExplosion(coord[0], coord[1]);
+                            motor.ballonExplosion(coord[0], coord[1]);
                         }
                     } else if (action == 'e')    //activate bombe
                     {
                         int[] coord = askCoordinates();
-                        Motor.bombExplosion(coord[0], coord[1]);
+                        motor.bombExplosion(coord[0], coord[1]);
                     } else if (action == 'g')    //convert score to gold
                     {
-                        Motor.getCurrentJoueur().convertPointsToGold();
+                        motor.getCurrentJoueur().convertPointsToGold();
                     } else if (action == 'q')    //convert score to gold
                     {
                         forcequite = true;
                     } else System.out.println("Wrong input, try again");
 
-                    gameStatus = Motor.getCurrentLevelStatus();
+                    gameStatus = motor.getCurrentLevelStatus();
                 } //while (!gameStatus.equals("lost") && !gameStatus.equals("win") && (!forcequite))
 
                 if (!forcequite)
                 {
                     if (gameStatus.equals("win"))
                     {
-                        Motor.getCurrentJoueur().getCompte().setUnlockLevel(Motor.getCurrentJoueur().getCompte().getUnlockLevel() + 1);
+                        motor.getCurrentJoueur().getCompte().setUnlockLevel(motor.getCurrentJoueur().getCompte().getUnlockLevel() + 1);
 
                         System.out.println("\n===========================================");
                         System.out.println("======= Congratulations, you win !! =======");
                         System.out.println("\n===========================================");
 
-                        afficheAccountInfo(Motor.getCurrentJoueur().getCompte());
+                        afficheAccountInfo(motor.getCurrentJoueur().getCompte());
                         printPlateau();
 
                         endLevel = isExit();
@@ -393,7 +368,7 @@ public class CliPrs
                         System.out.println("======= The level is lost. Try again.. =======");
                         System.out.println("\n==============================================");
 
-                        afficheAccountInfo(Motor.getCurrentJoueur().getCompte());
+                        afficheAccountInfo(motor.getCurrentJoueur().getCompte());
                         printPlateau();
 
                         endLevel = isExit();
@@ -401,15 +376,5 @@ public class CliPrs
                 }
             } //while (!endLevel)
         }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static void main (String[] args)
-    {
-        CliPrs jeu = new CliPrs();
-        jeu.consoleGame();
-        jeu.CliClose();
     }
 }

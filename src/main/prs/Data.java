@@ -1,6 +1,7 @@
 package prs;
 import java.awt.Image;
 import java.awt.Font;
+import prs.graphics.*;
 
 /**
 *{@summary Contain all data (images) that will be used by the graphic interface.}
@@ -16,6 +17,13 @@ public class Data {
   private static int nbrLevelAviable=4;
   private static Font font=new Font("FreeSans",Font.BOLD,60);
   private static int tailleDUneCase = 100;
+
+  private Frame frame;
+  private PanelMap pMap;
+  private PanelPlateau pPlateau;
+  private PanelGame pGame;
+  private PanelInfo pInfo;
+  private boolean clic;
   // CONSTRUCTORS --------------------------------------------------------------
 
   // GET SET -------------------------------------------------------------------
@@ -34,6 +42,25 @@ public class Data {
   public static int getNbrLevelAviable(){return nbrLevelAviable;}
   public static Font getFont(){return font;}
   public static int getTailleDUneCase(){return tailleDUneCase;}
+
+  public Frame getFrame(){return frame;}
+  public void setFrame(Frame f){frame=f;}
+  public PanelMap getPMap(){return pMap;}
+  public void setPMap(PanelMap p){pMap=p;}
+  public PanelPlateau getPPlateau(){return pPlateau;}
+  public void setPPlateau(PanelPlateau p){pPlateau=p;}
+  public PanelGame getPGame(){return pGame;}
+  public void setPGame(PanelGame p){pGame=p;}
+  public PanelInfo getPInfo(){return pInfo;}
+  public void setPInfo(PanelInfo p){pInfo=p;}
+
+
+  public boolean getClic(){return clic;}
+  public void setClic(boolean b){clic=b;}
+  public int getWidthMax(){return getFrame().getWidth();}
+  public int getHeightMax(){return getFrame().getHeight();}
+  //public void addPlateau(Plateau p){plateau=p;}
+  //public Plateau getPlateau(){return pPlateau.getPlateau();}
   // FUNCTIONS -----------------------------------------------------------------
 
   // SUB-CLASS -----------------------------------------------------------------

@@ -95,7 +95,7 @@ public class PanelPlateau extends JPanel implements MouseListener{
   //public class Listener implements MouseListener{
     public void mouseClicked(MouseEvent e){
         System.out.println("clic en "+e.getY()+" "+e.getX());//@a
-        jeu.getJeu().clicOnPlateau(e.getY(),e.getX()); // /!\ our x & y are revers to the java usualx & y.
+        jeu.clicOnPlateau(e.getY(),e.getX()); // /!\ our x & y are revers to the java usualx & y.
         //jeu.setClic(true);
         jeu.GUIClicAction();
         jeu.repaint();

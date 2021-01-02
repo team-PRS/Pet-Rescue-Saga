@@ -17,10 +17,11 @@ public class Jeu
     private int initialBlocs, initialAnimals, initialImmoBlocs, initialBombs, initialBallons;
     private int additionalBlocs, additionalAnimals, additionalBombs, additionalBallons;
     private Configuration configLevel;
+    private int level;
     private ArrayList<Joueur> gamers;
     private Compte compte;
-    private boolean IsGui;
-    private static Data data;
+    private static boolean IsGui;
+    //private static Data data;
 
 
     /*============================== Constructor & close function ===================================================*/
@@ -51,7 +52,11 @@ public class Jeu
     {
         saveUserAccountsToFile();
     }
-
+    /*============================== get set ==========================================================*/
+    public int getCurentLevel(){return level;}
+    public Plateau getPlateau(){return plateau;}
+    public Joueur getJoueur(){return joueur;}
+    public Compte getCompte(){return compte;}
     /*============================== User account functions ==========================================================*/
 
     /**
@@ -110,14 +115,18 @@ public class Jeu
 
 
     /*============================== Game board functions ============================================================*/
-
     /**
      * Recreate game board using current user level parameter.
      */
-    public void createPlateau()
+    public void createPlateau(){
+        createPlateau(joueur.getCompte().getUnlockLevel());
+    }
+    /**
+     * Recreate game board using the selected level.
+     */
+    public void createPlateau(int level)
     {
         // this helps create plateau in all cases cause getLevel check getUnlockLevel
-        int level = this.joueur.getCompte().getUnlockLevel();
 
         this.plateau = new Plateau(Integer.parseInt(this.configLevel.getLevelValue(level, "height")), Integer.parseInt(this.configLevel.getLevelValue(level, "width")));
 
@@ -367,6 +376,38 @@ public class Jeu
     }
 
 
+    /* ============================= Text Fonctions            ====================*/
+    public String showMessage(String request)
+    {
+        String message = "";
+
+        String l1 = "LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals ( @ )\n" +
+                "so they will go down and will be rescued";
+
+        String l2 = "LEVEL 2\nOn this level you can explode bombs ( * )\n" +
+                "to destroy the cubes surrounding. Animals will not lost.";
+
+        String l3 = "LEVEL 3\n         \n" +
+                "      ";
+
+        String l4 = "LEVEL 4\nGo ahead!";
+
+        String pr = "\nOne pet is rescued";
+        String haveAccount="Do you have an account ? y / n ";
+        String pseudo="Please enter your pseudo : ";
+
+        if (request.equals("level1")) {message = l1;}
+        else if (request.equals("level2")) {message = l2;}
+        else if (request.equals("level3")) {message = l3;}
+        else if (request.equals("level4")) {message = l4;}
+        else if (request.equals("petRescued")){message = pr;}
+        else if (request.equals("haveAccount")){message = haveAccount;}
+        else if (request.equals("pseudo")){message = pseudo;}
+
+        return message;
+    }
+
+
     /*============================== Private & internal functions ====================================================*/
     /**
      * check animal on the floor, rescue them and print message for each of them
@@ -428,6 +469,25 @@ public class Jeu
         catch (IOException | ClassNotFoundException e)
         {
             this.gamers = new ArrayList<Joueur>();
+        }
+    }
+    //============================================
+    /**
+    *Main funtion to launch game.
+    */
+    public static void main(String[] args) {
+        if(args.length>0 && args[0].equals("text")){
+            IsGui=false;
+        }else{
+            IsGui=true;
+        }
+        if(IsGui){
+            GuiPrs gui = new GuiPrs();
+            gui.GUIGame();
+        }else{
+            CliPrs jeu = new CliPrs();
+            jeu.consoleGame();
+            jeu.CliClose();
         }
     }
 }
