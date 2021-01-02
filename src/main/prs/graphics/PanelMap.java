@@ -50,7 +50,7 @@ public class PanelMap extends JPanel{
     public Button(){
       id=1+nbrButton++;
       setBounds(((id-1)*getDimX())/(Data.getNbrLevelAviable()+1),((id-1)*getDimY())/(Data.getNbrLevelAviable()+1),getDimX()/(2*Data.getNbrLevelAviable()),getDimY()/(2*Data.getNbrLevelAviable()));
-      setText(id+"");
+      setText(id+"  "+"score:"+jeu.getJeu().getJoueur().getCompte().getScore(id));
       setFont(Data.getFont());
       addMouseListener(this);
       setVisible(true);

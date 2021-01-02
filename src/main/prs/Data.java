@@ -17,7 +17,7 @@ public class Data {
   private static int screenDimX;
   private static int screenDimY;
   private static int nbrLevelAviable=4;
-  private static Font font=new Font("FreeSans",Font.BOLD,60);
+  private static Font font=new Font("FreeSans",Font.BOLD,30);
   private static int tailleDUneCase = 100;
 
   private Frame frame;
