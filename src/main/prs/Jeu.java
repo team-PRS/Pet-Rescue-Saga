@@ -338,7 +338,10 @@ public class Jeu
     }
 
     public boolean placeBallon(int x, int y){
-        if (this.plateau==null || getCompte().getBallon()>0){return false;}
+        System.out.println("try place ballon");//@a
+        System.out.println(getCompte().getBallon());//@a
+        if (this.plateau==null){return false;}
+        if(getCompte().getBallon() <= 0){return false;}
         // player has clicked on plateau
         if (plateau.isOnPlateau(x, y))
         {
@@ -348,10 +351,12 @@ public class Jeu
                 ObjectSurCase obj = plateau.getObject(x, y);
                 if (obj instanceof Bloc)
                 {
-                    plateau.setObject(new Ballon(),x,y);
+                    Ballon ballon = new Ballon();
+                    Bloc bloc = (Bloc)obj;
+                    ballon.setColor(bloc.getColorId());
+                    plateau.setObject(ballon,x,y);
+                    System.out.println("1 ballon have been place.");//@a
                 }
-            }else{
-                plateau.setObject(new Ballon(),x,y);
             }
         }
         getCompte().setBallon(getCompte().getBallon()-1);

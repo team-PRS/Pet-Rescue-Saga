@@ -16,7 +16,7 @@ public class PanelMap extends JPanel{
   private GuiPrs jeu;
   // CONSTRUCTORS --------------------------------------------------------------
   public PanelMap(GuiPrs j){
-      nbrButton = 0;
+    nbrButton = 0;
     setLayout(null);
     jeu=j;
     setBackground(new Color(255,255,255,200));

@@ -22,9 +22,11 @@ public class GuiPrs
     private static Data data;
     private Jeu motor;
     private Map map;
+    private boolean ballonToPlace;
 
     public GuiPrs(){
         motor = new Jeu(false);
+        ballonToPlace=false;
     }
 
     // GET SET -------------------------------------------------------------------
@@ -85,7 +87,7 @@ public class GuiPrs
         });
         getData().getPInfo().getPlaceBallon().addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                //...
+                ballonToPlace=true;
             }
         });
         getData().getPInfo().getBackToMap().addActionListener(new ActionListener(){
@@ -276,7 +278,12 @@ public class GuiPrs
     {
         if(x<0 || y<0){return;}
         //if(x>Data.getScreenDimX() || y>Data.getScreenDimY()){return;}
-        getJeu().pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
+        if(ballonToPlace){
+            getJeu().placeBallon(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
+            ballonToPlace=false;
+        }else{
+            getJeu().pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
+        }
         //TODO add a sound ?
     }
     public static void main(String[] args) {

@@ -54,8 +54,9 @@ public class PanelPlateau extends JPanel implements MouseListener{
           g.drawImage(jeu.getData().getAnimal(),yTemp,xTemp,this);
         }else if(plateau.getObject(j,i) instanceof Bomb){
           g.drawImage(jeu.getData().getBomb(),yTemp,xTemp,this);
-      }else if(plateau.getObject(j,i) instanceof Ballon){
-          g.drawImage(jeu.getData().getBallon(),yTemp,xTemp,this);
+        }else if(plateau.getObject(j,i) instanceof Ballon){
+            Ballon b = (Ballon) plateau.getObject(j,i);
+          drawballon(i,j,b.getColor2(),g);
         }
       }
     }
@@ -93,6 +94,13 @@ public class PanelPlateau extends JPanel implements MouseListener{
     g2d.drawLine(tc*(i+1),tc*j,tc*(i+1)-tc/8,tc*j+tc/8);
     g2d.setColor(new Color(255,255,255,50));
     g2d.drawLine(tc*(i+1),tc*(j+1),tc*(i+1)-tc/8,tc*(j+1)-tc/8);
+  }
+  public void drawballon(int i, int j, Color c, Graphics g){
+      int tc = jeu.getData().getTailleDUneCase();
+      g.setColor(c);
+      g.fillOval(tc*i+tc/10,tc*j,(tc*8)/10,(tc*9)/10);
+      g.setColor(Color.BLACK);
+      g.drawOval(tc*i+tc/10,tc*j,(tc*8)/10,(tc*9)/10);
   }
   //public class Listener implements MouseListener{
     public void mouseClicked(MouseEvent e){
