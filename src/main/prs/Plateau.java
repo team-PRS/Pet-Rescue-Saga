@@ -10,7 +10,7 @@ public class Plateau
     private ObjectSurCase[][] plateau;
     private boolean isOnFloor = false;
     private boolean isRescued = false;
-    private int nbrOfMaxColor = 5; //it can be 2,3,4 or 5.
+    private int nbrOfMaxColor = 2; //it can be 2,3,4 or 5.
 
     /*================================= Constructor ==============================*/
     public Plateau(int h, int w)
@@ -133,7 +133,7 @@ public class Plateau
         int ia = 0, ib=0, ic=0, id=0;
         // Set decoration (RANDOM mode)
         if (nmbImmoBlocs != 0)
-        { 
+        {
             for (int i = nmbImmoBlocs; i > 0; i--)
             {
                 while (nmbImmoBlocs - ia != 0)

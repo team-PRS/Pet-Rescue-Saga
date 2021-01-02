@@ -16,9 +16,11 @@ public class Compte implements Serializable{
   *{@summary Containt the score for every level.}
   *If score = -1 level is lock. If score = 0 level is unlock but not done yet. If score > 0 level have been done.
   */
-
-  private int points;
   private int [] levelScore;
+  /**
+  *Temporary point for the curent level
+  */
+  private int points;
   public static final int NUMBER_OF_LEVEL = 4;
   // CONSTRUCTEUR ---------------------------------------------------------------
   /**
@@ -57,15 +59,20 @@ public class Compte implements Serializable{
   public void unlockNextLevel(){
       unlockLevel(getLastUnlockLevel()+1);
   }
+  /**
+  *Save the point in score.
+  */
+  public void saveScore(int level){
+      setScore(level,points);
+      convertPointsToGold();
+  }
 
-  //------------------ Natalia's function to test serialisation --------------
-
-  public int getUnlockLevel() { return this.unlockLevel;}
+  /*public int getUnlockLevel() { return this.unlockLevel;}
 
   public void setUnlockLevel(int unlock)
   {
     this.unlockLevel = unlock;
-  }
+}*/
 
   public int getPoints(){return points;}
 
@@ -75,10 +82,6 @@ public class Compte implements Serializable{
   {
     return toString();
   }
-
-  // END-- Natalia's function to test serialisation --------------
-
-
 
  // //public void setUnlockLevel(int l){unlockLevel = l;}
  /**
@@ -140,5 +143,18 @@ public class Compte implements Serializable{
      levelScore[i]=0;
      return true;
    }return false;
+ }
+
+ public void convertPointsToGold()
+ {
+     if (points >= PointsPerGoldCoin)
+     {
+         setGold(getGold() + points/PointsPerGoldCoin);
+     }
+     else
+     {
+         System.out.println("Can't convert, too few points");
+     }
+     points = 0;
  }
 }

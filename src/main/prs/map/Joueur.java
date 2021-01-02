@@ -28,19 +28,6 @@ public class Joueur implements Serializable{
       this.compte.setBallon(this.compte.getBallon() + 1);
   }
 
-  public void convertPointsToGold()
-  {
-      int points = this.getCompte().getPoints();
-      if (points >= Compte.PointsPerGoldCoin)
-      {
-          this.getCompte().setPoints(this.getCompte().getPoints() - Compte.PointsPerGoldCoin);
-          this.getCompte().setGold(this.getCompte().getGold() + 1);
-      }
-      else
-      {
-        System.out.println("Can't convert, too few points");
-      }
-  }
 
   public void activateBallon()                                          // make -1 ballon in Compte
   {

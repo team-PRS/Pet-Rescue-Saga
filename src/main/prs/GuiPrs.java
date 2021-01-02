@@ -58,7 +58,7 @@ public class GuiPrs
     public boolean addPanelPlateau(){
       try {
         getData().setPPlateau(new PanelPlateau());
-        getJeu().createPlateau();
+        //getJeu().createPlateau();
         System.out.println("-----------------------");
         //getJeu().getPlateau().printMap();
         System.out.println(getJeu().getPlateau());//@a
@@ -212,6 +212,10 @@ public class GuiPrs
         rescue();*/
         repaint();
         getJeu().getPlateau().gameState();
+        endAction();
+    }
+    public void endAction(){
+        getJeu().endLevel();
         if (getJeu().getPlateau().gameState().equals("win"))
         {
             JOptionPane.showMessageDialog(getData().getFrame(),"Congratulations, you win !");
@@ -226,7 +230,6 @@ public class GuiPrs
         }
     }
     public void playOrExit(boolean play){
-        getJeu().getCompte().unlockNextLevel();
         getJeu().Close();
         if(play){
                 getData().getFrame().dispose();
@@ -251,7 +254,7 @@ public class GuiPrs
     }
     public void loadPlayerInfo(){
         //... TODO
-        getJeu().createPlateau();
+        //getJeu().createPlateau();
     }
     /**
      function that calculate coordinates of a click & launch pressCell

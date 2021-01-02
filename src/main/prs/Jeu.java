@@ -119,7 +119,7 @@ public class Jeu
      * Recreate game board using current user level parameter.
      */
     public void createPlateau(){
-        createPlateau(joueur.getCompte().getUnlockLevel());
+        createPlateau(joueur.getCompte().getLastUnlockLevel());
     }
     /**
      * Recreate game board using the selected level.
@@ -170,7 +170,7 @@ public class Jeu
 
 
     /**
-     * return game board width 
+     * return game board width
      * @return width
      */
     public int getPlateauWidth()
@@ -205,7 +205,7 @@ public class Jeu
         {
             return 0;
         }
-        
+
         return plateau.getAnimalsOnFloor().size();
     }
 
@@ -303,7 +303,7 @@ public class Jeu
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -371,7 +371,10 @@ public class Jeu
 
         return message;
     }
-
+    public void endLevel(){
+        getCompte().unlockNextLevel();
+        getCompte().saveScore(getCurentLevel());
+    }
 
     /*============================== Private & internal functions ====================================================*/
     /**

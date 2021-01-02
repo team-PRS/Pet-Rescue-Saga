@@ -50,7 +50,7 @@ public class PanelInfo extends JPanel{
     public void paintComponent(Graphics g){
       super.paintComponent(g);
       //setSize(200,60);
-      score.setText("score: "+compte.getScore(jeu.getJeu().getCurentLevel()));
+      score.setText("score: "+compte.getPoints());
       gold.setText("gold: "+compte.getGold());
       ballon.setText("ballon: "+compte.getBallon());
       addBallon.setText("Buy 1 ballon");
