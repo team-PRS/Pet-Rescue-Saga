@@ -29,11 +29,11 @@ public class Compte implements Serializable{
     this.ballon = 0;
     this.unlockLevel = 1;
     this.points = 0;
-   // levelScore = new int [NUMBER_OF_LEVEL];
-   // levelScore[0]=0; //1a level is unlocked
-   // for (int i=1;i<NUMBER_OF_LEVEL ;i++ ) {
-   //   levelScore[i]=-1;
-   // }
+    levelScore = new int [NUMBER_OF_LEVEL];
+    levelScore[0]=0; //1a level is unlocked
+    for (int i=1;i<NUMBER_OF_LEVEL ;i++ ) {
+      levelScore[i]=-1;
+    }
   }
  // // GET SET --------------------------------------------------------------------
   public int getGold(){ return gold;}
