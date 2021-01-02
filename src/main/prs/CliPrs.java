@@ -11,6 +11,9 @@ public class CliPrs
     private Scanner scanAnswer;
     private Jeu motor;
 
+
+    /*============================== Constructor & close function ====================================================*/
+
     public CliPrs()
     {
         this.scanAnswer = new Scanner(System.in);
@@ -23,12 +26,76 @@ public class CliPrs
         this.motor.Close();
     }
 
+    /*========================================= User Input ===========================================================*/
+
+
+    /**
+     * Ask that gamer want to do
+     */
+    public char askAction()
+    {
+        System.out.print("\nActions:\n" +
+                "a - activate your ballon\n" +
+                "b - buy the ballon /cost " + String.valueOf(Compte.ballonPrix) + " golds/\n" +
+                "c - click on the cell\n" +
+                "e - activate bomb\n" +
+                "g - convert score to gold /1 ingot = " + String.valueOf(Compte.PointsPerGoldCoin) + " points/\n" +
+                "q - quite game (q)\n" +
+                "Select (a/b/c/e/g/q):\n");
+        String Action = scanAnswer.next();
+        return Action.charAt(0);
+    }
+
+    /**
+     * Ask if gamer want to exit
+     */
+    public String askPlayOrExit()
+    {
+        System.out.print("Do you want exit or play ? (ex/pl)");
+        String answer = scanAnswer.next();
+        return answer.toLowerCase();
+    }
+
+
+    /*============================================= Output ===========================================================*/
+
+    /**
+     *  Bring the messages: level descriptions and if pet is rescued
+     *  @param request - is made in levelInfo
+     *  @return String - level description or message that pet was rescued
+     */
     public String showMessage(String request)
     {
         return motor.showMessage(request);
     }
 
-    public boolean wantPlay()                                           // first reception - want to play or not?
+    /**
+     *  Compose String level for function showMessage
+     *  @param l - number of current level
+     *  @return String - level#
+     */
+    public String levelInfo(int l)
+    {
+        return "level" + Integer.toString(l);
+    }
+
+    /**
+    *  Print current parameters of gamer's account {points, gold, ballon}
+    */
+    public void afficheAccountInfo(Compte userAccount)
+    {
+        System.out.println("\nPoints: " + userAccount.getPoints() + " / Gold: " + userAccount.getGold() +
+                " / Ballon: " + userAccount.getBallon());
+        System.out.println("");
+    }
+
+
+    /*======================================== Personal fonctions ====================================================*/
+
+    /**
+     * Administrate answers of gamer for start of game (if true - account administration and launch, il false - save and close program)
+     */
+    public boolean wantPlay()
     {
         boolean answer = false;
         boolean isCorrectAnswer = false;
@@ -49,8 +116,10 @@ public class CliPrs
         return answer;
     }
 
-
-    public void accountAdministration()                               // ask create or download account
+    /**
+     * Provides load of account from the list or creation of new account
+     */
+    public void accountAdministration()
     {
         final int CreateNewAccountId = 0;
         int Id = CreateNewAccountId;
@@ -82,7 +151,7 @@ public class CliPrs
 
             if (!bCorrupted)
             {
-                System.out.print("Please enter action nubmer:");
+                System.out.print("Please enter action number:");
                 while (true)
                 {
                     String strId = scanAnswer.next();
@@ -98,7 +167,7 @@ public class CliPrs
                         break;
                     } else
                     {
-                        System.out.print("numer error, value should be in range: [0 .. " + String.valueOf(gamers.size()) + "]");
+                        System.out.print("Number error, value should be in range: [0 .. " + String.valueOf(gamers.size()) + "]");
                         System.out.print("Please try again:");
                     }
                 }
@@ -182,25 +251,6 @@ public class CliPrs
         return new int[]{xCoord, yCoord};
     }
 
-    public char askAction()                                       // ask that gamer want to do
-    {
-        System.out.print("\nActions:\n" +
-                "a - activate your ballon\n" +
-                "b - buy the ballon /cost " + String.valueOf(Compte.ballonPrix) + " golds/\n" +
-                "c - click on the cell\n" +
-                "e - activate bomb\n" +
-                "g - convert score to gold /1 ingot = " + String.valueOf(Compte.PointsPerGoldCoin) + " points/\n" +
-                "q - quite game (q)\n" +
-                "Select (a/b/c/e/g/q):\n");
-        String Action = scanAnswer.next();
-        return Action.charAt(0);
-    }
-
-    public String levelInfo(int l)                              // compose level to call message level
-    {
-        return "level" + Integer.toString(l);
-    }
-
     public void printPlateau()		                            // print Plateau
     {
         //print y-scale
@@ -254,13 +304,9 @@ public class CliPrs
         }
     }
 
-    public String askPlayOrExit()                                // ask if gamer want to exit
-    {
-        System.out.print("Do you want exit or play ? (ex/pl)");
-        String answer = scanAnswer.next();
-        return answer.toLowerCase();
-    }
-
+    /**
+     * Administrate answers of gamer for end of level (if true - save and close program, it false - load next level)
+     */
     public boolean isExit()
     {
         boolean IsValid = false;
@@ -285,19 +331,13 @@ public class CliPrs
         return IsExit;
     }
 
-    public void afficheAccountInfo(Compte userAccount)
-    {
-        System.out.println("\nPoints: " + userAccount.getPoints() + " / Gold: " + userAccount.getGold() +
-                " / Ballon: " + userAccount.getBallon());
-        System.out.println("");
-    }
+    /*======================================= Key function ===========================================================*/
 
     /**
-     *
+     * Units together all functions of Console User Interface
      */
     public void consoleGame()
     {
-        // GUImode=false;
         if (wantPlay())
         {
             accountAdministration();

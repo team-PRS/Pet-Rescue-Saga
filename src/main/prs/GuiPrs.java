@@ -60,7 +60,7 @@ public class GuiPrs
         getData().setPPlateau(new PanelPlateau());
         getJeu().createPlateau();
         System.out.println("-----------------------");
-        getJeu().getPlateau().printMap();
+        //getJeu().getPlateau().printMap();
         System.out.println(getJeu().getPlateau());//@a
         getData().getPPlateau().setPlateau(getJeu().getPlateau());
         getData().setPInfo(new PanelInfo(getJeu().getCompte(),this));
