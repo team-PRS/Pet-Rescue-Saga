@@ -18,6 +18,7 @@ public class PanelInfo extends JPanel{
     private JLabel ballon;
     private JButton addBallon;
     private JButton placeBallon;
+    private JButton backToMap;
     //private JButton retry;
     private GuiPrs jeu;
     // CONSTRUCTORS --------------------------------------------------------------
@@ -30,11 +31,13 @@ public class PanelInfo extends JPanel{
         ballon = new JLabel();
         addBallon = new JButton();
         placeBallon = new JButton();
+        backToMap = new JButton();
         add(score);
         add(gold);
         add(ballon);
         add(addBallon);
         add(placeBallon);
+        add(backToMap);
         //font
         Font font = new Font("Arial",Font.BOLD,30);
         score.setFont(font);
@@ -42,10 +45,12 @@ public class PanelInfo extends JPanel{
         ballon.setFont(font);
         addBallon.setFont(font);
         placeBallon.setFont(font);
+        backToMap.setFont(font);
     }
     // GET SET -------------------------------------------------------------------
     public JButton getAddBallon(){return addBallon;}
     public JButton getPlaceBallon(){return placeBallon;}
+    public JButton getBackToMap(){return backToMap;}
     // FUNCTIONS -----------------------------------------------------------------
     public void paintComponent(Graphics g){
       super.paintComponent(g);
@@ -55,11 +60,13 @@ public class PanelInfo extends JPanel{
       ballon.setText("ballon: "+compte.getBallon());
       addBallon.setText("Buy 1 ballon");
       placeBallon.setText("Place 1 ballon");
+      backToMap.setText("abandon");
       int k=0;
       score.setLocation(0,40*k);k++;
       gold.setLocation(0,40*k);k++;
       ballon.setLocation(0,40*k);k++;
       addBallon.setLocation(0,40*k);k++;
       placeBallon.setLocation(0,40*k);k++;
+      backToMap.setLocation(0,40*k);k++;
     }
 }

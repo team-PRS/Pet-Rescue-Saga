@@ -52,8 +52,10 @@ public class PanelPlateau extends JPanel implements MouseListener{
           }
         }else if(plateau.getObject(j,i) instanceof Animal){
           g.drawImage(jeu.getData().getAnimal(),yTemp,xTemp,this);
-        }else if(plateau.getObject(j,i) instanceof Outil){
-          //g.drawImage(...);
+        }else if(plateau.getObject(j,i) instanceof Bomb){
+          g.drawImage(jeu.getData().getBomb(),yTemp,xTemp,this);
+      }else if(plateau.getObject(j,i) instanceof Ballon){
+          g.drawImage(jeu.getData().getBallon(),yTemp,xTemp,this);
         }
       }
     }

@@ -23,8 +23,7 @@ public class GuiPrs
     private Jeu motor;
     private Map map;
 
-    public GuiPrs()
-    {
+    public GuiPrs(){
         motor = new Jeu(false);
     }
 
@@ -34,6 +33,9 @@ public class GuiPrs
     public Jeu getJeu(){return motor;}
 
     /*============================= graphics functions ==========================*/
+    /**
+    *Add main window.
+    */
     public boolean addFrame(){
       try {
         getData().setFrame(new Frame());
@@ -42,6 +44,9 @@ public class GuiPrs
         return false;
       }
     }
+    /**
+    *Add a Panel to alowed player to choose a level.
+    */
     public boolean addPanelMap(){
       try {
         getData().setPMap(new PanelMap(this));
@@ -58,10 +63,6 @@ public class GuiPrs
     public boolean addPanelPlateau(){
       try {
         getData().setPPlateau(new PanelPlateau());
-        //getJeu().createPlateau();
-        System.out.println("-----------------------");
-        //getJeu().getPlateau().printMap();
-        System.out.println(getJeu().getPlateau());//@a
         getData().getPPlateau().setPlateau(getJeu().getPlateau());
         getData().setPInfo(new PanelInfo(getJeu().getCompte(),this));
         getData().setPGame(new PanelGame(getData().getPPlateau(),getData().getPInfo()));
@@ -85,6 +86,13 @@ public class GuiPrs
         getData().getPInfo().getPlaceBallon().addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 //...
+            }
+        });
+        getData().getPInfo().getBackToMap().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                getJeu().endLevelLost();
+                JOptionPane.showMessageDialog(getData().getFrame(),"The level is lost. Try again.. ");
+                playOrExit(true);
             }
         });
     }
@@ -113,33 +121,37 @@ public class GuiPrs
         img = img.getScaledInstance(getData().getWidthMax(),getData().getHeightMax() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
         getData().setPMapImg(img);
-      }catch (Exception e) {
-        ok=false;
-      }
+      }catch (Exception e) {ok=false;}
       img = image.getImage("background2.jpg");
       try {
         img = img.getScaledInstance(getData().getWidthMax(),getData().getHeightMax() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
         getData().setPPlateauImg(img);
-      }catch (Exception e) {
-        ok=false;
-      }
+      }catch (Exception e) {ok=false;}
       img = image.getImage("animal.jpg");
       try {
         img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
         getData().setAnimal(img);
-      }catch (Exception e) {
-        ok=false;
-      }
+      }catch (Exception e) {ok=false;}
       img = image.getImage("inmovable.jpg");
       try {
         img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
         getData().setInmovable(img);
-      }catch (Exception e) {
-        ok=false;
-      }
+      }catch (Exception e) {ok=false;}
+      img = image.getImage("bomb.jpg");
+      try {
+        img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
+        if(img==null){throw new NullPointerException();}
+        getData().setBomb(img);
+      }catch (Exception e) {ok=false;}
+      img = image.getImage("ballons.jpg");
+      try {
+        img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
+        if(img==null){throw new NullPointerException();}
+        getData().setBallon(img);
+      }catch (Exception e) {ok=false;}
       return ok;
     }
     public void repaint(){
@@ -224,7 +236,7 @@ public class GuiPrs
         }
         else if (getJeu().getPlateau().gameState().equals("lost"))
         {
-            getJeu().endLevel();
+            getJeu().endLevelLost();
             JOptionPane.showMessageDialog(getData().getFrame(),"The level is lost. Try again.. ");
             int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to try again ?");
             playOrExit(answer==0);
@@ -250,9 +262,9 @@ public class GuiPrs
     public void showMessageGUI(String key){
         JOptionPane.showMessageDialog(getData().getFrame(),getJeu().showMessage(key));
     }
-    public void finish() {
+    /*public void finish() {
         getData().getFrame().dispose();
-    }
+    }*/
     public void loadPlayerInfo(){
         //... TODO
         //getJeu().createPlateau();
@@ -266,14 +278,6 @@ public class GuiPrs
         //if(x>Data.getScreenDimX() || y>Data.getScreenDimY()){return;}
         getJeu().pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
         //TODO add a sound ?
-    }
-
-    //---------------------
-    public static void main (String[] args)
-    {
-        GuiPrs gui = new GuiPrs();
-        gui.GUIGame();
-        //gui.CliClose();
     }
 
 }

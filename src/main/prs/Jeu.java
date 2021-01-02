@@ -374,7 +374,9 @@ public class Jeu
     public void endLevel(){
         getCompte().unlockNextLevel();
         getCompte().saveScore(getCurentLevel());
-        System.out.println(getCompte());//@a
+    }
+    public void endLevelLost(){
+        getCompte().saveScore(getCurentLevel());
     }
 
     /*============================== Private & internal functions ====================================================*/

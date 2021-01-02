@@ -12,6 +12,8 @@ public class Data {
   private Image pPlateauImg;
   private Image animal;
   private Image inmovable;
+  private Image bomb;
+  private Image ballon;
   private static int screenDimX;
   private static int screenDimY;
   private static int nbrLevelAviable=4;
@@ -35,6 +37,10 @@ public class Data {
   public void setAnimal(Image i){animal = i;}
   public Image getInmovable(){return inmovable;}
   public void setInmovable(Image i){inmovable = i;}
+  public Image getBomb(){return bomb;}
+  public void setBomb(Image i){bomb = i;}
+  public Image getBallon(){return ballon;}
+  public void setBallon(Image i){ballon = i;}
   public static int getScreenDimX(){return screenDimX;}
   public static void setScreenDimX(int x){screenDimX=x;}
   public static int getScreenDimY(){return screenDimY;}
