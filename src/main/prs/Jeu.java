@@ -126,6 +126,7 @@ public class Jeu
      */
     public void createPlateau(int level)
     {
+        this.level=level;
         // this helps create plateau in all cases cause getLevel check getUnlockLevel
 
         this.plateau = new Plateau(Integer.parseInt(this.configLevel.getLevelValue(level, "height")), Integer.parseInt(this.configLevel.getLevelValue(level, "width")));
@@ -222,11 +223,10 @@ public class Jeu
      */
     public boolean pressCell(int x, int y)
     {
-        if (null == this.plateau)
+        if (this.plateau==null)
         {
             return false;
         }
-
         // player has clicked on plateau
         if (plateau.isOnPlateau(x, y))
         {
@@ -374,6 +374,7 @@ public class Jeu
     public void endLevel(){
         getCompte().unlockNextLevel();
         getCompte().saveScore(getCurentLevel());
+        System.out.println(getCompte());//@a
     }
 
     /*============================== Private & internal functions ====================================================*/

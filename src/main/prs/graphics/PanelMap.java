@@ -12,10 +12,11 @@ import java.awt.Color;
 {@summary Represent the map on the Frame.}
 */
 public class PanelMap extends JPanel{
-  private int nbrButton = 0;
+  private int nbrButton;
   private GuiPrs jeu;
   // CONSTRUCTORS --------------------------------------------------------------
   public PanelMap(GuiPrs j){
+      nbrButton = 0;
     setLayout(null);
     jeu=j;
     setBackground(new Color(255,255,255,200));
@@ -26,14 +27,16 @@ public class PanelMap extends JPanel{
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
     super.paintComponent(g);
-    System.out.println("paint map");//@a
     if(jeu.getData().getPMapImg() != null){
-        System.out.println("paint map with image");//@a
       g.drawImage(jeu.getData().getPMapImg(),0,0,this);
     }
   }
   public void addLevel(){
-    add(new Button());
+      int nbrDeLevelAPrint=jeu.getJeu().getCompte().getLastUnlockLevel();
+      while(nbrDeLevelAPrint>0){
+          add(new Button());
+          nbrDeLevelAPrint--;
+      }
   }
   public int getDimX(){return getWidth();}
   public int getDimY(){return getHeight();}

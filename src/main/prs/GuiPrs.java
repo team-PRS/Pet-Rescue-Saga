@@ -215,15 +215,16 @@ public class GuiPrs
         endAction();
     }
     public void endAction(){
-        getJeu().endLevel();
         if (getJeu().getPlateau().gameState().equals("win"))
         {
+            getJeu().endLevel();
             JOptionPane.showMessageDialog(getData().getFrame(),"Congratulations, you win !");
             int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to replay ?");
             playOrExit(answer==0);
         }
         else if (getJeu().getPlateau().gameState().equals("lost"))
         {
+            getJeu().endLevel();
             JOptionPane.showMessageDialog(getData().getFrame(),"The level is lost. Try again.. ");
             int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to try again ?");
             playOrExit(answer==0);
