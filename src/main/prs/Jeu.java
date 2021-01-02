@@ -395,7 +395,9 @@ public class Jeu
         return message;
     }
     public void endLevel(){
-        getCompte().unlockNextLevel();
+        if(getCurentLevel()==getCompte().getLastUnlockLevel()){
+            getCompte().unlockNextLevel();
+        }
         getCompte().saveScore(getCurentLevel());
     }
     public void endLevelLost(){
