@@ -19,7 +19,7 @@ public class Jeu
     private Configuration configLevel;
     private int level;
     private ArrayList<Joueur> gamers;
-    private Compte compte;
+    //private Compte compte;
     private static boolean IsGui;
     //private static Data data;
 
@@ -35,7 +35,7 @@ public class Jeu
     {
         this.configLevel = new Configuration("config.txt");
         this.joueur = new Joueur();
-        this.compte = joueur.getCompte();
+        //this.compte = joueur.getCompte();
         this.IsGui = IsGui;
 
         this.plateau = null;
@@ -56,7 +56,7 @@ public class Jeu
     public int getCurentLevel(){return level;}
     public Plateau getPlateau(){return plateau;}
     public Joueur getJoueur(){return joueur;}
-    public Compte getCompte(){return compte;}
+    public Compte getCompte(){return getJoueur().getCompte();}
     /*============================== User account functions ==========================================================*/
 
     /**
@@ -88,14 +88,14 @@ public class Jeu
     {
         this.joueur = account;
 
-        if (null != account)
+        /*if (null != account)
         {
             //set link to compte
-            this.compte = this.joueur.getCompte();
+            //this.compte = this.joueur.getCompte();
         } else
         {
-            this.compte = null;
-        }
+            //this.compte = null;
+        }*/
     }
 
     /**
@@ -109,7 +109,7 @@ public class Jeu
         this.joueur = newRecord;
         this.joueur.setPseudo(name);
         //set link to compte
-        this.compte = this.joueur.getCompte();
+        //this.compte = this.joueur.getCompte();
         this.gamers.add(this.joueur);
     }
 
@@ -223,10 +223,7 @@ public class Jeu
      */
     public boolean pressCell(int x, int y)
     {
-        if (this.plateau==null)
-        {
-            return false;
-        }
+        if (this.plateau==null){return false;}
         // player has clicked on plateau
         if (plateau.isOnPlateau(x, y))
         {
@@ -338,6 +335,27 @@ public class Jeu
         plateau.shiftLeft();
         rescue();
         plateau.shiftLeft();
+    }
+
+    public boolean placeBallon(int x, int y){
+        if (this.plateau==null || getCompte().getBallon()>0){return false;}
+        // player has clicked on plateau
+        if (plateau.isOnPlateau(x, y))
+        {
+            // not empty cell
+            if (!plateau.isEmpty(x, y) && plateau.getObject(x,y)!=null)
+            {
+                ObjectSurCase obj = plateau.getObject(x, y);
+                if (obj instanceof Bloc)
+                {
+                    plateau.setObject(new Ballon(),x,y);
+                }
+            }else{
+                plateau.setObject(new Ballon(),x,y);
+            }
+        }
+        getCompte().setBallon(getCompte().getBallon()-1);
+        return true;
     }
 
 
