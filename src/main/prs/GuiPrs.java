@@ -279,5 +279,8 @@ public class GuiPrs
         getJeu().pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
         //TODO add a sound ?
     }
-
+    public static void main(String[] args) {
+        GuiPrs gui = new GuiPrs();
+        gui.GUIGame();
+    }
 }

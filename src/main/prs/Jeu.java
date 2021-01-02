@@ -446,7 +446,7 @@ public class Jeu
     /**
     *Main funtion to launch game.
     */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         if(args.length>0 && args[0].equals("text")){
             IsGui=false;
         }else{
@@ -460,5 +460,5 @@ public class Jeu
             jeu.consoleGame();
             jeu.CliClose();
         }
-    }
+    }*/
 }

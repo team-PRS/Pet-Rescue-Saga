@@ -417,4 +417,9 @@ public class CliPrs
             } //while (!endLevel)
         }
     }
+    public static void main(String[] args) {
+        CliPrs jeu = new CliPrs();
+        jeu.consoleGame();
+        jeu.CliClose();
+    }
 }
