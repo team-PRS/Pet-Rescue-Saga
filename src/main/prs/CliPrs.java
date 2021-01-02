@@ -39,7 +39,7 @@ public class CliPrs
                 "b - buy the ballon /cost " + String.valueOf(Compte.ballonPrix) + " golds/\n" +
                 "c - click on the cell\n" +
                 "e - activate bomb\n" +
-                //"g - convert score to gold /1 ingot = " + String.valueOf(Compte.PointsPerGoldCoin) + " points/\n" +
+                "g - convert score to gold /1 ingot = " + String.valueOf(Compte.PointsPerGoldCoin) + " points/\n" +
                 "q - quite game (q)\n" +
                 "Select (a/b/c/e/g/q):\n");
         String Action = scanAnswer.next();
@@ -375,10 +375,10 @@ public class CliPrs
                     {
                         int[] coord = askCoordinates();
                         motor.bombExplosion(coord[0], coord[1]);
-                    }/* else if (action == 'g')    //convert score to gold
+                    } else if (action == 'g')    //convert score to gold
                     {
                         motor.getCompte().saveScore(motor.getCurentLevel());
-                    } */else if (action == 'q')    //convert score to gold
+                    } else if (action == 'q')    //convert score to gold
                     {
                         forcequite = true;
                     } else System.out.println("Wrong input, try again");
