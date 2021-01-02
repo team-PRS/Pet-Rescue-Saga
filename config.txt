@@ -60,6 +60,25 @@ L3_additionalBallons=2
 
 ------------ Level 4 --------------------
 
+L4_height=10
+L4_width=15
+
+L4_initialBlocs=100
+L4_initialAnimals=7
+L4_initialImmoBlocs=8
+L4_initialBombs=5
+L4_initialBallons=5
+
+L4_addBlocs=true
+L4_addAnimals=false
+L4_addBombs=false
+L4_addBallons=true
+
+L4_additionalBlocs=53
+L4_additionalAnimals=0
+L4_additionalBombs=0
+L4_additionalBallons=2
+
 
 probability of remplissage can be added as parametre
 now it is 80% (blocs) + 10&(ballons) + 10%(animals)
