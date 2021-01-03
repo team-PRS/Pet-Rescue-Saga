@@ -362,14 +362,13 @@ public class GuiPrs
         int clic=0;
         while(clic < 5000){
             if(getJeu().getPlateau().gameState().equals("win")){
-                endAction(true);
+                endAction(true); //special Gui part
             }
             int x = new Random().nextInt(getJeu().getPlateau().getHeight() - 1);
             int y = new Random().nextInt(getJeu().getPlateau().getWidth() - 1);
             if(getJeu().pressCell(x,y)){
-                System.out.println("1 clic done");
                 clic=0;
-                paintAll();
+                paintAll(); //special Gui part
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ie) {
@@ -378,7 +377,7 @@ public class GuiPrs
             }
             clic++;
         }
-        endAction(false);
+        endAction(false); //special Gui part
     }
 
 
