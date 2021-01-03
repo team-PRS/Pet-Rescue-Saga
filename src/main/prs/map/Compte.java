@@ -156,11 +156,11 @@ public class Compte implements Serializable{
      if (points >= PointsPerGoldCoin)
      {
          setGold(getGold() + points/PointsPerGoldCoin);
+         this.setPoints(this.points%PointsPerGoldCoin);
      }
      else
      {
          System.out.println("Can't convert, too few points");
      }
-     points = 0;
  }
 }

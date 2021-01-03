@@ -819,9 +819,10 @@ public class Plateau
 
     /*================================= MAIN ==============================*/
 
-  //  public static void main(String[] args)
+   // public static void main(String[] args)
   //
-  //  {
+ //   {
+
   //      Plateau test1 = new Plateau(5, 5);
   //
   //      test1.remplirPlateau(3, 34, 4, 1);

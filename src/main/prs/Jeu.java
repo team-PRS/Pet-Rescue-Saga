@@ -21,7 +21,6 @@ public class Jeu
     private ArrayList<Joueur> gamers;
     //private Compte compte;
     private static boolean IsGui;
-    //private static Data data;
 
 
     /*============================== Constructor & close function ===================================================*/
@@ -52,11 +51,17 @@ public class Jeu
     {
         saveUserAccountsToFile();
     }
+
     /*============================== get set ==========================================================*/
     public int getCurentLevel(){return level;}
+
     public Plateau getPlateau(){return plateau;}
+
     public Joueur getJoueur(){return joueur;}
+
     public Compte getCompte(){return getJoueur().getCompte();}
+
+
     /*============================== User account functions ==========================================================*/
 
     /**
@@ -104,6 +109,7 @@ public class Jeu
             //this.compte = null;
         }*/
     }
+    
     public void selectJoueur(String pseudo)
     {
         for (Joueur j : gamers) {
@@ -131,12 +137,14 @@ public class Jeu
 
 
     /*============================== Game board functions ============================================================*/
+
     /**
      * Recreate game board using current user level parameter.
      */
     public void createPlateau(){
         createPlateau(joueur.getCompte().getLastUnlockLevel());
     }
+
     /**
      * Recreate game board using the selected level.
      */
@@ -165,28 +173,6 @@ public class Jeu
     }
 
     /**
-     * return object on game board
-     *
-     * @return game object {Bloc, Bomb, Ballon, Animal}
-     */
-    public ObjectSurCase getCell(int x, int y)
-    {
-        return plateau.getObject(x, y);
-    }
-
-
-    /**
-     * return current level status
-     *
-     * @return level status {lost, win, continue}
-     */
-    public String getCurrentLevelStatus()
-    {
-        return plateau.gameState();
-    }
-
-
-    /**
      * return game board width
      * @return width
      */
@@ -213,6 +199,28 @@ public class Jeu
     }
 
     /**
+     * return object on game board
+     *
+     * @return game object {Bloc, Bomb, Ballon, Animal}
+     */
+    public ObjectSurCase getCell(int x, int y)
+    {
+        return plateau.getObject(x, y);
+    }
+
+
+    /**
+     * return current level status
+     *
+     * @return level status {lost, win, continue}
+     */
+    public String getCurrentLevelStatus()
+    {
+        return plateau.gameState();
+    }
+
+
+    /**
      * return count of animals on the board. Application may monitor this value to detect when animals get rescued
      * @return animals count
      */
@@ -222,7 +230,6 @@ public class Jeu
         {
             return 0;
         }
-
         return plateau.getAnimalsOnFloor().size();
     }
 
@@ -356,6 +363,11 @@ public class Jeu
         plateau.shiftLeft();
     }
 
+
+    //TODO WHERE IS YOUR PLACE?
+    /* ========================================================================================================*/
+
+
     public boolean placeBallon(int x, int y){
         System.out.println("try place ballon");//@a
         System.out.println(getCompte().getBallon());//@a
@@ -382,46 +394,22 @@ public class Jeu
         return true;
     }
 
-
-    /* ============================= Text Fonctions            ====================*/
-    public String showMessage(String request)
-    {
-        String message = "";
-
-        String l1 = "LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals ( @ )\n" +
-                "so they will go down and will be rescued";
-
-        String l2 = "LEVEL 2\nOn this level you can explode bombs ( * )\n" +
-                "to destroy the cubes surrounding. Animals will not lost.";
-
-        String l3 = "LEVEL 3\n         \n" +
-                "      ";
-
-        String l4 = "LEVEL 4\nGo ahead!";
-
-        String pr = "\nOne pet is rescued";
-        String haveAccount="Do you have an account ? y / n ";
-        String pseudo="Please enter your pseudo : ";
-
-        if (request.equals("level1")) {message = l1;}
-        else if (request.equals("level2")) {message = l2;}
-        else if (request.equals("level3")) {message = l3;}
-        else if (request.equals("level4")) {message = l4;}
-        else if (request.equals("petRescued")){message = pr;}
-        else if (request.equals("haveAccount")){message = haveAccount;}
-        else if (request.equals("pseudo")){message = pseudo;}
-
-        return message;
-    }
     public void endLevel(){
         if(getCurentLevel()==getCompte().getLastUnlockLevel()){
             getCompte().unlockNextLevel();
         }
-        getCompte().saveScore(getCurentLevel(),true);
+        getCompte().saveScore(getCurentLevel(),true);               //TODO Here the
+        getCompte().setPoints(getCompte().getPoints());
+
+
     }
+
     public void endLevelLost(){
         getCompte().saveScore(getCurentLevel(),false);
     }
+
+
+
 
     /*============================== Private & internal functions ====================================================*/
     /**
@@ -467,7 +455,6 @@ public class Jeu
         }
     }
 
-
     /**
      * load list of players from binary file
      */
@@ -486,18 +473,5 @@ public class Jeu
             this.gamers = new ArrayList<Joueur>();
         }
     }
-    //============================================
-    /**
-    *Main funtion to launch game.
-    */
-    /*public static void main(String[] args) {
-        if(IsGui){
-            GuiPrs gui = new GuiPrs();
-            gui.GUIGame();
-        }else{
-            CliPrs jeu = new CliPrs();
-            jeu.consoleGame();
-            jeu.CliClose();
-        }
-    }*/
+
 }

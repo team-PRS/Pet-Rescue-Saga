@@ -56,13 +56,13 @@ public class PanelInfo extends JPanel{
       setLocation2();
     }
     private void setText2(){
-        score.setText("score: "+compte.getPoints());
-        gold.setText("gold: "+compte.getGold());
-        ballon.setText("ballon: "+compte.getBallon());
+        score.setText("Points : "+compte.getPoints());
+        gold.setText("Gold : "+compte.getGold());
+        ballon.setText("Ballon : "+compte.getBallon());
         addBallon.setText("Buy 1 ballon");
         placeBallon.setText("Place 1 ballon");
-        backToMap.setText("abandon");
-        iaFinish.setText("let's AI end level.");
+        backToMap.setText("Abandon");
+        iaFinish.setText("Bot's game");
     }
     private void setLocation2(){
         int k=0;

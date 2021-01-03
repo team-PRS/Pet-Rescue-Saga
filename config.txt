@@ -3,7 +3,7 @@ L1_height=7
 L1_width=7
 
 L1_initialBlocs=38
-L1_initialAnimals=5
+L1_initialAnimals=4
 L1_initialImmoBlocs=0
 L1_initialBombs=0
 L1_initialBallons=0
@@ -23,7 +23,7 @@ L2_height=10
 L2_width=10
 
 L2_initialBlocs=58
-L2_initialAnimals=3
+L2_initialAnimals=5
 L2_initialImmoBlocs=4
 L2_initialBombs=2
 L2_initialBallons=0
@@ -44,7 +44,7 @@ L3_width=10
 
 L3_initialBlocs=58
 L3_initialAnimals=5
-L3_initialImmoBlocs=4
+L3_initialImmoBlocs=6
 L3_initialBombs=0
 L3_initialBallons=2
 

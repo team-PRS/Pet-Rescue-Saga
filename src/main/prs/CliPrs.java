@@ -28,6 +28,53 @@ public class CliPrs
 
     /*========================================= User Input ===========================================================*/
 
+    private String askPseudo()
+    {
+        System.out.print("Please enter your pseudo : ");
+        String nameJoueur = scanAnswer.next();
+        return nameJoueur;
+    }
+
+    public int[] askCoordinates()
+    {
+        boolean IsValid = false;
+        int xCoord = 0; int yCoord = 0;
+
+        String CoordStr;
+        System.out.print("\nIn which cell do you want to play now? (Exemple: b3) : ");
+
+        while(!IsValid)
+        {
+            CoordStr = scanAnswer.next();
+            if (CoordStr.length() >= 2)
+            {
+                int input = CoordStr.charAt(0) - 'a';                    // -'a' because all loops started by 0
+                for (int i = 0; i < motor.getPlateauHeight(); i++)
+                {
+                    if (input == i)
+                    {
+                        xCoord = input;
+                        IsValid = true;
+                        break;
+                    }
+                }
+
+                if (IsValid)
+                {
+                    yCoord = Integer.parseInt(CoordStr.substring(1)) - 1;  // -1 because all loops started by 0, but table markings by 1
+                    if ((yCoord < 0) && (yCoord >= motor.getPlateauWidth()))
+                    {
+                        IsValid = false;
+                    }
+                }
+            }
+            if (!IsValid)
+            {
+                System.out.print("wrong input, try again (Exemple: b3) : ");
+            }
+        }
+        return new int[]{xCoord, yCoord};
+    }
 
     /**
      * Ask that gamer want to do
@@ -57,7 +104,7 @@ public class CliPrs
     }
 
 
-    /*============================================= Output ===========================================================*/
+    /*========================================== User Output =========================================================*/
 
     /**
      *  Bring the messages: level descriptions and if pet is rescued
@@ -66,7 +113,30 @@ public class CliPrs
      */
     public String showMessage(String request)
     {
-        return motor.showMessage(request);
+        String message = "";
+
+        String l1 = "LEVEL 1\n " +
+                            "Try to eliminate the groups of blocs ( represented by greek letters )" +
+                            " of the same color under animals ( represented by @ )\n" +
+                    "so they will go down and will be rescued.";
+
+        String l2 = "LEVEL 2\nOn this level you can explode bombs ( represented by * )\n" +
+                            "to destroy the cubes surrounding. Animals will not lost in this case.\n" +
+                            "There are also immovable obstacles ( represented by ≡ )";
+
+        String l3 = "LEVEL 3\\nGood luck !! ";
+
+        String l4 = "LEVEL 4\nGo ahead !!";
+
+        String pr = "\nOne pet is rescued";
+
+        if (request.equals("level1")) {message = l1;}
+        else if (request.equals("level2")) {message = l2;}
+        else if (request.equals("level3")) {message = l3;}
+        else if (request.equals("level4")) {message = l4;}
+        else if (request.equals("petRescued")) {message = pr;}
+        
+        return message;
     }
 
     /**
@@ -89,8 +159,63 @@ public class CliPrs
         System.out.println("");
     }
 
+    /**
+     *  Print game board
+     */
+    public void printPlateau()
+    {
+        //print y-scale
+        System.out.print("  | ");
+        for (int k = 0; k < motor.getPlateauHeight(); k++)
+        {
+            System.out.print(" " + (k + 1) + " ");
+        }
+        System.out.println("");
+        System.out.print("-----");
+        for (int l = 0; l < motor.getPlateauWidth(); l++)
+        {
+            System.out.print("---");
+        }
+        System.out.println("");
 
-    /*======================================== Personal fonctions ====================================================*/
+        //print table
+        for (int i = 0; i < motor.getPlateauHeight(); i++)
+        {
+            char ch = (char) ('a' + i);
+            System.out.print(ch + " | ");
+
+            for (int j = 0; j < motor.getPlateauWidth(); j++)
+            {
+                ObjectSurCase obj = motor.getCell(i, j);
+                if (obj instanceof Bloc)
+                {
+                    if (((Bloc) obj).getColor() == "NONE")
+                        System.out.print(" ≡ ");
+                    else if (((Bloc) obj).getColor() == "BLUE")
+                        System.out.print(" α ");
+                    else if (((Bloc) obj).getColor() == "YELLOW")
+                        System.out.print(" β ");
+                    else if (((Bloc) obj).getColor() == "RED")
+                        System.out.print(" γ ");
+                    else if (((Bloc) obj).getColor() == "GREEN")
+                        System.out.print(" δ ");
+                    else
+                        System.out.print(" ε ");
+                }
+                else if (obj instanceof Bomb)
+                    System.out.print(" * ");
+                else if (obj instanceof Ballon)
+                    System.out.print(" օ ");
+                else if (obj instanceof Animal)
+                    System.out.print(" @ ");
+                else
+                    System.out.print(" - ");
+            }
+            System.out.println("");
+        }
+    }
+
+    /*======================================== Personal functions ====================================================*/
 
     /**
      * Administrate answers of gamer for start of game (if true - account administration and launch, il false - save and close program)
@@ -203,106 +328,6 @@ public class CliPrs
 
     }
 
-    private String askPseudo()
-    {
-        System.out.print("Please enter your pseudo : ");
-        String nameJoueur = scanAnswer.next();
-        return nameJoueur;
-    }
-
-    public int[] askCoordinates()
-    {
-        boolean IsValid = false;
-        int xCoord = 0; int yCoord = 0;
-
-        String CoordStr;
-        System.out.print("\nIn which cell do you want to play now? (Exemple: b3) : ");
-
-        while(!IsValid)
-        {
-            CoordStr = scanAnswer.next();
-            if (CoordStr.length() >= 2)
-            {
-                int input = CoordStr.charAt(0) - 'a';                    // -'a' because all loops started by 0
-                for (int i = 0; i < motor.getPlateauHeight(); i++)
-                {
-                    if (input == i)
-                    {
-                        xCoord = input;
-                        IsValid = true;
-                        break;
-                    }
-                }
-
-                if (IsValid)
-                {
-                    yCoord = Integer.parseInt(CoordStr.substring(1)) - 1;  // -1 because all loops started by 0, but table markings by 1
-                    if ((yCoord < 0) && (yCoord >= motor.getPlateauWidth()))
-                    {
-                        IsValid = false;
-                    }
-                }
-            }
-            if (!IsValid)
-            {
-                System.out.print("wrong input, try again (Exemple: b3) : ");
-            }
-        }
-        return new int[]{xCoord, yCoord};
-    }
-
-    public void printPlateau()		                            // print Plateau
-    {
-        //print y-scale
-        System.out.print("  | ");
-        for (int k = 0; k < motor.getPlateauHeight(); k++)
-        {
-            System.out.print(" " + (k + 1) + " ");
-        }
-        System.out.println("");
-        System.out.print("-----");
-        for (int l = 0; l < motor.getPlateauWidth(); l++)
-        {
-            System.out.print("---");
-        }
-        System.out.println("");
-
-        //print table
-        for (int i = 0; i < motor.getPlateauHeight(); i++)
-        {
-            char ch = (char) ('a' + i);
-            System.out.print(ch + " | ");
-
-            for (int j = 0; j < motor.getPlateauWidth(); j++)
-            {
-                ObjectSurCase obj = motor.getCell(i, j);
-                if (obj instanceof Bloc)
-                {
-                    if (((Bloc) obj).getColor() == "NONE")
-                        System.out.print(" + ");
-                    else if (((Bloc) obj).getColor() == "BLUE")
-                        System.out.print(" α ");
-                    else if (((Bloc) obj).getColor() == "YELLOW")
-                        System.out.print(" β ");
-                    else if (((Bloc) obj).getColor() == "RED")
-                        System.out.print(" γ ");
-                    else if (((Bloc) obj).getColor() == "GREEN")
-                        System.out.print(" δ ");
-                    else
-                        System.out.print(" ε ");
-                }
-                else if (obj instanceof Bomb)
-                    System.out.print(" * ");
-                else if (obj instanceof Ballon)
-                    System.out.print(" օ ");
-                else if (obj instanceof Animal)
-                    System.out.print(" @ ");
-                else
-                    System.out.print(" - ");
-            }
-            System.out.println("");
-        }
-    }
 
     /**
      * Administrate answers of gamer for end of level (if true - save and close program, it false - load next level)
@@ -331,6 +356,7 @@ public class CliPrs
         return IsExit;
     }
 
+
     /*======================================= Key function ===========================================================*/
 
     /**
@@ -349,11 +375,13 @@ public class CliPrs
                 System.out.println(showMessage(levelInfo(motor.getCurrentJoueur().getCompte().getLastUnlockLevel())));
                 System.out.println("");
                 motor.createPlateau();
+
                 gameStatus = "continue";
 
                 while (!gameStatus.equals("lost") && !gameStatus.equals("win") && (!forcequite))
                 {
                     afficheAccountInfo(motor.getCurrentJoueur().getCompte());
+                    
                     printPlateau();
 
                     char action = askAction();
@@ -377,7 +405,7 @@ public class CliPrs
                         motor.bombExplosion(coord[0], coord[1]);
                     } else if (action == 'g')    //convert score to gold
                     {
-                        motor.getCompte().saveScore(motor.getCurentLevel());
+                        motor.getCompte().convertPointsToGold();
                     } else if (action == 'q')    //convert score to gold
                     {
                         forcequite = true;
@@ -417,7 +445,10 @@ public class CliPrs
             } //while (!endLevel)
         }
     }
-    public static void main(String[] args) {
+
+
+    public static void main(String[] args)
+    {
         CliPrs jeu = new CliPrs();
         jeu.consoleGame();
         jeu.CliClose();
