@@ -115,6 +115,7 @@ public class GuiPrs
           @Override // indique au compilateur qu'on écrit sur la méthode windowClosing déjà défini et il est sencé vérifier qu'on a pas fait de bêtise d'écriture.
           public void windowClosing(WindowEvent e) {
               System.out.println("close widows & do a save.");
+              getJeu().endLevelLost();
               playOrExit(false);
             //quit();
           }
@@ -274,13 +275,6 @@ public class GuiPrs
     public void showMessageGUI(String key){
         JOptionPane.showMessageDialog(getData().getFrame(),getJeu().showMessage(key));
     }
-    /*public void finish() {
-        getData().getFrame().dispose();
-    }*/
-    /*public void loadPlayerInfo(){
-        //... TODO
-        //getJeu().createPlateau();
-    }*/
     /**
      function that calculate coordinates of a click & launch pressCell
      */
@@ -310,9 +304,31 @@ public class GuiPrs
         //window with menu deroulant:
         int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you have an account ?");
         if(answer==0){ //if yes
-            Joueur j=null;
-            //make player choose on the list.
-            getJeu().selectJoueur(j);
+            Object pseudo=null;
+            boolean joueurSet=false;
+            while(!joueurSet){
+                //make player choose on the list.
+                Object[] elementsO = getJeu().getListOfJoueurs().toArray();
+                String[] elements = new String[elementsO.length];
+                int i=0;
+                for (Object o : elementsO ) {
+                    if(o instanceof Joueur){
+                        elements[i]=((Joueur)o).getPseudo();
+                        i++;
+                    }else{
+                        System.out.println("error of convertion in GuiPrs.");
+                    }
+                }
+                //(Component parentComponent, Object message, String title, int messageType, Icon icon, Object[] selectionValues, Object initialSelectionValue)
+                pseudo = JOptionPane.showInputDialog​(getData().getFrame(),"choose a player","Player selection",JOptionPane.QUESTION_MESSAGE,null,elements,null);
+                if(pseudo instanceof String){
+                    //TODO
+                    getJeu().selectJoueur((String)pseudo);
+                    joueurSet = true;
+                }else{
+                    System.out.println("fail to set selectJoueur.");
+                }
+            }
         }else{
             //ask a pseudo while it isn't a new pseudo.
             String pseudo = "";
@@ -323,20 +339,6 @@ public class GuiPrs
             //j.setPseudo(pseudo);
             getJeu().createNewJoueur(pseudo);
         }
-        //1) menu "new account" -> create registrationWindow() va etre creer dans cette classe
-        //2) menu avec accounts existants -> getListOfJoueurs() de la classe Jeu
-        //                                   selectJoueur() de la classe Jeu
-        //                                   createPanelGame() va etre creer dans cette classe
-        //                                  launchGame()  va etre creer dans cette classe
-    }
-
-    public void addRegistrationWindow()
-    {
-        //window with:
-        // 1) pannel with text "Invent your pseudo:"
-        // 2) fenêtre ou taper String pseudo
-        // 3) button "enter" -> takes String from 2) + createNewJoueur()
-
     }
 
 

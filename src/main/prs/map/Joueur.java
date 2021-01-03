@@ -18,6 +18,8 @@ public class Joueur implements Serializable{
   public void setPseudo(String p) {this.pseudo = p; }
 
 //  // Fonctions propre -----------------------------------------------------------
+    //TODO fix toString to have a nicer print.
+    //public String toString(){return "J1";}
 //  public String toString(){return "Player: " + pseudo + " " + compte.toString();}
 //  public boolean unlockLevel(int i){ return compte.unlockLevel(i);}
 //  public boolean isLevelUnlock(int i){return compte.isLevelUnlock(i);}

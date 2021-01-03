@@ -104,6 +104,15 @@ public class Jeu
             //this.compte = null;
         }*/
     }
+    public void selectJoueur(String pseudo)
+    {
+        for (Joueur j : gamers) {
+            if(j.getPseudo().equals(pseudo)){
+                selectJoueur(j);
+                return;
+            }
+        }
+    }
 
     /**
      * Create new gamer account
