@@ -21,7 +21,7 @@ public class GuiPrs
 {
     private static Data data;
     private Jeu motor;
-    private Map map;
+    //private Map map;
     private boolean ballonToPlace;
 
     public GuiPrs(){
@@ -150,11 +150,11 @@ public class GuiPrs
         getData().setBomb(img);
       }catch (Exception e) {ok=false;}
       img = image.getImage("ballons.jpg");
-      try {
+      /*try {
         img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
         getData().setBallon(img);
-      }catch (Exception e) {ok=false;}
+      }catch (Exception e) {ok=false;}*/
       return ok;
     }
     public void repaint(){
@@ -191,7 +191,7 @@ public class GuiPrs
         System.out.println(addFrame());
         //TODO faire changer ou creer un compte graphiquement.
         loadPlayerInfo();
-        map = new Map(getJeu().getJoueur());
+        //Map map = new Map(getJeu().getJoueur());
         System.out.println(iniImage());
         System.out.println(addPanelMap());
         System.out.println("addLevel "+addLevel());
@@ -287,6 +287,34 @@ public class GuiPrs
         }
         //TODO add a sound ?
     }
+    //--------------------
+    public void windowPlay()
+    {
+        //window with button "play"
+        //click listener for button -> create accountWindow
+    }
+
+    public void accountWindow()
+    {
+        //window with menu deroulant:
+        //1) menu "new account" -> create registrationWindow() va etre creer dans cette classe
+        //2) menu avec accounts existants -> getListOfJoueurs() de la classe Jeu
+        //                                   selectJoueur() de la classe Jeu
+        //                                   createPanelGame() va etre creer dans cette classe
+        //                                  launchGame()  va etre creer dans cette classe
+    }
+
+    public void registrationWindow()
+    {
+        //window with:
+        // 1) pannel with text "Invent your pseudo:"
+        // 2) feunetre ou taper String pseudo
+        // 3) button "enter" -> takes String from 2) + createNewJoueur()
+
+    }
+
+
+    //-------------------
     public static void main(String[] args) {
         GuiPrs gui = new GuiPrs();
         gui.GUIGame();
