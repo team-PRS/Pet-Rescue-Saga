@@ -24,8 +24,12 @@ public class Joueur implements Serializable{
 //
   public void buyBallon()
   {
-      this.compte.setGold(this.compte.getGold() - Compte.ballonPrix);
-      this.compte.setBallon(this.compte.getBallon() + 1);
+      if(gold >= 10){
+          this.compte.setGold(this.compte.getGold() - Compte.ballonPrix);
+          this.compte.setBallon(this.compte.getBallon() + 1);
+      }else{
+          System.out.println("You don't have enoth gold for buying a new ballon.");
+      }
   }
 
 
