@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Random;
 
 
 public class GuiPrs
@@ -109,6 +110,11 @@ public class GuiPrs
         });
         getData().getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setBoutonFermer();
+        getData().getPInfo().getIaFinish().addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                letsIaPlay();
+            }
+        });
     }
     public void setBoutonFermer(){
       getData().getFrame().addWindowListener(new WindowAdapter() {
@@ -221,7 +227,6 @@ public class GuiPrs
             addAccountWindow();
         }
 
-
         //loadPlayerInfo();
         //Map map = new Map(getJeu().getJoueur());
         System.out.println(iniImage());
@@ -239,22 +244,34 @@ public class GuiPrs
         getJeu().getPlateau().gameState();
         endAction();
     }
+    /**
+    *End game if level is win or lost.
+    */
     public void endAction(){
-        if (getJeu().getPlateau().gameState().equals("win"))
-        {
+        if (getJeu().getPlateau().gameState().equals("win")){
+            endAction(true);
+        }else if (getJeu().getPlateau().gameState().equals("lost")){
+            endAction(false);
+        }
+    }
+    /**
+    *End game by a win or a lost.
+    */
+    public void endAction(boolean win){
+        if (win){
             getJeu().endLevel();
             JOptionPane.showMessageDialog(getData().getFrame(),"Congratulations, you win !");
             int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to go go back to map ?");
             playOrExit(answer==0);
         }
-        else if (getJeu().getPlateau().gameState().equals("lost"))
-        {
+        else{
             getJeu().endLevelLost();
             JOptionPane.showMessageDialog(getData().getFrame(),"The level is lost. Try again.. ");
             int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to try again ?");
             playOrExit(answer==0);
         }
     }
+
     public void playOrExit(boolean play){
         getJeu().Close();
         if(play){
@@ -339,6 +356,29 @@ public class GuiPrs
             //j.setPseudo(pseudo);
             getJeu().createNewJoueur(pseudo);
         }
+    }
+
+    public void letsIaPlay(){
+        int clic=0;
+        while(clic < 5000){
+            if(getJeu().getPlateau().gameState().equals("win")){
+                endAction(true);
+            }
+            int x = new Random().nextInt(getJeu().getPlateau().getHeight() - 1);
+            int y = new Random().nextInt(getJeu().getPlateau().getWidth() - 1);
+            if(getJeu().pressCell(x,y)){
+                System.out.println("1 clic done");
+                clic=0;
+                paintAll();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    System.out.println("can't pause in Gui.letsIaPlay");
+                }
+            }
+            clic++;
+        }
+        endAction(false);
     }
 
 

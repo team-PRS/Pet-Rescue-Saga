@@ -8,8 +8,9 @@ public class Compte implements Serializable{
   *{@summary Number of gold, the vip monney.}
   */
   private int gold;
-  public static final int ballonPrix = 10;
-  public static final int PointsPerGoldCoin = 50;
+  public static final int ballonPrix = 10; //TO_DO replace by BALLON_PRIX
+  public static final int PointsPerGoldCoin = 50; //TO_DO replace by POINTS_PER_GOLD_COIN
+  private static final int WIN_POINT = 100;
   private int ballon;
   private int unlockLevel;
   /**
@@ -62,13 +63,15 @@ public class Compte implements Serializable{
   /**
   *Save the point in score.
   */
-  public void saveScore(int level){
+  public void saveScore(int level,boolean win){
       //if that's a new best score.
+      if(win){points+=WIN_POINT;}
       if(getScore(level)<points){
           setScore(level,points);
       }
       convertPointsToGold();
   }
+  public void saveScore(int level){saveScore(level,true);}
 
   /*public int getUnlockLevel() { return this.unlockLevel;}
 

@@ -118,7 +118,8 @@ public class Plateau
      */
     public boolean isEmpty(int x, int y)
     {
-        return (getObject(x, y).equals(null) ? true : false);
+        return (getObject(x, y)==null);
+        //return (getObject(x, y).equals(null) ? true : false);
     }
 
     /*================================= Filling by elements ==============================*/

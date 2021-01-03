@@ -248,6 +248,7 @@ public class Jeu
             {
                 ObjectSurCase obj = plateau.getObject(x, y);
                 // if bloc
+                boolean b=false;
                 if (obj instanceof Bloc)
                 {
                     // if only one bloc
@@ -272,7 +273,7 @@ public class Jeu
                             plateau.shiftDown(xCoord, yCoord);
                         }
                         this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points*5);
-
+                        b=true;
                         // TODO add another blocs and elements (depends of level)
                         //  if (configLevel.getValue(level, "addBlocs") == "true")
                         // {
@@ -291,6 +292,7 @@ public class Jeu
                     if (obj instanceof Bomb)
                     {
                         plateau.bombExplosion(x, y);
+                        b=true;
                     }
 
                     //if ballon
@@ -299,6 +301,7 @@ public class Jeu
                         //ballon destroyed all blocs of his color
                         String ballonColor = ((Ballon)plateau.getObject(x, y)).getColor();
                         plateau.ballonExplosion(ballonColor);
+                        b=true;
 
                     }
                 }
@@ -306,6 +309,7 @@ public class Jeu
                 plateau.shiftLeft();
                 rescue();
                 plateau.shiftLeft();
+                return b;
             }
             else //empty cell
             {
@@ -316,8 +320,6 @@ public class Jeu
         {
             return false;
         }
-
-        return true;
     }
 
     /**
@@ -414,10 +416,10 @@ public class Jeu
         if(getCurentLevel()==getCompte().getLastUnlockLevel()){
             getCompte().unlockNextLevel();
         }
-        getCompte().saveScore(getCurentLevel());
+        getCompte().saveScore(getCurentLevel(),true);
     }
     public void endLevelLost(){
-        getCompte().saveScore(getCurentLevel());
+        getCompte().saveScore(getCurentLevel(),false);
     }
 
     /*============================== Private & internal functions ====================================================*/
