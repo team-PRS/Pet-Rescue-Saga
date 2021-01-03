@@ -198,28 +198,6 @@ public class GuiPrs
         repaint();
         System.out.println("end of main of GUIGame");
     }
-    //TODO add all of this for GUI
-    /*else if (action == 'b')    //buy ballon
-    {
-        getJeu().getJoueur().buyBallon();
-    }
-    else if (action == 'a')    //activate ballon
-    {
-        if (this.getJeu().getJoueur().getCompte().getBallon() > 0)
-        {
-            int[] coord = askCoordinates();
-            String color = getJeu().getPlateau().getColorOfBloc(coord[IsGui=true;
-        data = new Data();
-        getJeu().getJoueur() = new getJeu().getJoueur()();0], coord[1]);
-            getJeu().getPlateau().ballonExplosion(color);
-            getJeu().getJoueur().activateBallon();
-        }
-    }
-    else if (action == 'e')    //activate bombe
-    {
-        int[] coord = askCoordinates();
-        getJeu().getPlateau().bombExplosion(coord[0], coord[1]);
-    }*/
 
     public void GUIClicAction(){
         /*rescue(); //in pressCell.
