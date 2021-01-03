@@ -64,6 +64,7 @@ public class GuiPrs
     */
     public boolean addPanelPlateau(){
       try {
+        getData().setTailleDUneCase(getData().getHeightMax()/12);
         getData().setPPlateau(new PanelPlateau());
         getData().getPPlateau().setPlateau(getJeu().getPlateau());
         getData().setPInfo(new PanelInfo(getJeu().getCompte(),this));
@@ -233,7 +234,7 @@ public class GuiPrs
         {
             getJeu().endLevel();
             JOptionPane.showMessageDialog(getData().getFrame(),"Congratulations, you win !");
-            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to replay ?");
+            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to go go back to map ?");
             playOrExit(answer==0);
         }
         else if (getJeu().getPlateau().gameState().equals("lost"))

@@ -41,13 +41,14 @@ public class Data {
   public void setBomb(Image i){bomb = i;}
   public Image getBallon(){return ballon;}
   public void setBallon(Image i){ballon = i;}
-  public int getScreenDimX(){return screenDimX;}
+  /*public int getScreenDimX(){return screenDimX;}
   public void setScreenDimX(int x){screenDimX=x;}
-  public int getScreenDimY(){return screenDimY;}
-  public void setScreenDimY(int x){screenDimY=x;}
+  public int getScreenDimY(){return frame.getHeight();}
+  public void setScreenDimY(int x){screenDimY=x;}*/
   public int getNbrLevelAviable(){return nbrLevelAviable;}
   public Font getFont(){return font;}
   public int getTailleDUneCase(){return tailleDUneCase;}
+  public void setTailleDUneCase(int x){tailleDUneCase=x;}
 
   public Frame getFrame(){return frame;}
   public void setFrame(Frame f){frame=f;}
