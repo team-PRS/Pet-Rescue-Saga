@@ -248,7 +248,7 @@ public class Jeu
             {
                 ObjectSurCase obj = plateau.getObject(x, y);
                 // if bloc
-                boolean b=false;
+                boolean b=false;                                    //for GUI
                 if (obj instanceof Bloc)
                 {
                     // if only one bloc
@@ -291,7 +291,8 @@ public class Jeu
                     // if bomb
                     if (obj instanceof Bomb)
                     {
-                        plateau.bombExplosion(x, y);
+                        int points1 = plateau.bombExplosion(x, y);
+                        this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points1 * 5);
                         b=true;
                     }
 

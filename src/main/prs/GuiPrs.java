@@ -261,13 +261,13 @@ public class GuiPrs
         if (win){
             getJeu().endLevel();
             JOptionPane.showMessageDialog(getData().getFrame(),"Congratulations, you win !");
-            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to go go back to map ?");
+            int answer = JOptionPane.showConfirmDialog(getData().getFrame(),"do you want to go go back to map ?");
             playOrExit(answer==0);
         }
         else{
             getJeu().endLevelLost();
             JOptionPane.showMessageDialog(getData().getFrame(),"The level is lost. Try again.. ");
-            int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you want to try again ?");
+            int answer = JOptionPane.showConfirmDialog(getData().getFrame(),"do you want to try again ?");
             playOrExit(answer==0);
         }
     }
@@ -319,7 +319,7 @@ public class GuiPrs
     public void addAccountWindow()
     {
         //window with menu deroulant:
-        int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you have an account ?");
+        int answer = JOptionPane.showConfirmDialog(getData().getFrame(),"do you have an account ?");
         if(answer==0){ //if yes
             Object pseudo=null;
             boolean joueurSet=false;
@@ -337,7 +337,7 @@ public class GuiPrs
                     }
                 }
                 //(Component parentComponent, Object message, String title, int messageType, Icon icon, Object[] selectionValues, Object initialSelectionValue)
-                pseudo = JOptionPane.showInputDialog​(getData().getFrame(),"choose a player","Player selection",JOptionPane.QUESTION_MESSAGE,null,elements,null);
+                pseudo = JOptionPane.showInputDialog(getData().getFrame(),"choose a player","Player selection",JOptionPane.QUESTION_MESSAGE,null,elements,null);
                 if(pseudo instanceof String){
                     //TODO
                     getJeu().selectJoueur((String)pseudo);
@@ -350,7 +350,7 @@ public class GuiPrs
             //ask a pseudo while it isn't a new pseudo.
             String pseudo = "";
             do {
-                pseudo = JOptionPane.showInputDialog​(getData().getFrame(), "Enter a new pseudo", "Anonymus");
+                pseudo = JOptionPane.showInputDialog(getData().getFrame(), "Enter a new pseudo", "Anonymus");
             } while (getJeu().isJoueurExisting(pseudo) || pseudo.equals(""));
             //j = new Joueur();
             //j.setPseudo(pseudo);

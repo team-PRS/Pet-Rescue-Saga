@@ -528,7 +528,7 @@ public class Plateau
      * Finds nearest right NOT empty column from the floor
      */
     public int[] nextRightNotEmptyColumn_Floor(int x, int y)
-    {                                                                  // if find deco return null
+    {                                                                  // return null if find deco
         int i = height - 1;
         int j = y + 1;
         boolean isFound = false;
@@ -641,7 +641,7 @@ public class Plateau
                 {
                     for (int j = y - 1; j <= y + 1; j++)
                     {
-                        if ((i >= 1) && (i <= height - 1) && (j >= 1) && (j <= width - 1))
+                        if ((i >= 0) && (i <= height - 1) && (j >= 0) && (j <= width - 1))
                         {
                             if (plateau[i][j] != null)
                             {
