@@ -8,8 +8,8 @@ public class Compte implements Serializable{
   *{@summary Number of gold, the vip monney.}
   */
   private int gold;
-  public static final int ballonPrix = 10;
-  public static final int PointsPerGoldCoin = 50;
+  public static final int BALLON_PRIX = 10;
+  public static final int POINTS_PER_GOLD_COIN = 50;
   private int ballon;
   private int unlockLevel;
   /**
@@ -147,9 +147,9 @@ public class Compte implements Serializable{
 
  public void convertPointsToGold()
  {
-     if (points >= PointsPerGoldCoin)
+     if (points >= POINTS_PER_GOLD_COIN)
      {
-         setGold(getGold() + points/PointsPerGoldCoin);
+         setGold(getGold() + points/ POINTS_PER_GOLD_COIN);
      }
      else
      {

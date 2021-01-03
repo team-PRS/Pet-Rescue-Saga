@@ -274,7 +274,9 @@ public class Jeu
                     // if bomb
                     if (obj instanceof Bomb)
                     {
-                        plateau.bombExplosion(x, y);
+                       // plateau.bombExplosion(x, y);
+                        int points1 = plateau.bombExplosion(x, y);
+                        this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points1 * 5);
                     }
 
                     //if ballon
@@ -467,23 +469,5 @@ public class Jeu
             this.gamers = new ArrayList<Joueur>();
         }
     }
-    //============================================
-    /**
-    *Main funtion to launch game.
-    */
-    /*public static void main(String[] args) {
-        if(args.length>0 && args[0].equals("text")){
-            IsGui=false;
-        }else{
-            IsGui=true;
-        }
-        if(IsGui){
-            GuiPrs gui = new GuiPrs();
-            gui.GUIGame();
-        }else{
-            CliPrs jeu = new CliPrs();
-            jeu.consoleGame();
-            jeu.CliClose();
-        }
-    }*/
+
 }

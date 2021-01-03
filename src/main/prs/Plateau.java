@@ -640,7 +640,7 @@ public class Plateau
                 {
                     for (int j = y - 1; j <= y + 1; j++)
                     {
-                        if ((i >= 1) && (i <= height - 1) && (j >= 1) && (j <= width - 1))
+                        if ((i >= 0) && (i <= height - 1) && (j >= 0) && (j <= width - 1))
                         {
                             if (plateau[i][j] != null)
                             {
