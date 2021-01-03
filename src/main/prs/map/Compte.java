@@ -63,7 +63,10 @@ public class Compte implements Serializable{
   *Save the point in score.
   */
   public void saveScore(int level){
-      setScore(level,points);
+      //if that's a new best score.
+      if(getScore(level)<points){
+          setScore(level,points);
+      }
       convertPointsToGold();
   }
 

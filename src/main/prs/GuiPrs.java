@@ -277,12 +277,12 @@ public class GuiPrs
     public void clicOnPlateau(int x, int y)
     {
         if(x<0 || y<0){return;}
-        //if(x>Data.getScreenDimX() || y>Data.getScreenDimY()){return;}
+        //if(x>getData().getScreenDimX() || y>getData().getScreenDimY()){return;}
         if(ballonToPlace){
-            getJeu().placeBallon(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
+            getJeu().placeBallon(x/getData().getTailleDUneCase(),y/getData().getTailleDUneCase());
             ballonToPlace=false;
         }else{
-            getJeu().pressCell(x/Data.getTailleDUneCase(),y/Data.getTailleDUneCase());
+            getJeu().pressCell(x/getData().getTailleDUneCase(),y/getData().getTailleDUneCase());
         }
         //TODO add a sound ?
     }

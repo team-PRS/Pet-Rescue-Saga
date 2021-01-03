@@ -19,14 +19,13 @@ public class Frame extends JFrame{
     setExtendedState(JFrame.MAXIMIZED_BOTH);//Frame take as many space as it can.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // bouton fermer par défaut.
     //TODO notre bouton fermer si dessous qui demande une validation de l'utilisateur.
-    /*
-    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    /*setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     Runnable r = new Runnable() {
       @Override // indique au compilateur qu'on écrit sur la méthode run.
       public void run() {
         setBoutonFermer(); //Méthode qui demande validation si le joueur clic sur le bouton fermé la fenetre.
       }
-    };*/
+  };*/
     //fullScreen
     /*
     setUndecorated(true);
@@ -53,9 +52,8 @@ public class Frame extends JFrame{
       //si validation.
       if(choix){
         setVisible(false);
-        dispose();
         // On provoque une fermeture normale du jeu.
-        //Main.quitter(); // on pourrait réaliser une sauvegarde automatique.
+        // on pourrait réaliser une sauvegarde automatique.
         System.exit(0);
       }//sinon rien.
     }catch (Exception e) {

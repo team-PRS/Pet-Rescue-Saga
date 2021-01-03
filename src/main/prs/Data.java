@@ -14,11 +14,11 @@ public class Data {
   private Image inmovable;
   private Image bomb;
   private Image ballon;
-  private static int screenDimX;
-  private static int screenDimY;
-  private static int nbrLevelAviable=4;
-  private static Font font=new Font("FreeSans",Font.BOLD,30);
-  private static int tailleDUneCase = 100;
+  private int screenDimX;
+  private int screenDimY;
+  private int nbrLevelAviable=4;
+  private Font font=new Font("FreeSans",Font.BOLD,30);
+  private int tailleDUneCase = 100;
 
   private Frame frame;
   private PanelMap pMap;
@@ -41,13 +41,13 @@ public class Data {
   public void setBomb(Image i){bomb = i;}
   public Image getBallon(){return ballon;}
   public void setBallon(Image i){ballon = i;}
-  public static int getScreenDimX(){return screenDimX;}
-  public static void setScreenDimX(int x){screenDimX=x;}
-  public static int getScreenDimY(){return screenDimY;}
-  public static void setScreenDimY(int x){screenDimY=x;}
-  public static int getNbrLevelAviable(){return nbrLevelAviable;}
-  public static Font getFont(){return font;}
-  public static int getTailleDUneCase(){return tailleDUneCase;}
+  public int getScreenDimX(){return screenDimX;}
+  public void setScreenDimX(int x){screenDimX=x;}
+  public int getScreenDimY(){return screenDimY;}
+  public void setScreenDimY(int x){screenDimY=x;}
+  public int getNbrLevelAviable(){return nbrLevelAviable;}
+  public Font getFont(){return font;}
+  public int getTailleDUneCase(){return tailleDUneCase;}
 
   public Frame getFrame(){return frame;}
   public void setFrame(Frame f){frame=f;}
