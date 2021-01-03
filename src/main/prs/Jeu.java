@@ -6,10 +6,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-
 /**
-* Main class / controller class
+* Controller class
 */
+
 public class Jeu
 {
     private Joueur joueur;
@@ -73,6 +73,7 @@ public class Jeu
     {
         return this.gamers;
     }
+
     public boolean isJoueurExisting(String pseudo)
     {
         for (Joueur j : gamers) {
@@ -217,20 +218,6 @@ public class Jeu
     public String getCurrentLevelStatus()
     {
         return plateau.gameState();
-    }
-
-
-    /**
-     * return count of animals on the board. Application may monitor this value to detect when animals get rescued
-     * @return animals count
-     */
-    public int getAnimalsCount()
-    {
-        if (null == this.plateau)
-        {
-            return 0;
-        }
-        return plateau.getAnimalsOnFloor().size();
     }
 
 
@@ -399,7 +386,7 @@ public class Jeu
             getCompte().unlockNextLevel();
         }
         getCompte().saveScore(getCurentLevel(),true);               //TODO Here the
-        getCompte().setPoints(getCompte().getPoints());
+
 
 
     }

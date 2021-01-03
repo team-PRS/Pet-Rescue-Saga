@@ -83,10 +83,10 @@ public class CliPrs
     {
         System.out.print("\nActions:\n" +
                 "a - activate your ballon\n" +
-                "b - buy the ballon /cost " + String.valueOf(Compte.ballonPrix) + " golds/\n" +
+                "b - buy the ballon /cost " + String.valueOf(Compte.BALLON_PRIX) + " golds/\n" +
                 "c - click on the cell\n" +
                 "e - activate bomb\n" +
-                "g - convert score to gold /1 ingot = " + String.valueOf(Compte.PointsPerGoldCoin) + " points/\n" +
+                "g - convert score to gold /1 ingot = " + String.valueOf(Compte.POINTS_PER_GOLD_COIN) + " points/\n" +
                 "q - quite game (q)\n" +
                 "Select (a/b/c/e/g/q):\n");
         String Action = scanAnswer.next();
@@ -380,6 +380,8 @@ public class CliPrs
 
                 while (!gameStatus.equals("lost") && !gameStatus.equals("win") && (!forcequite))
                 {
+                    motor.getCompte().setPoints(0);
+
                     afficheAccountInfo(motor.getCurrentJoueur().getCompte());
                     
                     printPlateau();

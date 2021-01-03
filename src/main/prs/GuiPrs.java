@@ -296,6 +296,7 @@ public class GuiPrs
 
     public void launchLevel(int i){
         if(motor.getJoueur().getCompte().isLevelUnlock(i)){
+            motor.getCompte().setPoints(0);
             motor.createPlateau(i);
             addPanelPlateau();
             showMessageGUI("level"+i);
