@@ -68,6 +68,13 @@ public class Jeu
     {
         return this.gamers;
     }
+    public boolean isJoueurExisting(String pseudo)
+    {
+        for (Joueur j : gamers) {
+            if(j.getPseudo().equals(pseudo)){return true;}
+        }
+        return false;
+    }
 
     /**
      * Get current gamer account and parameters
@@ -472,11 +479,6 @@ public class Jeu
     *Main funtion to launch game.
     */
     /*public static void main(String[] args) {
-        if(args.length>0 && args[0].equals("text")){
-            IsGui=false;
-        }else{
-            IsGui=true;
-        }
         if(IsGui){
             GuiPrs gui = new GuiPrs();
             gui.GUIGame();

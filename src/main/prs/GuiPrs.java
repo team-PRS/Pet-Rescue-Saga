@@ -8,6 +8,7 @@ import prs.graphics.*;
 import prs.usuel.image;
 
 import java.io.*;
+import javax.swing.JFrame;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -15,6 +16,8 @@ import java.awt.Image;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 public class GuiPrs
@@ -78,6 +81,12 @@ public class GuiPrs
         return false;
       }
     }
+
+
+
+    /**
+    *Add action for the button.
+    */
     public void addActionToButton(){
         //button action
         getData().getPInfo().getAddBallon().addActionListener(new ActionListener(){
@@ -98,7 +107,23 @@ public class GuiPrs
                 playOrExit(true);
             }
         });
+        getData().getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setBoutonFermer();
     }
+    public void setBoutonFermer(){
+      getData().getFrame().addWindowListener(new WindowAdapter() {
+          @Override // indique au compilateur qu'on écrit sur la méthode windowClosing déjà défini et il est sencé vérifier qu'on a pas fait de bêtise d'écriture.
+          public void windowClosing(WindowEvent e) {
+              System.out.println("close widows & do a save.");
+              playOrExit(false);
+            //quit();
+          }
+      });
+    }
+
+    /**
+    *set the best size for PanelPlateau & center it.
+    */
     public boolean setPanelPlateauSize(){
       try {
         int dimX = 1+getData().getTailleDUneCase()*getJeu().getPlateau().getWidth();
@@ -187,10 +212,16 @@ public class GuiPrs
     }
     public void GUIGame()
     {
-        if(data==null){iniIsGui();}
+        boolean needToLoadAccount = false;
+        if(data==null){iniIsGui();needToLoadAccount=true;}
         System.out.println(addFrame());
-        //TODO faire changer ou creer un compte graphiquement.
-        loadPlayerInfo();
+        //faire changer ou creer un compte graphiquement.
+        if(needToLoadAccount){
+            addAccountWindow();
+        }
+
+
+        //loadPlayerInfo();
         //Map map = new Map(getJeu().getJoueur());
         System.out.println(iniImage());
         System.out.println(addPanelMap());
@@ -246,10 +277,10 @@ public class GuiPrs
     /*public void finish() {
         getData().getFrame().dispose();
     }*/
-    public void loadPlayerInfo(){
+    /*public void loadPlayerInfo(){
         //... TODO
         //getJeu().createPlateau();
-    }
+    }*/
     /**
      function that calculate coordinates of a click & launch pressCell
      */
@@ -271,10 +302,27 @@ public class GuiPrs
         //window with button "play"
         //click listener for button -> create accountWindow
     }
-
-    public void accountWindow()
+    /**
+    * Show some windows to make player chose an existing account or create a new 1.
+    */
+    public void addAccountWindow()
     {
         //window with menu deroulant:
+        int answer = JOptionPane.showConfirmDialog​(getData().getFrame(),"do you have an account ?");
+        if(answer==0){ //if yes
+            Joueur j=null;
+            //make player choose on the list.
+            getJeu().selectJoueur(j);
+        }else{
+            //ask a pseudo while it isn't a new pseudo.
+            String pseudo = "";
+            do {
+                pseudo = JOptionPane.showInputDialog​(getData().getFrame(), "Enter a new pseudo", "Anonymus");
+            } while (getJeu().isJoueurExisting(pseudo) || pseudo.equals(""));
+            //j = new Joueur();
+            //j.setPseudo(pseudo);
+            getJeu().createNewJoueur(pseudo);
+        }
         //1) menu "new account" -> create registrationWindow() va etre creer dans cette classe
         //2) menu avec accounts existants -> getListOfJoueurs() de la classe Jeu
         //                                   selectJoueur() de la classe Jeu
@@ -282,11 +330,11 @@ public class GuiPrs
         //                                  launchGame()  va etre creer dans cette classe
     }
 
-    public void registrationWindow()
+    public void addRegistrationWindow()
     {
         //window with:
         // 1) pannel with text "Invent your pseudo:"
-        // 2) feunetre ou taper String pseudo
+        // 2) fenêtre ou taper String pseudo
         // 3) button "enter" -> takes String from 2) + createNewJoueur()
 
     }

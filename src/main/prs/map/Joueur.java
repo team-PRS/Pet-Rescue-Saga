@@ -10,7 +10,7 @@ public class Joueur implements Serializable{
   // CONSTRUCTEUR ---------------------------------------------------------------
   public Joueur(){
     this.compte = new Compte();
-    this.pseudo = "Anonime";
+    this.pseudo = "Anonyme";
   }
   // GET SET --------------------------------------------------------------------
   public Compte getCompte(){return compte;}
