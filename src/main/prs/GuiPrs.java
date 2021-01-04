@@ -90,15 +90,20 @@ public class GuiPrs
     {
         String message = "";
 
-        String l1 = "LEVEL 1\nTry to eliminate the groups of blocs of the same color under animals\n" +
-                "so they will go down and will be rescued";
+        String l1 = "LEVEL 1\n" +
+                            "Try to eliminate the groups of blocs of the same color under animals\n" +
+                            "so they will go down and will be rescued.\n" +
+                            "Your points will be converted to gold at the end of level.";
 
-        String l2 = "LEVEL 2\nOn this level you can explode bombs\n" +
-                "to destroy the cubes surrounding. Animals will not lost in this case.";
+        String l2 = "LEVEL 2\n" +
+                            "On this level you can explode bombs\n" +
+                            "to destroy the cubes surrounding. Animals will not lost in this case.";
 
-        String l3 = "LEVEL 3\nGood luck !\n";
+        String l3 = "LEVEL 3\n" +
+                            "Good luck!";
 
-        String l4 = "LEVEL 4\nGo ahead!";
+        String l4 = "LEVEL 4\n" +
+                            "Go ahead!";
 
         if (request.equals("level1")) {message = l1;}
         else if (request.equals("level2")) {message = l2;}

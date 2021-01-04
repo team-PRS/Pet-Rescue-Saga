@@ -52,7 +52,8 @@ public class Jeu
         saveUserAccountsToFile();
     }
 
-    /*============================== get set ==========================================================*/
+    /*============================== Get Set ==========================================================*/
+
     public int getCurentLevel(){return level;}
 
     public Plateau getPlateau(){return plateau;}
@@ -394,8 +395,6 @@ public class Jeu
     public void endLevelLost(){
         getCompte().saveScore(getCurentLevel(),false);
     }
-
-
 
 
     /*============================== Private & internal functions ====================================================*/

@@ -10,6 +10,7 @@ public class Plateau
     private ObjectSurCase[][] plateau;
     private boolean isOnFloor = false;
     private boolean isRescued = false;
+    private boolean isDecoStop = false;
     private int nbrOfMaxColor = 5; //it can be 2,3,4 or 5.
 
     /*================================= Constructor ==============================*/
@@ -473,15 +474,35 @@ public class Plateau
                     int coordX = next[0];
                     int coordY = next[1];
                     ObjectSurCase obj = getObject(coordX, coordY);
-                    if (obj.isClicable())
+                    if (obj.isClicable())                                //move only clicable objects
                     {
                         int lenColumnToMove = findLengthOfColumn(coordX, coordY);
                         if (lenColumnToMove > 0)
                         {
                             int lenFreeSpace = lengthFreeSpace(i, j);
-                            if (lenFreeSpace >= lenColumnToMove)
+                            int[] stop = nextLeftNotEmptyColumn(coordX, coordY);
+                            int coordYStop = stop[1] ;
+
+                            if ((lenFreeSpace >= lenColumnToMove) && (coordYStop <= coordY))               //TODO DOESN'T WORK
                             {
-                                moveColumn(j, coordY);
+                                if (isDecoStop)
+                                {
+                                    int lenFreeSpaceUnderDeco = lengthFreeSpace(stop[0], stop[1]);
+                                    if (lenFreeSpaceUnderDeco >= lenColumnToMove )
+                                    {
+                                        moveColumn(j, coordY);
+                                    }
+                                    else
+                                    {
+                                        moveColumn(coordYStop + 1, coordY);
+                                    }
+                                }
+                                else
+                                {
+                                  moveColumn(j, coordY);
+                                }
+                                printMap();
+
                             } else  //if it is deco
                             {
                                 //skip do nothing
@@ -525,10 +546,12 @@ public class Plateau
     }
 
     /**
-     * Finds nearest right NOT empty column from the floor
+     * Finds nearest right NOT empty column from the floor = find column to move     *
+     * @return null if find deco or if doesn't find not empty column
+     * @return coordinates of column to move
      */
     public int[] nextRightNotEmptyColumn_Floor(int x, int y)
-    {                                                                  // return null if find deco
+    {
         int i = height - 1;
         int j = y + 1;
         boolean isFound = false;
@@ -561,6 +584,42 @@ public class Plateau
         }
         return new int[]{i, j};
     }
+
+    /**
+     * Finds nearest left NOT empty column (= STOP for ShiftLeft)
+     * @return coordinates of column to stop for ShiftLeft or null
+     */
+    public int[] nextLeftNotEmptyColumn(int x, int y)
+    {
+        int i = x;
+        int j = y - 1;
+        boolean isFound = false;
+        this.isDecoStop = false;
+        int counter = 0;
+        while ((!isFound) && (j >= 0))
+        {
+            for (j = y - 1; j >= 0; j--)
+            {
+                for (i = x; i >= 0; i--)
+                if ((plateau[i][j] != null)  && (j >= 0) )
+                {
+                    ObjectSurCase obj = getObject(i, j);
+                    if (!obj.isClicable())
+                    {
+                        isDecoStop = true;
+                    }
+                    counter++;
+                    return new int[]{height - 1, j};
+                }
+            }
+        }
+        if (counter == 0)
+        {
+            return new int[]{height - 1, j + 1};
+        }
+        return new int[]{height - 1, j};
+    }
+
 
     /**
      * Moves columns from (floor,y2) to (floor,y1)
@@ -819,30 +878,30 @@ public class Plateau
 
     /*================================= MAIN ==============================*/
 
-   // public static void main(String[] args)
-  //
- //   {
+    public static void main(String[] args)
 
-  //      Plateau test1 = new Plateau(5, 5);
-  //
-  //      test1.remplirPlateau(3, 34, 4, 1);
+    {
 
-  //      Bloc b1 = new Bloc("BLUE");                                         //test shiftLeft();
-  //      Bloc b2 = new Bloc("NONE");
-  //      Bloc b3 = new Bloc("BLUE");
-  //      Bloc b4 = new Bloc("BLUE");
-  //
-  //      test1.setObject(b1, 4, 1);
-  //      test1.setObject(b2, 3, 1);
-  //      test1.setObject(b3, 4, 3);
-  //      test1.setObject(b4, 3, 3);
-  //
-  //      test1.printMap();
-  //
-  //      test1.shiftLeft();
-  //
-  //      test1.printMap();
-  //      System.out.println("");
+        Plateau test1 = new Plateau(5, 5);
+
+     //   test1.remplirPlateau(3, 14, 1, 0);
+
+        Bloc b1 = new Bloc("BLUE");                                         //test shiftLeft();
+        Bloc b2 = new Bloc("NONE");
+        Bloc b3 = new Bloc("BLUE");
+        Bloc b4 = new Bloc("BLUE");
+
+        test1.setObject(b1, 4, 1);
+        test1.setObject(b2, 3, 2);
+        test1.setObject(b3, 4, 4);
+        test1.setObject(b4, 3, 4);
+
+        test1.printMap();
+
+        test1.shiftLeft();
+
+        test1.printMap();
+        System.out.println("");
   //
   //      for (int i = test1.height - 1; i >= 0; i--)                             //test ballonExplosion()
   //      {
@@ -917,5 +976,5 @@ public class Plateau
   //      //  System.out.println("");
   //      //  test1.getGroup(3, 4);
   //
-   // }
+    }
 }

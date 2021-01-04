@@ -117,16 +117,18 @@ public class CliPrs
 
         String l1 = "LEVEL 1\n " +
                             "Try to eliminate the groups of blocs ( represented by greek letters )" +
-                            " of the same color under animals ( represented by @ )\n" +
-                    "so they will go down and will be rescued.";
+                            "of the same color under animals ( represented by @ )\n" +
+                            "so they will go down and will be rescued.\n" +
+                            "Your points will be converted to gold at the end of level.";
 
-        String l2 = "LEVEL 2\nOn this level you can explode bombs ( represented by * )\n" +
+        String l2 = "LEVEL 2\n " +
+                           "On this level you can explode bombs ( represented by * )\n" +
                             "to destroy the cubes surrounding. Animals will not lost in this case.\n" +
                             "There are also immovable obstacles ( represented by ≡ )";
 
-        String l3 = "LEVEL 3\\nGood luck !! ";
+        String l3 = "LEVEL 3\n" + "Good luck !! ";
 
-        String l4 = "LEVEL 4\nGo ahead !!";
+        String l4 = "LEVEL 4\n" + "Go ahead !! ";
 
         String pr = "\nOne pet is rescued";
 
@@ -255,8 +257,8 @@ public class CliPrs
            )
         {
             boolean bCorrupted = false;
+            System.out.println("");
             System.out.println("To start game you need to select or create new account");
-
             System.out.println("0: Create new");
 
             int index = 1;
@@ -276,7 +278,9 @@ public class CliPrs
 
             if (!bCorrupted)
             {
+                System.out.println("");
                 System.out.print("Please enter action number:");
+                System.out.println("");
                 while (true)
                 {
                     String strId = scanAnswer.next();
@@ -367,6 +371,7 @@ public class CliPrs
         if (wantPlay())
         {
             accountAdministration();
+            System.out.println("");
             String gameStatus = "continue";
             boolean endLevel = false;
             boolean forcequite = false;
