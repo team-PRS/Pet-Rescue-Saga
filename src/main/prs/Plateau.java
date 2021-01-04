@@ -47,7 +47,6 @@ public class Plateau
         return null;
     }
 
-
     /**
      * Set game object on position (x,y)
      */
@@ -522,6 +521,45 @@ public class Plateau
         }
     }
 
+    public void shiftAnimal()
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (plateau[i][j] != null)
+                {
+                    ObjectSurCase obj = getObject(i, j);
+                    if (!obj.isClicable())
+                    {
+                        if (((i - 1) >=0 ) && ((i - 1) < height) && (plateau[i - 1][j] != null))
+                        {
+                            ObjectSurCase obj1 = getObject(i - 1, j);
+                            if (obj1 instanceof Animal)
+                            {
+                                //make shiftLeft and shiftDown
+                                int[] newCoords = shiftOneStepLeft(i, j);
+                                //can't move if not empty cell and in cell near (just left cell)
+                                if ((plateau[newCoords[0]] [newCoords[1]] == null) && (newCoords[0] != i + 1 ) && (newCoords[1] != j + 1))
+                                {
+                                    this.setObject(obj1, newCoords[0], newCoords[1]);
+                                    this.cleanCase(i - 1, j);
+                                    for (int k = i - 1; k > 0; k-- )
+                                    {
+                                        
+                                        shiftDown(k, j);
+                                    }
+                                }
+                               // shiftDown(newCoords[0], newCoords[1]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     //--------------- service functions for shiftLeft ----------------------------------------------------------------//
 
     /**
@@ -620,7 +658,6 @@ public class Plateau
         return new int[]{height - 1, j};
     }
 
-
     /**
      * Moves columns from (floor,y2) to (floor,y1)
      */
@@ -677,6 +714,26 @@ public class Plateau
             }
         }
         return len;
+    }
+
+    //--------------- service functions for shiftAnimal---------------------------------------------------------------//
+
+    private int[] shiftOneStepLeft(int x, int y)
+    {
+        int i = x;
+        int j = y - 1;
+        for ( i = x; i < height; i++)
+        {
+            if (plateau[i][j] != null)
+            {
+                return new int[]{i - 1, j};        //coordinates of empty cell where need to move animal
+            }
+            else
+            {
+                //keep moving down and looking for first not empty cell
+            }
+        }
+        return new int[]{i - 1, j};
     }
 
 
@@ -819,8 +876,18 @@ public class Plateau
                 cleanCase(x, y);
                 shiftDown(x, y);
                 isRescued = true;
+                isOnFloor = false;
                 //System.out.println("            1 animal rescued");                    //debug code
             }
+        }
+    }
+
+    public void rescueAnimals_1()
+    {
+        while (isOnFloor)
+        {
+            rescueAnimals(getAnimalsOnFloor());
+            shiftLeft();
         }
     }
 
@@ -890,9 +957,11 @@ public class Plateau
         Bloc b2 = new Bloc("NONE");
         Bloc b3 = new Bloc("BLUE");
         Bloc b4 = new Bloc("BLUE");
+        Animal a = new Animal("CAT");
 
         test1.setObject(b1, 4, 1);
         test1.setObject(b2, 3, 2);
+        test1.setObject(a, 2, 2);
         test1.setObject(b3, 4, 4);
         test1.setObject(b4, 3, 4);
 
@@ -901,7 +970,17 @@ public class Plateau
         test1.shiftLeft();
 
         test1.printMap();
+
+        test1.shiftAnimal();
+        
         System.out.println("");
+        test1.printMap();
+
+                                                                                //test shiftAnimal();
+
+
+
+
   //
   //      for (int i = test1.height - 1; i >= 0; i--)                             //test ballonExplosion()
   //      {

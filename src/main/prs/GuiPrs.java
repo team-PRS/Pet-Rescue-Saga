@@ -36,7 +36,7 @@ public class GuiPrs
     // GET SET -------------------------------------------------------------------
     public Data getData(){return data;}
     public static void setData(Data d){data=d;}
-    public Jeu getJeu(){return motor;}
+    public Jeu getMotor(){return motor;}
 
     /*============================= graphics functions ==========================*/
 
@@ -74,7 +74,7 @@ public class GuiPrs
         data.setTailleDUneCase(data.getHeightMax()/12);
         data.setPPlateau(new PanelPlateau());
         data.getPPlateau().setPlateau(motor.getPlateau());
-        data.setPInfo(new PanelInfo(motor.getCompte(),this));
+        data.setPInfo(new PanelInfo(motor,this));
         data.setPGame(new PanelGame(data.getPPlateau(),data.getPInfo()));
         data.getPGame().setJeu(this);
         data.getFrame().setContentPane(data.getPGame());
@@ -91,13 +91,13 @@ public class GuiPrs
         String message = "";
 
         String l1 = "LEVEL 1\n" +
-                            "Try to eliminate the groups of blocs of the same color under animals\n" +
+                            "Try to eliminate the groups of blocs of the same color under animals" +
                             "so they will go down and will be rescued.\n" +
                             "Your points will be converted to gold at the end of level.";
 
         String l2 = "LEVEL 2\n" +
-                            "On this level you can explode bombs\n" +
-                            "to destroy the cubes surrounding. Animals will not lost in this case.";
+                            "On this level you can explode bombs to destroy the cubes surrounding.\n " +
+                            "Animals will not lost in this case.";
 
         String l3 = "LEVEL 3\n" +
                             "Good luck!";
@@ -162,8 +162,8 @@ public class GuiPrs
     */
     public boolean setPanelPlateauSize(){
       try {
-        int dimX = 1+data.getTailleDUneCase()*motor.getPlateau().getWidth();
-        int dimY = 1+data.getTailleDUneCase()*motor.getPlateau().getHeight();
+        int dimX = 1+data.getTailleDUneCase()*motor.getPlateauWidth();
+        int dimY = 1+data.getTailleDUneCase()*motor.getPlateauHeight();
         int xCenter = (data.getWidthMax()-dimX)/2;
         int yCenter = (data.getHeightMax()-dimY)/2;
         data.getPPlateau().setBounds(xCenter,yCenter,dimX,dimY);
@@ -251,11 +251,8 @@ public class GuiPrs
     }
 
     public void GUIClicAction(){
-        /*rescue(); //in pressCell.
-        motor.getPlateau().shiftLeft();
-        rescue();*/
         repaint();
-        motor.getPlateau().gameState();
+        motor.getCurrentLevelStatus();
         endAction();
     }
 
@@ -300,8 +297,8 @@ public class GuiPrs
     }
 
     public void launchLevel(int i){
-        if(motor.getJoueur().getCompte().isLevelUnlock(i)){
-            motor.getCompte().setPoints(0);
+        if(motor.getCurrentJoueur().getCompte().isLevelUnlock(i)){
+            motor.getCurrentJoueur().getCompte().setPoints(0);
             motor.createPlateau(i);
             addPanelPlateau();
             showMessageGUI("level"+i);
@@ -319,13 +316,50 @@ public class GuiPrs
         if(x<0 || y<0){return;}
         //if(x>data.getScreenDimX() || y>data.getScreenDimY()){return;}
         if(ballonToPlace){
-            motor.placeBallon(x/data.getTailleDUneCase(),y/data.getTailleDUneCase());
+            placeBallon(x/data.getTailleDUneCase(),y/data.getTailleDUneCase());
             ballonToPlace=false;
         }else{
             motor.pressCell(x/data.getTailleDUneCase(),y/data.getTailleDUneCase());
         }
         //TODO add a sound ?
     }
+
+
+    public boolean isJoueurExisting(String pseudo)
+    {
+        for (Joueur j : motor.getListOfJoueurs()) {
+            if(j.getPseudo().equals(pseudo)){return true;}
+        }
+        return false;
+    }
+
+    public boolean placeBallon(int x, int y){
+        System.out.println("try place ballon");//@a
+        System.out.println(motor.getCurrentJoueur().getCompte().getBallon());//@a
+        if (motor.getPlateau()==null){return false;}
+        if(motor.getCurrentJoueur().getCompte().getBallon() <= 0){return false;}
+        // player has clicked on plateau
+        if (motor.getPlateau().isOnPlateau(x, y))
+        {
+            // not empty cell
+            if (!motor.getPlateau().isEmpty(x, y) && motor.getCell(x,y)!=null)
+            {
+                ObjectSurCase obj = motor.getCell(x, y);
+                if (obj instanceof Bloc)
+                {
+                    Ballon ballon = new Ballon();
+                    Bloc bloc = (Bloc)obj;
+                    ballon.setColor(bloc.getColorId());
+                    motor.getPlateau().setObject(ballon,x,y);
+                    System.out.println("1 ballon have been place.");//@a
+                }
+            }
+        }
+        motor.getCurrentJoueur().getCompte().setBallon(motor.getCurrentJoueur().getCompte().getBallon()-1);
+        return true;
+    }
+
+
 
     //--------------------
 
@@ -367,7 +401,7 @@ public class GuiPrs
             String pseudo = "";
             do {
                 pseudo = JOptionPane.showInputDialog(data.getFrame(), "Enter a new pseudo", "Anonymus");
-            } while (motor.isJoueurExisting(pseudo) || pseudo.equals(""));
+            } while (this.isJoueurExisting(pseudo) || pseudo.equals(""));
             //j = new Joueur();
             //j.setPseudo(pseudo);
             motor.createNewJoueur(pseudo);

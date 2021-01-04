@@ -19,7 +19,6 @@ public class Animal extends ObjectSurCase
     {
         int index = new Random().nextInt(types.length);
         this.type = types[index];
-
     }
 
     public String getType()

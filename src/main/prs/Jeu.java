@@ -56,11 +56,9 @@ public class Jeu
 
     public int getCurentLevel(){return level;}
 
-    public Plateau getPlateau(){return plateau;}
+    public Plateau getPlateau(){return plateau;}         //TODO Here Emilien made a changes
 
-    public Joueur getJoueur(){return joueur;}
-
-    public Compte getCompte(){return getJoueur().getCompte();}
+    public Compte getCompte(){return getCurrentJoueur().getCompte();}
 
 
     /*============================== User account functions ==========================================================*/
@@ -75,14 +73,6 @@ public class Jeu
         return this.gamers;
     }
 
-    public boolean isJoueurExisting(String pseudo)
-    {
-        for (Joueur j : gamers) {
-            if(j.getPseudo().equals(pseudo)){return true;}
-        }
-        return false;
-    }
-
     /**
      * Get current gamer account and parameters
      *
@@ -92,6 +82,9 @@ public class Jeu
     {
         return this.joueur;
     }
+
+
+    //TODO Here Emilien made a changes   -----------------------
 
     /**
      * select current gamer's account
@@ -111,7 +104,7 @@ public class Jeu
             //this.compte = null;
         }*/
     }
-    
+
     public void selectJoueur(String pseudo)
     {
         for (Joueur j : gamers) {
@@ -121,6 +114,9 @@ public class Jeu
             }
         }
     }
+
+    //---------------------------------------------------------
+
 
     /**
      * Create new gamer account
@@ -139,6 +135,8 @@ public class Jeu
 
 
     /*============================== Game board functions ============================================================*/
+
+    //TODO Here Emilien made a changes   -----------------------
 
     /**
      * Recreate game board using current user level parameter.
@@ -173,6 +171,8 @@ public class Jeu
 
         this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals, initialBombs);
     }
+
+    //---------------------------------------------------------
 
     /**
      * return game board width
@@ -301,6 +301,10 @@ public class Jeu
 
                     }
                 }
+                //plateau.rescueAnimals_1();
+                rescue();
+                plateau.shiftLeft();
+                plateau.shiftAnimal();
                 rescue();
                 plateau.shiftLeft();
                 rescue();
@@ -329,6 +333,10 @@ public class Jeu
         joueur.activateBallon();
         this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points * 5);
 
+        //plateau.rescueAnimals_1();
+        rescue();
+        plateau.shiftLeft();
+        plateau.shiftAnimal();
         rescue();
         plateau.shiftLeft();
         rescue();
@@ -344,7 +352,11 @@ public class Jeu
     {
         int points1 = plateau.bombExplosion(x, y);
         this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points1 * 5);
-
+        
+        //plateau.rescueAnimals_1();
+        rescue();
+        plateau.shiftLeft();
+        plateau.shiftAnimal();
         rescue();
         plateau.shiftLeft();
         rescue();
@@ -354,33 +366,6 @@ public class Jeu
 
     //TODO WHERE IS YOUR PLACE?
     /* ========================================================================================================*/
-
-
-    public boolean placeBallon(int x, int y){
-        System.out.println("try place ballon");//@a
-        System.out.println(getCompte().getBallon());//@a
-        if (this.plateau==null){return false;}
-        if(getCompte().getBallon() <= 0){return false;}
-        // player has clicked on plateau
-        if (plateau.isOnPlateau(x, y))
-        {
-            // not empty cell
-            if (!plateau.isEmpty(x, y) && plateau.getObject(x,y)!=null)
-            {
-                ObjectSurCase obj = plateau.getObject(x, y);
-                if (obj instanceof Bloc)
-                {
-                    Ballon ballon = new Ballon();
-                    Bloc bloc = (Bloc)obj;
-                    ballon.setColor(bloc.getColorId());
-                    plateau.setObject(ballon,x,y);
-                    System.out.println("1 ballon have been place.");//@a
-                }
-            }
-        }
-        getCompte().setBallon(getCompte().getBallon()-1);
-        return true;
-    }
 
     public void endLevel(){
         if(getCurentLevel()==getCompte().getLastUnlockLevel()){
