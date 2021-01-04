@@ -86,7 +86,7 @@ public class CliPrs
                 "b - buy the ballon /cost " + String.valueOf(Compte.BALLON_PRIX) + " golds/\n" +
                 "c - click on the cell\n" +
                 "e - activate bomb\n" +
-                "g - convert score to gold /1 ingot = " + String.valueOf(Compte.POINTS_PER_GOLD_COIN) + " points/\n" +
+                "g - convert score to gold /1 gold = " + String.valueOf(Compte.POINTS_PER_GOLD_COIN) + " points/\n" +
                 "q - quite game (q)\n" +
                 "Select (a/b/c/e/g/q):\n");
         String Action = scanAnswer.next();
@@ -168,9 +168,16 @@ public class CliPrs
     {
         //print y-scale
         System.out.print("  | ");
-        for (int k = 0; k < motor.getPlateauHeight(); k++)
+        for (int k = 0; k < motor.getPlateauWidth(); k++)
         {
-            System.out.print(" " + (k + 1) + " ");
+            if (k > 8)
+            {
+                System.out.print( (k + 1) + " ");
+            }
+            else
+            {
+                System.out.print(" " + (k + 1) + " ");
+            }
         }
         System.out.println("");
         System.out.print("-----");
@@ -380,12 +387,12 @@ public class CliPrs
                 System.out.println(showMessage(levelInfo(motor.getCurrentJoueur().getCompte().getLastUnlockLevel())));
                 System.out.println("");
                 motor.createPlateau();
+                motor.getCompte().setPoints(0);
 
                 gameStatus = "continue";
 
                 while (!gameStatus.equals("lost") && !gameStatus.equals("win") && (!forcequite))
                 {
-                    motor.getCompte().setPoints(0);
 
                     afficheAccountInfo(motor.getCurrentJoueur().getCompte());
                     
@@ -420,7 +427,8 @@ public class CliPrs
 
                     gameStatus = motor.getCurrentLevelStatus();
                 } //while (!gameStatus.equals("lost") && !gameStatus.equals("win") && (!forcequite))
-
+                motor.getCurrentJoueur().getCompte().convertPointsToGold();
+                
                 if (!forcequite)
                 {
                     if (gameStatus.equals("win"))
@@ -432,6 +440,7 @@ public class CliPrs
                         System.out.println("\n===========================================");
 
                         afficheAccountInfo(motor.getCurrentJoueur().getCompte());
+                        motor.getCurrentJoueur().getCompte().convertPointsToGold();
                         printPlateau();
 
                         endLevel = isExit();
@@ -444,6 +453,7 @@ public class CliPrs
                         System.out.println("\n==============================================");
 
                         afficheAccountInfo(motor.getCurrentJoueur().getCompte());
+                        motor.getCurrentJoueur().getCompte().convertPointsToGold();
                         printPlateau();
 
                         endLevel = isExit();

@@ -63,7 +63,7 @@ public class PanelInfo extends JPanel{
         ballon.setText("Ballon : "+motor.getCurrentJoueur().getCompte().getBallon());
         addBallon.setText("Buy 1 ballon");
         placeBallon.setText("Place 1 ballon");
-        backToMap.setText("Abandon");
+        backToMap.setText("Quit");
         iaFinish.setText("Bot's game");
     }
     private void setLocation2(){

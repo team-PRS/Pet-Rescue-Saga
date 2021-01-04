@@ -114,6 +114,7 @@ public class GuiPrs
         return message;
     }
 
+
     /**
     *Add action for the button.
     */
@@ -182,7 +183,7 @@ public class GuiPrs
     */
     public boolean iniImage(){
       boolean ok = true;
-      Image img = image.getImage("paysage.jpg");
+      Image img = image.getImage("img1_346.jpg");
       try {
         img = img.getScaledInstance(data.getWidthMax(),data.getHeightMax() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
@@ -238,11 +239,11 @@ public class GuiPrs
         data.setBomb(img);
       }catch (Exception e) {ok=false;}
       img = image.getImage("ballons.jpg");
-      /*try {
+      try {
         img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
         data.setBallon(img);
-      }catch (Exception e) {ok=false;}*/
+      }catch (Exception e) {ok=false;}
       return ok;
     }
 

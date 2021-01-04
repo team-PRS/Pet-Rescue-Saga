@@ -67,7 +67,7 @@ L4_initialBlocs=100
 L4_initialAnimals=7
 L4_initialImmoBlocs=8
 L4_initialBombs=5
-L4_initialBallons=5
+L4_initialBallons=0
 
 L4_addBlocs=true
 L4_addAnimals=false

@@ -261,9 +261,9 @@ public class Plateau
                 }
             }
         }
-        System.out.println("need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
-                "  animaux: " + c + ":" + ic + "  bombs: " + d + ":" + id);
-        System.out.println("");
+      //  System.out.println("need:added \n" + "deco: " + a + ":" + ia + "  blocs: " + b + ":" + ib +   //test does all element added
+      //          "  animaux: " + c + ":" + ic + "  bombs: " + d + ":" + id);
+      //  System.out.println("");
     }
 
     /*================================= Find group of blocs ==============================*/
@@ -928,14 +928,14 @@ public class Plateau
 
     /*============================= Add Elements During the Set ==========================*/
 
-    public void addBlocsInGame(int nmbBlocs)
-    {
-    }
-
-
-
-    /*================================= MAIN ==============================*/
-
+   // public void addBlocsInGame(int nmbBlocs)
+   // {
+   // }
+   //
+   //
+   //
+   // /*================================= MAIN ==============================*/
+   //
   //  public static void main(String[] args)
   //
   //  {

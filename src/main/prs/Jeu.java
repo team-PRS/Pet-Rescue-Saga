@@ -56,7 +56,7 @@ public class Jeu
 
     public int getCurentLevel(){return level;}
 
-    public Plateau getPlateau(){return plateau;}         //TODO Here Emilien made a changes
+    public Plateau getPlateau(){return plateau;}
 
     public Compte getCompte(){return getCurrentJoueur().getCompte();}
 
@@ -82,9 +82,6 @@ public class Jeu
     {
         return this.joueur;
     }
-
-
-    //TODO Here Emilien made a changes   -----------------------
 
     /**
      * select current gamer's account
@@ -115,9 +112,6 @@ public class Jeu
         }
     }
 
-    //---------------------------------------------------------
-
-
     /**
      * Create new gamer account
      * add it into the list
@@ -135,8 +129,6 @@ public class Jeu
 
 
     /*============================== Game board functions ============================================================*/
-
-    //TODO Here Emilien made a changes   -----------------------
 
     /**
      * Recreate game board using current user level parameter.
@@ -171,8 +163,6 @@ public class Jeu
 
         this.plateau.remplirPlateau(initialImmoBlocs, initialBlocs, initialAnimals, initialBombs);
     }
-
-    //---------------------------------------------------------
 
     /**
      * return game board width
@@ -364,23 +354,16 @@ public class Jeu
     }
 
 
-    //TODO WHERE IS YOUR PLACE?
-    /* ========================================================================================================*/
-
     public void endLevel(){
         if(getCurentLevel()==getCompte().getLastUnlockLevel()){
             getCompte().unlockNextLevel();
         }
-        getCompte().saveScore(getCurentLevel(),true);               //TODO Here the
-
-
-
+        getCompte().saveScore(getCurentLevel(),true);
     }
 
     public void endLevelLost(){
         getCompte().saveScore(getCurentLevel(),false);
     }
-
 
     /*============================== Private & internal functions ====================================================*/
     /**
