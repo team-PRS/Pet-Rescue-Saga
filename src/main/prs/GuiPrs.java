@@ -195,8 +195,6 @@ public class GuiPrs
         data.setPPlateauImg(img);
       }catch (Exception e) {ok=false;}
 
-      //TODO add different animals ----------------------------
-
       data.setTailleDUneCase(data.getHeightMax()/data.MAX_CASE_PER_PLATEAU);
 
       img = image.getImage("dog_100.jpg");
@@ -226,12 +224,6 @@ public class GuiPrs
           if(img==null){throw new NullPointerException();}
           data.setMouse(img);
       }catch (Exception e) {ok=false;}
-
-        //TODO END add different animals ----------------------------
-
-
-
-
 
       img = image.getImage("inmovable_100.jpg");
       try {

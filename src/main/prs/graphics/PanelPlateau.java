@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
 {@summary Represent the plateau on the Frame.}
 */
 public class PanelPlateau extends JPanel implements MouseListener{
-  private Plateau plateau;                                            //TODO VIOLENCE View Model Controller everywhere
+  private Plateau plateau;
   private Jeu motor;
   private GuiPrs jeu;
 
@@ -28,12 +28,12 @@ public class PanelPlateau extends JPanel implements MouseListener{
   }
   // GET SET -------------------------------------------------------------------
   public Plateau getPlateau(){return motor.getPlateau();}
-  public void setPlateau(Plateau p){plateau=p;}                        //TODO VIOLENCE View Model Controller
-  public void setMotor(Jeu ExtMotor){this.motor=ExtMotor;}                        //TODO VIOLENCE View Model Controller
+  public void setPlateau(Plateau p){plateau=p;}
+  public void setMotor(Jeu ExtMotor){this.motor=ExtMotor;}
   public void setJeu(GuiPrs j){jeu=j;}
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
-    if(plateau!=null){
+    if(motor.getPlateau()!=null){
       g.setColor(new Color(255,255,255,180));
       g.fillRect(0,0,getWidth(),getHeight());
       paintCase(g);
@@ -41,15 +41,15 @@ public class PanelPlateau extends JPanel implements MouseListener{
     }
   }
   public void paintCase(Graphics g){
-    for (int i = 0; i < plateau.getWidth(); i++){
-      for (int j = 0; j < plateau.getHeight(); j++){
+    for (int i = 0; i < motor.getPlateauWidth(); i++){
+      for (int j = 0; j < motor.getPlateauHeight(); j++){
         int xTemp = j*jeu.getData().getTailleDUneCase();
         int yTemp = i*jeu.getData().getTailleDUneCase();
 
-        ObjectSurCase obj = plateau.getObject(j,i);
+        ObjectSurCase obj = motor.getCell(j,i);
 
         if(obj instanceof Bloc){
-          Bloc b = (Bloc) plateau.getObject(j,i);
+          Bloc b = (Bloc) motor.getCell(j,i);
           if(b.getColor()!="NONE"){
             drawColorRect(i,j,b.getColor2(),g);
           }else{
@@ -69,8 +69,6 @@ public class PanelPlateau extends JPanel implements MouseListener{
 
           else if (((Animal)obj).getType().equals("MOUSE"))
           {g.drawImage(jeu.getData().getMouse(),yTemp,xTemp,this);}
-
-
         }
         else if(obj instanceof Bomb){
           g.drawImage(jeu.getData().getBomb(),yTemp,xTemp,this);
@@ -86,8 +84,8 @@ public class PanelPlateau extends JPanel implements MouseListener{
     g.setColor(Color.BLACK);
     Graphics2D g2d = (Graphics2D) g;
     g2d.setStroke(new BasicStroke(1));
-    int xCase = plateau.getWidth();
-    int yCase = plateau.getHeight();
+    int xCase = motor.getPlateauWidth();
+    int yCase = motor.getPlateauHeight();
     for (int i=0;i<xCase+1 ;i++ ) {
       int xT = jeu.getData().getTailleDUneCase()*i;
       g.drawLine(xT,0,xT,jeu.getData().getTailleDUneCase()*yCase);
