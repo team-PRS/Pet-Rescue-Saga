@@ -882,15 +882,6 @@ public class Plateau
         }
     }
 
-    public void rescueAnimals_1()
-    {
-        while (isOnFloor)
-        {
-            rescueAnimals(getAnimalsOnFloor());
-            shiftLeft();
-        }
-    }
-
     /*==================================== GameSet Screening =========================================================*/
 
     /**
@@ -945,42 +936,42 @@ public class Plateau
 
     /*================================= MAIN ==============================*/
 
-    public static void main(String[] args)
-
-    {
-
-        Plateau test1 = new Plateau(5, 5);
-
-     //   test1.remplirPlateau(3, 14, 1, 0);
-
-        Bloc b1 = new Bloc("BLUE");                                         //test shiftLeft();
-        Bloc b2 = new Bloc("NONE");
-        Bloc b3 = new Bloc("BLUE");
-        Bloc b4 = new Bloc("BLUE");
-        Animal a = new Animal("CAT");
-
-        test1.setObject(b1, 4, 1);
-        test1.setObject(b2, 3, 2);
-        test1.setObject(a, 2, 2);
-        test1.setObject(b3, 4, 4);
-        test1.setObject(b4, 3, 4);
-
-        test1.printMap();
-
-        test1.shiftLeft();
-
-        test1.printMap();
-
-        test1.shiftAnimal();
-        
-        System.out.println("");
-        test1.printMap();
-
-                                                                                //test shiftAnimal();
-
-
-
-
+  //  public static void main(String[] args)
+  //
+  //  {
+  //
+  //      Plateau test1 = new Plateau(5, 5);
+  //
+  //   //   test1.remplirPlateau(3, 14, 1, 0);
+  //
+  //      Bloc b1 = new Bloc("BLUE");                                         //test shiftLeft();
+  //      Bloc b2 = new Bloc("NONE");
+  //      Bloc b3 = new Bloc("BLUE");
+  //      Bloc b4 = new Bloc("BLUE");
+  //      Animal a = new Animal("CAT");
+  //
+  //      test1.setObject(b1, 4, 1);
+  //      test1.setObject(b2, 3, 2);
+  //      test1.setObject(a, 2, 2);
+  //      test1.setObject(b3, 4, 4);
+  //      test1.setObject(b4, 3, 4);
+  //
+  //      test1.printMap();
+  //
+  //      test1.shiftLeft();
+  //
+  //      test1.printMap();
+  //
+  //      test1.shiftAnimal();
+  //
+  //      System.out.println("");
+  //      test1.printMap();
+  //
+  //                                                                              //test shiftAnimal();
+  //
+  //
+  //
+  //
   //
   //      for (int i = test1.height - 1; i >= 0; i--)                             //test ballonExplosion()
   //      {
@@ -1055,5 +1046,5 @@ public class Plateau
   //      //  System.out.println("");
   //      //  test1.getGroup(3, 4);
   //
-    }
+  //  }
 }

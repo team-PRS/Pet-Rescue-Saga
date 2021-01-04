@@ -353,7 +353,7 @@ public class Jeu
         int points1 = plateau.bombExplosion(x, y);
         this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points1 * 5);
         
-        //plateau.rescueAnimals_1();
+
         rescue();
         plateau.shiftLeft();
         plateau.shiftAnimal();

@@ -71,9 +71,10 @@ public class GuiPrs
     */
     public boolean addPanelPlateau(){
       try {
-        data.setTailleDUneCase(data.getHeightMax()/12);
+        data.setTailleDUneCase(data.getHeightMax()/data.MAX_CASE_PER_PLATEAU);
         data.setPPlateau(new PanelPlateau());
         data.getPPlateau().setPlateau(motor.getPlateau());
+        data.getPPlateau().setMotor(motor);
         data.setPInfo(new PanelInfo(motor,this));
         data.setPGame(new PanelGame(data.getPPlateau(),data.getPInfo()));
         data.getPGame().setJeu(this);
@@ -181,7 +182,7 @@ public class GuiPrs
     */
     public boolean iniImage(){
       boolean ok = true;
-      Image img = image.getImage("background.jpg");
+      Image img = image.getImage("paysage.jpg");
       try {
         img = img.getScaledInstance(data.getWidthMax(),data.getHeightMax() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
@@ -193,13 +194,46 @@ public class GuiPrs
         if(img==null){throw new NullPointerException();}
         data.setPPlateauImg(img);
       }catch (Exception e) {ok=false;}
-      img = image.getImage("animal.jpg");
+
+      //TODO add different animals ----------------------------
+
+      data.setTailleDUneCase(data.getHeightMax()/data.MAX_CASE_PER_PLATEAU);
+
+      img = image.getImage("dog_100.jpg");
       try {
         img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}
-        data.setAnimal(img);
+        data.setDog(img);
       }catch (Exception e) {ok=false;}
-      img = image.getImage("inmovable.jpg");
+
+      img = image.getImage("cat_100.jpg");
+      try {
+          img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
+          if(img==null){throw new NullPointerException();}
+          data.setCat(img);
+      }catch (Exception e) {ok=false;}
+
+      img = image.getImage("fish_100.jpg");
+      try {
+          img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
+          if(img==null){throw new NullPointerException();}
+          data.setFish(img);
+      }catch (Exception e) {ok=false;}
+
+      img = image.getImage("mouse_100.jpg");
+      try {
+          img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
+          if(img==null){throw new NullPointerException();}
+          data.setMouse(img);
+      }catch (Exception e) {ok=false;}
+
+        //TODO END add different animals ----------------------------
+
+
+
+
+
+      img = image.getImage("inmovable_100.jpg");
       try {
         img = img.getScaledInstance(data.getTailleDUneCase(),data.getTailleDUneCase() ,Image.SCALE_SMOOTH);
         if(img==null){throw new NullPointerException();}

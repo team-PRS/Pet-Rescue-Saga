@@ -3,7 +3,6 @@ import prs.GuiPrs;
 import javax.swing.JPanel;
 import java.awt.Graphics;
 import javax.swing.JButton;
-import prs.Data;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
 import java.awt.Color;
@@ -32,7 +31,7 @@ public class PanelMap extends JPanel{
     }
   }
   public void addLevel(){
-      int nbrDeLevelAPrint=jeu.getJeu().getCompte().getLastUnlockLevel();
+      int nbrDeLevelAPrint=jeu.getMotor().getCompte().getLastUnlockLevel();
       while(nbrDeLevelAPrint>0){
           add(new Button());
           nbrDeLevelAPrint--;
@@ -50,7 +49,7 @@ public class PanelMap extends JPanel{
     public Button(){
       id=1+nbrButton++;
       setBounds(((id-1)*getDimX())/(jeu.getData().getNbrLevelAviable()+1),((id-1)*getDimY())/(jeu.getData().getNbrLevelAviable()+1),getDimX()/(2*jeu.getData().getNbrLevelAviable()),getDimY()/(2*jeu.getData().getNbrLevelAviable()));
-      setText(id+"  "+"score:"+jeu.getJeu().getJoueur().getCompte().getScore(id));
+      setText(id+"  "+"score:"+jeu.getMotor().getCurrentJoueur().getCompte().getScore(id));
       setFont(jeu.getData().getFont());
       addMouseListener(this);
       setVisible(true);

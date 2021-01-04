@@ -8,9 +8,13 @@ import prs.graphics.*;
 *@author Hydrolien
 */
 public class Data {
+  public static final int MAX_CASE_PER_PLATEAU = 12;
   private Image pMapImg;
   private Image pPlateauImg;
-  private Image animal;
+  private Image dog;
+  private Image cat;
+  private Image mouse;
+  private Image fish;
   private Image inmovable;
   private Image bomb;
   private Image ballon;
@@ -33,8 +37,14 @@ public class Data {
   public void setPMapImg(Image i){pMapImg = i;}
   public Image getPPlateauImg(){return pPlateauImg;}
   public void setPPlateauImg(Image i){pPlateauImg = i;}
-  public Image getAnimal(){return animal;}
-  public void setAnimal(Image i){animal = i;}
+  public Image getDog(){return dog;}
+  public void setDog(Image i){dog = i;}
+  public Image getCat(){return cat;}
+  public void setCat(Image i){cat = i;}
+  public Image getMouse(){return mouse;}
+  public void setMouse(Image i){mouse = i;}
+  public Image getFish(){return fish;}
+  public void setFish(Image i){fish = i;}
   public Image getInmovable(){return inmovable;}
   public void setInmovable(Image i){inmovable = i;}
   public Image getBomb(){return bomb;}
@@ -49,7 +59,6 @@ public class Data {
   public Font getFont(){return font;}
   public int getTailleDUneCase(){return tailleDUneCase;}
   public void setTailleDUneCase(int x){tailleDUneCase=x;}
-
   public Frame getFrame(){return frame;}
   public void setFrame(Frame f){frame=f;}
   public PanelMap getPMap(){return pMap;}

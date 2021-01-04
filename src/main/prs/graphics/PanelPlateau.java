@@ -15,7 +15,8 @@ import java.awt.event.MouseEvent;
 {@summary Represent the plateau on the Frame.}
 */
 public class PanelPlateau extends JPanel implements MouseListener{
-  private Plateau plateau;
+  private Plateau plateau;                                            //TODO VIOLENCE View Model Controller everywhere
+  private Jeu motor;
   private GuiPrs jeu;
 
   // CONSTRUCTORS --------------------------------------------------------------
@@ -26,8 +27,9 @@ public class PanelPlateau extends JPanel implements MouseListener{
     //setBackground(new Color(255,255,255,150)); don't work.
   }
   // GET SET -------------------------------------------------------------------
-  public Plateau getPlateau(){return plateau;}
-  public void setPlateau(Plateau p){plateau=p;}
+  public Plateau getPlateau(){return motor.getPlateau();}
+  public void setPlateau(Plateau p){plateau=p;}                        //TODO VIOLENCE View Model Controller
+  public void setMotor(Jeu ExtMotor){this.motor=ExtMotor;}                        //TODO VIOLENCE View Model Controller
   public void setJeu(GuiPrs j){jeu=j;}
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
@@ -43,19 +45,38 @@ public class PanelPlateau extends JPanel implements MouseListener{
       for (int j = 0; j < plateau.getHeight(); j++){
         int xTemp = j*jeu.getData().getTailleDUneCase();
         int yTemp = i*jeu.getData().getTailleDUneCase();
-        if(plateau.getObject(j,i) instanceof Bloc){
+
+        ObjectSurCase obj = plateau.getObject(j,i);
+
+        if(obj instanceof Bloc){
           Bloc b = (Bloc) plateau.getObject(j,i);
           if(b.getColor()!="NONE"){
             drawColorRect(i,j,b.getColor2(),g);
           }else{
             g.drawImage(jeu.getData().getInmovable(),yTemp,xTemp,this);
           }
-        }else if(plateau.getObject(j,i) instanceof Animal){
-          g.drawImage(jeu.getData().getAnimal(),yTemp,xTemp,this);
-        }else if(plateau.getObject(j,i) instanceof Bomb){
+        }
+        else if(obj instanceof Animal)
+        {
+          if (((Animal)obj).getType().equals("DOG"))
+          {g.drawImage(jeu.getData().getDog(),yTemp,xTemp,this);}
+
+          else if (((Animal)obj).getType().equals("CAT"))
+          {g.drawImage(jeu.getData().getCat(),yTemp,xTemp,this);}
+
+          else if (((Animal)obj).getType().equals("FISH"))
+          {g.drawImage(jeu.getData().getFish(),yTemp,xTemp,this);}
+
+          else if (((Animal)obj).getType().equals("MOUSE"))
+          {g.drawImage(jeu.getData().getMouse(),yTemp,xTemp,this);}
+
+
+        }
+        else if(obj instanceof Bomb){
           g.drawImage(jeu.getData().getBomb(),yTemp,xTemp,this);
-        }else if(plateau.getObject(j,i) instanceof Ballon){
-            Ballon b = (Ballon) plateau.getObject(j,i);
+
+        }else if(obj instanceof Ballon){
+            Ballon b = (Ballon) obj;
           drawballon(i,j,b.getColor2(),g);
         }
       }

@@ -5,7 +5,7 @@ import java.util.Random;
 public class Animal extends ObjectSurCase
 {
     private String type;
-    private String[] types = new String[]{"CAT", "DOG", "BIRD", "FROG"};        
+    private String[] types = new String[]{"CAT", "DOG", "FISH", "MOUSE"};
 
     public Animal(String ty)
     {

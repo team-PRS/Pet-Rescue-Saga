@@ -6,12 +6,14 @@ import javax.swing.JButton;
 import java.awt.Graphics;
 import java.awt.Font;
 
+import prs.Jeu;
 import prs.map.Compte;
 /**
 {@summary Represent the player info in gold and tools.}
 */
 public class PanelInfo extends JPanel{
-    private Compte compte;
+
+    private Jeu motor;
     private JLabel score;
     private JLabel gold;
     //private JLabel bomb;
@@ -23,9 +25,9 @@ public class PanelInfo extends JPanel{
     //private JButton retry;
     private GuiPrs jeu;
     // CONSTRUCTORS --------------------------------------------------------------
-    public PanelInfo(Compte c, GuiPrs j){
+    public PanelInfo(Jeu m, GuiPrs j){
         jeu=j;
-        compte=c;
+        motor=m;
         //create & add all component.
         score = new JLabel();
         gold = new JLabel();
@@ -56,9 +58,9 @@ public class PanelInfo extends JPanel{
       setLocation2();
     }
     private void setText2(){
-        score.setText("Points : "+compte.getPoints());
-        gold.setText("Gold : "+compte.getGold());
-        ballon.setText("Ballon : "+compte.getBallon());
+        score.setText("Points : "+motor.getCurrentJoueur().getCompte().getPoints());
+        gold.setText("Gold : "+motor.getCurrentJoueur().getCompte().getGold());
+        ballon.setText("Ballon : "+motor.getCurrentJoueur().getCompte().getBallon());
         addBallon.setText("Buy 1 ballon");
         placeBallon.setText("Place 1 ballon");
         backToMap.setText("Abandon");
