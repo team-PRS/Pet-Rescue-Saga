@@ -460,60 +460,67 @@ public class Plateau
      */
     public void shiftLeft()
     {
-        int i = height - 1;
-        for (int j = 0; j < width - 1; j++)
+        int thereToMoveX = height - 1;
+        for (int thereToMoveY = 0; thereToMoveY < width - 1; thereToMoveY++)
         {
             // find null on the floor
-            if (plateau[i][j] == null)
+            if (plateau[thereToMoveX][thereToMoveY] == null)
             {
-                //find next right non null
-                int[] next = nextRightNotEmptyColumn_Floor(i, j);
+                //find next right non empty column
+                int[] next = nextRightNotEmptyColumn_Floor(thereToMoveX, thereToMoveY);
                 if (next != null)
                 {
-                    int coordX = next[0];
-                    int coordY = next[1];
-                    ObjectSurCase obj = getObject(coordX, coordY);
-                    if (obj.isClicable())                                //move only clicable objects
+                    int toMoveX = next[0];                   //   (toMoveX, toMoveY) - column to move
+                    int toMoveY = next[1];
+                    ObjectSurCase toMove = getObject(toMoveX, toMoveY);
+
+                    if (toMove.isClicable())                                //move only clicable objects
                     {
-                        int lenColumnToMove = findLengthOfColumn(coordX, coordY);
+                        int lenColumnToMove = findLengthOfColumn(toMoveX, toMoveY);
+
                         if (lenColumnToMove > 0)
                         {
-                            int lenFreeSpace = lengthFreeSpace(i, j);
-                            int[] stop = nextLeftNotEmptyColumn(coordX, coordY);
-                            int coordYStop = stop[1] ;
+                            int lenFreeSpace = lengthFreeSpace(thereToMoveX, thereToMoveY);
 
-                            if ((lenFreeSpace >= lenColumnToMove) && (coordYStop <= coordY))               //TODO DOESN'T WORK
-                            {
-                                if (isDecoStop)
-                                {
-                                    int lenFreeSpaceUnderDeco = lengthFreeSpace(stop[0], stop[1]);
-                                    if (lenFreeSpaceUnderDeco >= lenColumnToMove )
-                                    {
-                                        moveColumn(j, coordY);
-                                    }
-                                    else
-                                    {
-                                        moveColumn(coordYStop + 1, coordY);
-                                    }
-                                }
-                                else
-                                {
-                                  moveColumn(j, coordY);
-                                }
-                               // printMap();
+                            int[] stop = nextLeftNotEmptyColumn(toMoveX, toMoveY);
+                            int coordXStop = stop[0];                                    //Stop point
+                            int coordYStop = stop[1];
 
-                            } else  //if it is deco
+                            //if stop between
+                            if ((thereToMoveY <= coordYStop) && (coordYStop <= toMoveY))
                             {
-                                //skip do nothing
+                                // check free space under Stop
+                                int lenFreeSpaceUnderStop = lengthFreeSpace(stop[0], stop[1]);
+                                // if not enough
+                                if (lenFreeSpaceUnderStop < lenColumnToMove)
+                                {
+                                    moveColumn(coordYStop + 1, toMoveY);       //move till Stop
+                                }
+                                else   //if enough free space under Stop
+                                {
+                                    moveColumn(coordYStop, toMoveY);
+                                    shiftLeft();
+                                }
+                            } else //if there is not Stop between thereToMove and toMove
+                            {
+                                moveColumn(thereToMoveY, toMoveY);
                             }
-                        } else
+                        } else //if len toMove =0
                         {
-                            break;
+                            //skip do nothing
                         }
+                    } else  //if toMove is deco
+                    {
+                        //skip do nothing
                     }
                 }
+                else
+                    {
+                        break;
+                    }
             }
-            else
+
+        else
             {
                 //find next NOT null on the flor
                 continue;           //skip to j++
@@ -632,7 +639,7 @@ public class Plateau
         int i = x;
         int j = y - 1;
         boolean isFound = false;
-        this.isDecoStop = false;
+        //this.isDecoStop = false;
         int counter = 0;
         while ((!isFound) && (j >= 0))
         {
@@ -641,11 +648,6 @@ public class Plateau
                 for (i = x; i >= 0; i--)
                 if ((plateau[i][j] != null)  && (j >= 0) )
                 {
-                    ObjectSurCase obj = getObject(i, j);
-                    if (!obj.isClicable())
-                    {
-                        isDecoStop = true;
-                    }
                     counter++;
                     return new int[]{height - 1, j};
                 }
