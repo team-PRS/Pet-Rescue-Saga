@@ -546,7 +546,7 @@ public class Plateau
                                     this.cleanCase(i - 1, j);
                                     for (int k = i - 1; k > 0; k-- )
                                     {
-                                        
+
                                         shiftDown(k, j);
                                     }
                                 }
@@ -821,7 +821,7 @@ public class Plateau
                             j++;
                         }
                     }
-                    else if (obj instanceof Ballon)                        //if ballon
+                    else if (obj instanceof Ballon && ((Ballon)obj).getColor().equals(ballonColor))                        //if ballon
                     {
                         cleanCase(i, j);
                         shiftDown(i, j);
