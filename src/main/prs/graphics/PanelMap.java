@@ -18,7 +18,7 @@ public class PanelMap extends JPanel{
     nbrButton = 0;
     setLayout(null);
     jeu=j;
-    setBackground(new Color(255,255,255,200));
+    //setBackground(new Color(255,255,255,200));
     //setExtendedState(JPanel.MAXIMIZED_BOTH);
   }
   // GET SET -------------------------------------------------------------------
@@ -55,7 +55,8 @@ public class PanelMap extends JPanel{
       setVisible(true);
       setBorderPainted(true);
       setOpaque(true);
-      setBackground(jeu.getData().getBackgroundColor());
+      //setBackground(jeu.getData().getBackgroundColor()); //It need to repaint all frame or we will see some text in transparency.
+      setBackground(Color.WHITE);
     }
     // GET SET -------------------------------------------------------------------
 
