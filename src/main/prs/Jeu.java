@@ -208,8 +208,24 @@ public class Jeu
      */
     public String getCurrentLevelStatus()
     {
-        return plateau.gameState();
+        String status = "";
+        if (plateau.gameState().equals("lost") &&
+                joueur.getCompte().getBallon() < 1 &&
+                joueur.getCompte().getGold() < joueur.getCompte().BALLON_PRIX)
+        {
+            status = "lost";
+        }
+        else if (plateau.gameState().equals("win"))
+        {
+            status = "win";
+        }
+        else
+        {
+            status = "continue";
+        }
+        return status;
     }
+
 
 
     /**
@@ -329,6 +345,20 @@ public class Jeu
         check();
     }
 
+    /**
+     * Makes shifts and rescue of animals ans blocs
+     */
+    public void check()
+    {
+        rescue();
+        plateau.shiftLeft();
+        plateau.shiftAnimal();
+        rescue();
+        plateau.shiftLeft();
+        plateau.shiftAnimal();
+        rescue();
+        plateau.shiftLeft();
+    }
 
     public void endLevel(){
         if(getCurentLevel()==getCompte().getLastUnlockLevel()){
@@ -340,7 +370,7 @@ public class Jeu
     public void endLevelLost(){
         getCompte().saveScore(getCurentLevel(),false);
     }
-
+  
     /*============================== Private & internal functions ====================================================*/
     /**
      * check animal on the floor, rescue them and print message for each of them
@@ -404,16 +434,6 @@ public class Jeu
         }
     }
 
-    private void check()
-    {
-        rescue();
-        plateau.shiftLeft();
-        plateau.shiftAnimal();
-        rescue();
-        plateau.shiftLeft();
-        plateau.shiftAnimal();
-        rescue();
-        plateau.shiftLeft();
-    }
+
 
 }

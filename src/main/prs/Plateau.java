@@ -500,7 +500,7 @@ public class Plateau
                                 {
                                   moveColumn(j, coordY);
                                 }
-                                printMap();
+                               // printMap();
 
                             } else  //if it is deco
                             {
@@ -890,42 +890,38 @@ public class Plateau
      */
     public String gameState()
     {
-        //(animals != 0) && (ballons == 0) && (can't find any group anymore)
+        //(animals != 0) && (bomb == 0) && (can't find any group anymore)
         int an = 0;
-        int bal = 0;
+        int bomb = 0;
         LinkedList[] lists = null;
-        boolean isGroupsPresent = false;
+        int sizeSum = 0;
         String state = "";
         for (int i = 0; i < height; i++)
         {
             for (int j = 0; j < width; j++)
             {
+                state = "lost";
                 if (plateau[i][j] instanceof Animal)
                 {
                     an++;
                 }
-                if (plateau[i][j] instanceof Ballon)
+                if (plateau[i][j] instanceof Bomb)
                 {
-                    bal++;
+                    bomb++;
                 }
                 if (plateau[i][j] instanceof Bloc)
                 {
                     LinkedList l = getGroup(i, j);
-                    if (l.size() != 1)
-                        {
-                            isGroupsPresent = true;
-                        }
+                    sizeSum += l.size();
                 }
             }
         }
 
-        if ((an != 0) && (bal == 0) && (isGroupsPresent == false)) { state = "lost"; }
+        if (an > 0 && bomb == 0 && sizeSum == 0) { state = "lost"; }
         else if (an == 0) { state = "win"; }
         else { state = "continue"; }
-
         return state;
     }
-
     
     /*================================= MAIN ==============================*/
    //

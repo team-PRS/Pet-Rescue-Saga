@@ -94,7 +94,7 @@ public class GuiPrs
         String message = "";
 
         String l1 = "LEVEL 1\n" +
-                            "Try to eliminate the groups of blocs of the same color under animals" +
+                            "Try to eliminate the groups of blocs of the same color under animals " +
                             "so they will go down and will be rescued.\n" +
                             "Your points will be converted to gold at the end of level.";
 
