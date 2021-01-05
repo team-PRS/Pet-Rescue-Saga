@@ -7,7 +7,7 @@ public class Compte implements Serializable {
 
      private int gold;
      private int ballon;
-     private int unlockLevel;
+     //private int unlockLevel;
     /**
      *Temporary point for the curent level
      */
@@ -22,7 +22,7 @@ public class Compte implements Serializable {
      *If score = -1 level is lock. If score = 0 level is unlock but not done yet. If score > 0 level have been done.
      */
      private int [] levelScore;
-     
+
 
      // CONSTRUCTEUR ---------------------------------------------------------------
      /**
@@ -31,7 +31,7 @@ public class Compte implements Serializable {
      public Compte () {
        this.gold = 100;
        this.ballon = 0;
-       this.unlockLevel = 1;
+       //this.unlockLevel = 1;
        this.points = 0;
        levelScore = new int [NUMBER_OF_LEVEL];
        levelScore[0]=0; //1a level is unlocked
@@ -124,7 +124,7 @@ public class Compte implements Serializable {
     // Fonctions propre -----------------------------------------------------------
     public String toString(){
         String str = "Ballons : " + Integer.toString(ballon) + "  Gold : " + Integer.toString(gold)
-                + "  UnlockLevel : " + Integer.toString(unlockLevel)  + "  Points : " + Integer.toString(points);
+                + "  UnlockLevel : " + Integer.toString(getLastUnlockLevel())  + "  Points : " + Integer.toString(points);
           str+="\n"+tableau.tableauToString(levelScore);
         return str;
     }

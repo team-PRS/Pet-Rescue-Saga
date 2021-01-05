@@ -89,7 +89,7 @@ public class GuiPrs
       }
     }
 
-    /*public String showMessage(String request)
+    public String showMessage(String request)
     {
         String message = "";
 
@@ -114,7 +114,7 @@ public class GuiPrs
         else if (request.equals("level4")) {message = l4;}
 
         return message;
-    }*/
+    }
 
 
     /**
