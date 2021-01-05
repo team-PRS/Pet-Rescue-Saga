@@ -55,7 +55,8 @@ public class PanelMap extends JPanel{
       setVisible(true);
       setBorderPainted(true);
       setOpaque(true);
-      setBackground(jeu.getData().getBackgroundColor());
+      //setBackground(jeu.getData().getBackgroundColor()); //It need to repaint all frame or we will see some text in transparency.
+      setBackground(Color.WHITE);
     }
     // GET SET -------------------------------------------------------------------
 
