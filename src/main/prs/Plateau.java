@@ -305,7 +305,7 @@ public class Plateau
      * Find all Blocs of the same color. Make a loop with previous function.
      * @param x,y - coordinates of click, groupe - list of already founded blocs (or not)      *
      */
-    public void getGroup(int x, int y, int[][] groupe)
+    private void getGroup(int x, int y, int[][] groupe)
     {
         ObjectSurCase a = this.getObject(x, y);
         // only for blocs:
@@ -565,7 +565,7 @@ public class Plateau
     /**
      * Finds the length of free space INCLUDING (x, y)
      */
-    public int lengthFreeSpace(int x, int y)
+    private int lengthFreeSpace(int x, int y)
     {
         int counter = 0;
         int j = y;
@@ -588,7 +588,7 @@ public class Plateau
      * @return null if find deco or if doesn't find not empty column
      * @return coordinates of column to move
      */
-    public int[] nextRightNotEmptyColumn_Floor(int x, int y)
+    private int[] nextRightNotEmptyColumn_Floor(int x, int y)
     {
         int i = height - 1;
         int j = y + 1;
@@ -627,7 +627,7 @@ public class Plateau
      * Finds nearest left NOT empty column (= STOP for ShiftLeft)
      * @return coordinates of column to stop for ShiftLeft or null
      */
-    public int[] nextLeftNotEmptyColumn(int x, int y)
+    private int[] nextLeftNotEmptyColumn(int x, int y)
     {
         int i = x;
         int j = y - 1;
@@ -661,7 +661,7 @@ public class Plateau
     /**
      * Moves columns from (floor,y2) to (floor,y1)
      */
-    public void moveColumn(int y1, int y2)
+    private void moveColumn(int y1, int y2)
     {
         if ((y1 < y2) && (plateau[height - 1][y2] != null))
         {
@@ -692,7 +692,7 @@ public class Plateau
     /**
      * Finds the length of column INCLUDING (x, y)
      */
-    public int findLengthOfColumn(int x, int y)
+    private int findLengthOfColumn(int x, int y)
     {                                                                 //TODO make -1 if on (x,y) will be deco
         int len = 0;
         for (int i = x; i >= 0; i--)
