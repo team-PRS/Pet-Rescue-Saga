@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Random;
+import java.awt.Font;
 
 
 public class GuiPrs
@@ -57,6 +58,7 @@ public class GuiPrs
     */
     public boolean addPanelMap(){
       try {
+        iniFont();
         data.setPMap(new PanelMap(this));
         data.getPMap().setSize(data.getWidthMax(),data.getHeightMax());
         data.getFrame().setContentPane(data.getPMap());
@@ -247,7 +249,16 @@ public class GuiPrs
       return ok;
     }
 
-    public void repaint(){ data.getFrame().repaint();
+    /**
+    *set font size depending of the Frame size.
+    */
+    public void iniFont(){
+        int x=(data.getWidthMax()*30)/1920; //30 pixel for 1920x1080 resolution.
+        data.setFont(new Font("FreeSans",Font.BOLD,x));
+    }
+
+    public void repaint(){
+      data.getFrame().repaint();
       //paintAll();
     }
 

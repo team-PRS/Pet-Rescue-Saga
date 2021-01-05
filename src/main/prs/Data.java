@@ -57,6 +57,7 @@ public class Data {
   public void setScreenDimY(int x){screenDimY=x;}*/
   public int getNbrLevelAviable(){return nbrLevelAviable;}
   public Font getFont(){return font;}
+  public void setFont(Font f){font=f;}
   public int getTailleDUneCase(){return tailleDUneCase;}
   public void setTailleDUneCase(int x){tailleDUneCase=x;}
   public Frame getFrame(){return frame;}
