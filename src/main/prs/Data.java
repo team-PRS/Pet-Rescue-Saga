@@ -2,6 +2,7 @@ package prs;
 import java.awt.Image;
 import java.awt.Font;
 import prs.graphics.*;
+import java.awt.Color;
 
 /**
 *{@summary Contain all data (images) that will be used by the graphic interface.}
@@ -23,6 +24,7 @@ public class Data {
   private int nbrLevelAviable=4;
   private Font font=new Font("FreeSans",Font.BOLD,30);
   private int tailleDUneCase = 100;
+  private Color backgroundColor = new Color(255,255,255,180);
 
   private Frame frame;
   private PanelMap pMap;
@@ -60,6 +62,8 @@ public class Data {
   public void setFont(Font f){font=f;}
   public int getTailleDUneCase(){return tailleDUneCase;}
   public void setTailleDUneCase(int x){tailleDUneCase=x;}
+  public Color getBackgroundColor(){return backgroundColor;}
+
   public Frame getFrame(){return frame;}
   public void setFrame(Frame f){frame=f;}
   public PanelMap getPMap(){return pMap;}

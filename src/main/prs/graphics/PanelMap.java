@@ -53,10 +53,14 @@ public class PanelMap extends JPanel{
       setFont(jeu.getData().getFont());
       addMouseListener(this);
       setVisible(true);
+      setBorderPainted(true);
+      setOpaque(true);
+      setBackground(jeu.getData().getBackgroundColor());
     }
     // GET SET -------------------------------------------------------------------
 
     // FUNCTIONS -----------------------------------------------------------------
+    @Override
     public void paintComponent(Graphics g){
       super.paintComponent(g);
     }

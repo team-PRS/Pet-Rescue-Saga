@@ -34,7 +34,7 @@ public class PanelPlateau extends JPanel implements MouseListener{
   // FUNCTIONS -----------------------------------------------------------------
   public void paintComponent(Graphics g){
     if(motor.getPlateau()!=null){
-      g.setColor(new Color(255,255,255,180));
+      g.setColor(jeu.getData().getBackgroundColor());
       g.fillRect(0,0,getWidth(),getHeight());
       paintCase(g);
       paintGrid(g);
