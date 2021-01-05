@@ -18,7 +18,7 @@ public class Frame extends JFrame{
   public Frame(GuiPrs j){
     jeu=j;
     setTitle("Pet Rescue Saga");
-    setResizable(true);
+    setResizable(false);
     //setLocationRelativeTo(null); // fenetre centrée
     setExtendedState(JFrame.MAXIMIZED_BOTH);//Frame take as many space as it can.
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // bouton fermer par défaut.
