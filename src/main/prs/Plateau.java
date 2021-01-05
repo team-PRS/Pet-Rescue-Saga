@@ -926,15 +926,8 @@ public class Plateau
         return state;
     }
 
-    /*============================= Add Elements During the Set ==========================*/
-
-   // public void addBlocsInGame(int nmbBlocs)
-   // {
-   // }
-   //
-   //
-   //
-   // /*================================= MAIN ==============================*/
+    
+    /*================================= MAIN ==============================*/
    //
   //  public static void main(String[] args)
   //

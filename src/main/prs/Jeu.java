@@ -261,9 +261,6 @@ public class Jeu
                         b=true;
                         // TODO add another blocs and elements (depends of level)
                         //  if (configLevel.getValue(level, "addBlocs") == "true")
-                        // {
-                        //     plateau.addBlocsInGame(configLevel.getValue(level, "additionalBlocs"));
-                        // }
                     }
                 }
                 // if animal
@@ -291,14 +288,7 @@ public class Jeu
 
                     }
                 }
-                //plateau.rescueAnimals_1();
-                rescue();
-                plateau.shiftLeft();
-                plateau.shiftAnimal();
-                rescue();
-                plateau.shiftLeft();
-                rescue();
-                plateau.shiftLeft();
+                check();
                 return b;
             }
             else //empty cell
@@ -324,13 +314,7 @@ public class Jeu
         this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points * 5);
 
         //plateau.rescueAnimals_1();
-        rescue();
-        plateau.shiftLeft();
-        plateau.shiftAnimal();
-        rescue();
-        plateau.shiftLeft();
-        rescue();
-        plateau.shiftLeft();
+        check();
     }
 
     /**
@@ -342,15 +326,7 @@ public class Jeu
     {
         int points1 = plateau.bombExplosion(x, y);
         this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points1 * 5);
-        
-
-        rescue();
-        plateau.shiftLeft();
-        plateau.shiftAnimal();
-        rescue();
-        plateau.shiftLeft();
-        rescue();
-        plateau.shiftLeft();
+        check();
     }
 
 
@@ -426,6 +402,18 @@ public class Jeu
         {
             this.gamers = new ArrayList<Joueur>();
         }
+    }
+
+    private void check()
+    {
+        rescue();
+        plateau.shiftLeft();
+        plateau.shiftAnimal();
+        rescue();
+        plateau.shiftLeft();
+        plateau.shiftAnimal();
+        rescue();
+        plateau.shiftLeft();
     }
 
 }
