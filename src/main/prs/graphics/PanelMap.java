@@ -18,7 +18,7 @@ public class PanelMap extends JPanel{
     nbrButton = 0;
     setLayout(null);
     jeu=j;
-    setBackground(new Color(255,255,255,200));
+    //setBackground(new Color(255,255,255,200));
     //setExtendedState(JPanel.MAXIMIZED_BOTH);
   }
   // GET SET -------------------------------------------------------------------

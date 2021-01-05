@@ -46,7 +46,7 @@ public class GuiPrs
     */
     public boolean addFrame(){
       try {
-        data.setFrame(new Frame());
+        data.setFrame(new Frame(this));
         return true;
       }catch (Exception e) {
         return false;
@@ -475,6 +475,8 @@ public class GuiPrs
         boolean needToLoadAccount = false;
         if(data==null){iniIsGui();needToLoadAccount=true;}
         System.out.println(addFrame());
+        System.out.println(iniImage());
+        getData().getFrame().addBackgroud();
         //faire changer ou creer un compte graphiquement.
         if(needToLoadAccount){
             addAccountWindow();
@@ -482,7 +484,6 @@ public class GuiPrs
 
         //loadPlayerInfo();
         //Map map = new Map(motor.getJoueur());
-        System.out.println(iniImage());
         System.out.println(addPanelMap());
         System.out.println("addLevel "+addLevel());
         repaint();
