@@ -309,7 +309,6 @@ public class GuiPrs
     *End game by a win or a lost.
     */
     public void endAction(boolean win){
-        getJeu().getCompte().saveScore(win);
         if (win){
             motor.endLevel();
             JOptionPane.showMessageDialog(data.getFrame(),"Congratulations, you win !");
