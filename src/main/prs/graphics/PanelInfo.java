@@ -56,6 +56,7 @@ public class PanelInfo extends JPanel{
       super.paintComponent(g);
       setText2();
       setLocation2();
+      setSize((int)(jeu.getData().getFont().getSize()*1.2)*7,jeu.getData().getFont().getSize()*12);
     }
     private void setText2(){
         score.setText("Points : "+motor.getCurrentJoueur().getCompte().getPoints());
@@ -68,17 +69,19 @@ public class PanelInfo extends JPanel{
     }
     private void setLocation2(){
         int k=0;
-        score.setLocation(0,40*k);k++;
-        gold.setLocation(0,40*k);k++;
-        ballon.setLocation(0,40*k);k++;
-        addBallon.setLocation(0,40*k);k++;
-        placeBallon.setLocation(0,40*k);k++;
-        backToMap.setLocation(0,40*k);k++;
-        iaFinish.setLocation(0,40*k);k++;
+        int x = getHeight();
+        x=x/7;
+        score.setLocation(0,x*k);k++;
+        gold.setLocation(0,x*k);k++;
+        ballon.setLocation(0,x*k);k++;
+        addBallon.setLocation(0,x*k);k++;
+        placeBallon.setLocation(0,x*k);k++;
+        backToMap.setLocation(0,x*k);k++;
+        iaFinish.setLocation(0,x*k);k++;
     }
     private void setFont(){
         //font
-        Font font = new Font("Arial",Font.BOLD,30);
+        Font font = jeu.getData().getFont();
         score.setFont(font);
         gold.setFont(font);
         ballon.setFont(font);
