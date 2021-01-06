@@ -133,6 +133,7 @@ public class Plateau
         int a=nmbImmoBlocs, b=nmbBlocs, c=nmbAnimals, d=nmbBombs;
         int ia = 0, ib=0, ic=0, id=0;
         // Set decoration (RANDOM mode)
+        // TODO place in a sub function setDecoration();
         if (nmbImmoBlocs != 0)
         {
             for (int i = nmbImmoBlocs; i > 0; i--)
@@ -154,8 +155,8 @@ public class Plateau
             }
         }
 
-        /* Set movables objects (RANDOM mode)
-         */
+        /* Set movables objects (RANDOM mode)*/
+        // TODO place in a sub function setMovableObject();
         for (int i = height - 1; i >= 0; i--)
         {
             for (int j = width - 1; j >= 0; j--)
@@ -529,7 +530,7 @@ public class Plateau
     }
 
     /**
-     * Makes animal slide from deco + effect of gravity  
+     * Makes animal slide from deco + effect of gravity
      */
     public void shiftAnimal()
     {
@@ -795,19 +796,9 @@ public class Plateau
                                 {
                                     cleanCase(i, j);
                                     shiftDown(i, j);
-                                } else
-                                {
-                                    //skip
-                                }
-                            } else
-                            {
-                                //skip
-                            }
-                        }
-                        else
-                        {
-                            //skip
-                        }
+                                } else {} //skip
+                            } else {} //skip
+                        } else {} //skip
                     }
                 }
             } else
