@@ -704,7 +704,7 @@ public class Plateau
         }
         else //can't move column
         {
-            System.out.println("Can't move column");
+            //System.out.println("Can't move column");   //debug
         }
     }
 
