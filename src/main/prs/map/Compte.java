@@ -74,13 +74,6 @@ public class Compte implements Serializable {
      }
      public void saveScore(int level){saveScore(level,true);}
 
-     /*public int getUnlockLevel() { return this.unlockLevel;}
-
-     public void setUnlockLevel(int unlock)
-     {
-       this.unlockLevel = unlock;
-}   */
-
      public int getPoints(){return points;}
 
      public void setPoints(int points){ this.points = points;}

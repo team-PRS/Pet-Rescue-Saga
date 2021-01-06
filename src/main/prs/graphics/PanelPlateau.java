@@ -58,17 +58,7 @@ public class PanelPlateau extends JPanel implements MouseListener{
         }
         else if(obj instanceof Animal)
         {
-          if (((Animal)obj).getType().equals("DOG"))
-          {g.drawImage(jeu.getData().getDog(),yTemp,xTemp,this);}
-
-          else if (((Animal)obj).getType().equals("CAT"))
-          {g.drawImage(jeu.getData().getCat(),yTemp,xTemp,this);}
-
-          else if (((Animal)obj).getType().equals("FISH"))
-          {g.drawImage(jeu.getData().getFish(),yTemp,xTemp,this);}
-
-          else if (((Animal)obj).getType().equals("MOUSE"))
-          {g.drawImage(jeu.getData().getMouse(),yTemp,xTemp,this);}
+          drawAnimal(g,(Animal)obj,xTemp,yTemp);
         }
         else if(obj instanceof Bomb){
           g.drawImage(jeu.getData().getBomb(),yTemp,xTemp,this);
@@ -79,6 +69,20 @@ public class PanelPlateau extends JPanel implements MouseListener{
         }
       }
     }
+  }
+
+  public void drawAnimal(Graphics g, Animal a, int xTemp, int yTemp){
+      if (a.getType().equals("DOG"))
+      {g.drawImage(jeu.getData().getDog(),yTemp,xTemp,this);}
+
+      else if (a.getType().equals("CAT"))
+      {g.drawImage(jeu.getData().getCat(),yTemp,xTemp,this);}
+
+      else if (a.getType().equals("FISH"))
+      {g.drawImage(jeu.getData().getFish(),yTemp,xTemp,this);}
+
+      else if (a.getType().equals("MOUSE"))
+      {g.drawImage(jeu.getData().getMouse(),yTemp,xTemp,this);}
   }
   public void paintGrid(Graphics g){
     g.setColor(Color.BLACK);

@@ -314,8 +314,7 @@ public class GuiPrs
             JOptionPane.showMessageDialog(data.getFrame(),"Congratulations, you win !");
             int answer = JOptionPane.showConfirmDialog(data.getFrame(),"do you want to go back to map ?");
             playOrExit(answer==0);
-        }
-        else{
+        }else{
             motor.endLevelLost();
             JOptionPane.showMessageDialog(data.getFrame(),"The level is lost. Try again.. ");
             int answer = JOptionPane.showConfirmDialog(data.getFrame(),"do you want to try again ?");
@@ -377,14 +376,11 @@ public class GuiPrs
         if (motor.getPlateau()==null){return false;}
         if(motor.getCurrentJoueur().getCompte().getBallon() <= 0){return false;}
         // player has clicked on plateau
-        if (motor.getPlateau().isOnPlateau(x, y))
-        {
+        if (motor.getPlateau().isOnPlateau(x, y)){
             // not empty cell
-            if (!motor.getPlateau().isEmpty(x, y) && motor.getCell(x,y)!=null)
-            {
+            if (!motor.getPlateau().isEmpty(x, y) && motor.getCell(x,y)!=null){
                 ObjectSurCase obj = motor.getCell(x, y);
-                if (obj instanceof Bloc)
-                {
+                if (obj instanceof Bloc){
                     Ballon ballon = new Ballon();
                     Bloc bloc = (Bloc)obj;
                     ballon.setColor(bloc.getColorId());
@@ -409,30 +405,9 @@ public class GuiPrs
         //window with menu deroulant:
         int answer = JOptionPane.showConfirmDialog(data.getFrame(),"Do you have an account ?");
         if(answer==0){ //if yes
-            Object pseudo=null;
             boolean joueurSet=false;
             while(!joueurSet){
-                //make player choose on the list.
-                Object[] elementsO = motor.getListOfJoueurs().toArray();
-                String[] elements = new String[elementsO.length];
-                int i=0;
-                for (Object o : elementsO ) {
-                    if(o instanceof Joueur){
-                        elements[i]=((Joueur)o).getPseudo();
-                        i++;
-                    }else{
-                        System.out.println("Error of convertion in GuiPrs.");
-                    }
-                }
-                //(Component parentComponent, Object message, String title, int messageType, Icon icon, Object[] selectionValues, Object initialSelectionValue)
-                pseudo = JOptionPane.showInputDialog(data.getFrame(),"Choose a player","Player selection",JOptionPane.QUESTION_MESSAGE,null,elements,null);
-                if(pseudo instanceof String){
-                    //TODO
-                    motor.selectJoueur((String)pseudo);
-                    joueurSet = true;
-                }else{
-                    System.out.println("Fail to set selectJoueur.");
-                }
+                joueurSet = selectAPlayer();
             }
         }else{
             //ask a pseudo while it isn't a new pseudo.
@@ -440,9 +415,30 @@ public class GuiPrs
             do {
                 pseudo = JOptionPane.showInputDialog(data.getFrame(), "Enter a new pseudo", "Anonymus");
             } while (this.isJoueurExisting(pseudo) || pseudo.equals(""));
-            //j = new Joueur();
-            //j.setPseudo(pseudo);
             motor.createNewJoueur(pseudo);
+        }
+    }
+
+    public boolean selectAPlayer(){
+        //make player choose on the list.
+        Object[] elementsO = motor.getListOfJoueurs().toArray();
+        String[] elements = new String[elementsO.length];
+        int i=0;
+        for (Object o : elementsO ) {
+            if(o instanceof Joueur){
+                elements[i]=((Joueur)o).getPseudo();
+                i++;
+            }else{
+                System.out.println("Error of convertion in GuiPrs.");
+            }
+        }
+        Object pseudo = JOptionPane.showInputDialog(data.getFrame(),"Choose a player","Player selection",JOptionPane.QUESTION_MESSAGE,null,elements,null);
+        if(pseudo instanceof String){
+            motor.selectJoueur((String)pseudo);
+            return true;
+        }else{
+            System.out.println("Fail to set selectJoueur.");
+            return false;
         }
     }
 
@@ -477,13 +473,9 @@ public class GuiPrs
         System.out.println(addFrame());
         System.out.println(iniImage());
         getData().getFrame().addBackgroud();
-        //faire changer ou creer un compte graphiquement.
         if(needToLoadAccount){
             addAccountWindow();
         }
-
-        //loadPlayerInfo();
-        //Map map = new Map(motor.getJoueur());
         System.out.println(addPanelMap());
         System.out.println("addLevel "+addLevel());
         repaint();

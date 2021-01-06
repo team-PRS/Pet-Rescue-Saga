@@ -91,15 +91,6 @@ public class Jeu
     public void selectJoueur(Joueur account)
     {
         this.joueur = account;
-
-        /*if (null != account)
-        {
-            //set link to compte
-            //this.compte = this.joueur.getCompte();
-        } else
-        {
-            //this.compte = null;
-        }*/
     }
 
     public void selectJoueur(String pseudo)
@@ -122,8 +113,6 @@ public class Jeu
         Joueur newRecord = new Joueur();
         this.joueur = newRecord;
         this.joueur.setPseudo(name);
-        //set link to compte
-        //this.compte = this.joueur.getCompte();
         this.gamers.add(this.joueur);
     }
 
@@ -153,7 +142,6 @@ public class Jeu
         initialImmoBlocs = Integer.parseInt(configLevel.getLevelValue(level, "initialImmoBlocs"));
         initialBombs = Integer.parseInt(configLevel.getLevelValue(level, "initialBombs"));
         initialBallons = Integer.parseInt(configLevel.getLevelValue(level, "initialBallons"));
-
 
         //initialisation of additional values which would be added during the game according the level
         additionalBlocs = Integer.parseInt(configLevel.getLevelValue(level, "additionalBlocs"));
@@ -249,37 +237,10 @@ public class Jeu
                 boolean b=false;                                    //for GUI
                 if (obj instanceof Bloc)
                 {
-                    // if only one bloc
-                    if (plateau.getGroup(x, y).size() == 0)
-                    {
-                        if (!this.IsGui)
-                        {
-                            System.out.println("\n Can't delete single bloc \n");
-                        }
-                    }
-                    // if group of blocs
-                    else
-                    {
-                        LinkedList<Case> blocGroupe = plateau.getGroup(x, y);
-                        int points = blocGroupe.size();
-                        // delete group and shift down all upstairs elements
-                        for (Case p : blocGroupe)
-                        {
-                            int xCoord = p.getCoordX();
-                            int yCoord = p.getCoordY();
-                            plateau.cleanCase(xCoord, yCoord);
-                            plateau.shiftDown(xCoord, yCoord);
-                        }
-                        this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points*5);
-                        b=true;
-                        // TODO add another blocs and elements (depends of level)
-                        //  if (configLevel.getValue(level, "addBlocs") == "true")
-                    }
+                    b=pressBlocs(x,y);
                 }
                 // if animal
-                else if (obj instanceof Animal)
-                {
-                }
+                else if (obj instanceof Animal){}
                 // if outil
                 else if (obj instanceof Outil)
                 {
@@ -304,14 +265,43 @@ public class Jeu
                 check();
                 return b;
             }
-            else //empty cell
-            {
-                return false;
+            else{} //empty cell
+        }
+        else{} // player has clicked out of plateau
+        return false;
+    }
+    /**
+    *Delete a groupe of blocs is the press blocs have close blos of the same color.
+    */
+    public boolean pressBlocs(int x, int y){
+        // if only one bloc
+        if (plateau.getGroup(x, y).size() == 0){
+            if (!this.IsGui){
+                System.out.println("\n Can't delete single bloc \n");
             }
         }
-        else // player has clicked out of plateau
+        else{ // if group of blocs
+            LinkedList<Case> blocGroupe = plateau.getGroup(x, y);
+            int points = blocGroupe.size();
+            // delete group and shift down all upstairs elements
+            deleteGroupeBlocs(blocGroupe);
+            this.joueur.getCompte().setPoints(this.joueur.getCompte().getPoints() + points*5);
+            return true;
+            // TODO add another blocs and elements (depends of level)
+            //  if (configLevel.getValue(level, "addBlocs") == "true")
+        }
+        return false;
+    }
+    /**
+    *Delete all Blocs of a groupe.
+    */
+    public void deleteGroupeBlocs(LinkedList<Case> blocGroupe){
+        for (Case p : blocGroupe)
         {
-            return false;
+            int xCoord = p.getCoordX();
+            int yCoord = p.getCoordY();
+            plateau.cleanCase(xCoord, yCoord);
+            plateau.shiftDown(xCoord, yCoord);
         }
     }
 
@@ -367,7 +357,7 @@ public class Jeu
     public void endLevelLost(){
         getCompte().saveScore(getCurentLevel(),false);
     }
-  
+
     /*============================== Private & internal functions ====================================================*/
     /**
      * check animal on the floor, rescue them and print message for each of them
