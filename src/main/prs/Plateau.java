@@ -528,39 +528,55 @@ public class Plateau
         }
     }
 
+    /**
+     * Makes animal slide from deco + effect of gravity  
+     */
     public void shiftAnimal()
     {
-        for (int i = 0; i < height; i++)
+        for (int decoCoordX = 0; decoCoordX < height; decoCoordX++)
         {
-            for (int j = 0; j < width; j++)
+            for (int decoCoordY = 0; decoCoordY < width; decoCoordY++)
             {
-                if (plateau[i][j] != null)
+                if (plateau[decoCoordX][decoCoordY] != null)
                 {
-                    ObjectSurCase obj = getObject(i, j);
-                    if (!obj.isClicable())
+                    ObjectSurCase maybeDeco = getObject(decoCoordX, decoCoordY);
+
+                    //if deco
+                    if (!maybeDeco.isClicable())
                     {
-                        if (((i - 1) >=0 ) && ((i - 1) < height) && (plateau[i - 1][j] != null))
+                        int animalCoordX = decoCoordX - 1;
+                        int animalCoordY = decoCoordY;
+
+                        if ((animalCoordX >= 0 ) && (animalCoordX < height) && (plateau[animalCoordX][animalCoordY] != null))
                         {
-                            ObjectSurCase obj1 = getObject(i - 1, j);
-                            if (obj1 instanceof Animal)
+                            ObjectSurCase maybeAnimal = getObject(animalCoordX, animalCoordY);
+
+                            // if animal
+                            if (maybeAnimal instanceof Animal)
                             {
                                 //make shiftLeft and shiftDown
-                                int[] newCoords = shiftOneStepLeft(i, j);
-                                //can't move if not empty cell and in cell near (just left cell)
-                                if ((plateau[newCoords[0]] [newCoords[1]] == null) && (newCoords[0] != i + 1 ) && (newCoords[1] != j + 1))
-                                {
-                                    this.setObject(obj1, newCoords[0], newCoords[1]);
-                                    this.cleanCase(i - 1, j);
-                                    for (int k = i - 1; k > 0; k-- )
-                                    {
+                                int[] thereToMove = shiftOneStepLeft(animalCoordX, animalCoordY);
+                                int thereToMoveX = thereToMove[0];
+                                int thereToMoveY = thereToMove[1];
 
-                                        shiftDown(k, j);
+                                //can't move if not empty cell and in cell near animal (just left cell)
+                                if ((plateau[thereToMoveX][thereToMoveY] == null) && (thereToMoveY == animalCoordY - 1) &&
+                                        (thereToMoveX >= animalCoordX + 1))
+                                {
+                                    setObject(maybeAnimal, thereToMoveX, thereToMoveY);
+                                    cleanCase(animalCoordX, animalCoordY);
+
+                                    //make shift down for upstairs of animal
+                                    for (int k = animalCoordX; k > 0; k-- )
+                                    {
+                                        shiftDown(k, animalCoordY);
                                     }
                                 }
-                               // shiftDown(newCoords[0], newCoords[1]);
                             }
+                            // if not animal
                         }
                     }
+                    //if not deco
                 }
             }
         }
@@ -720,6 +736,11 @@ public class Plateau
 
     //--------------- service functions for shiftAnimal---------------------------------------------------------------//
 
+    /**
+     * Finds there can move animal from deco
+     * @param x, y - coordinates of animal
+     * @return coordinates of cell there can move animal from deco
+     */
     private int[] shiftOneStepLeft(int x, int y)
     {
         int i = x;
@@ -735,7 +756,7 @@ public class Plateau
                 //keep moving down and looking for first not empty cell
             }
         }
-        return new int[]{i - 1, j};
+        return new int[]{height - 1, y - 1};
     }
 
 
@@ -924,118 +945,5 @@ public class Plateau
         else { state = "continue"; }
         return state;
     }
-    
-    /*================================= MAIN ==============================*/
-   //
-  //  public static void main(String[] args)
-  //
-  //  {
-  //
-  //      Plateau test1 = new Plateau(5, 5);
-  //
-  //   //   test1.remplirPlateau(3, 14, 1, 0);
-  //
-  //      Bloc b1 = new Bloc("BLUE");                                         //test shiftLeft();
-  //      Bloc b2 = new Bloc("NONE");
-  //      Bloc b3 = new Bloc("BLUE");
-  //      Bloc b4 = new Bloc("BLUE");
-  //      Animal a = new Animal("CAT");
-  //
-  //      test1.setObject(b1, 4, 1);
-  //      test1.setObject(b2, 3, 2);
-  //      test1.setObject(a, 2, 2);
-  //      test1.setObject(b3, 4, 4);
-  //      test1.setObject(b4, 3, 4);
-  //
-  //      test1.printMap();
-  //
-  //      test1.shiftLeft();
-  //
-  //      test1.printMap();
-  //
-  //      test1.shiftAnimal();
-  //
-  //      System.out.println("");
-  //      test1.printMap();
-  //
-  //                                                                              //test shiftAnimal();
-  //
-  //
-  //
-  //
-  //
-  //      for (int i = test1.height - 1; i >= 0; i--)                             //test ballonExplosion()
-  //      {
-  //          for (int j = 6; j >= 0; j--)
-  //          {
-  //              if (test1.getObject(i, j) != null)
-  //              {
-  //                  ObjectSurCase obj = test1.getObject(i, j);
-  //
-  //                  if (obj instanceof Outil)
-  //                  {
-  //                      test1.ballonExplosion("BLUE");
-  //                  }
-  //              } else
-  //              {
-  //                  //System.out.println("has not element");          //for test
-  //              }
-  //          }
-  //      }
-  //
-  //      //  for (int i = 6; i >= 0; i--)                                //test bombExplosion()
-  //      //  {
-  //      //      for (int j = 6; j >= 0; j--)
-  //      //      {
-  //      //          if (test1.getObject(i, j) != null)
-  //      //          {
-  //      //              ObjectSurCase obj = test1.getObject(i, j);
-  //      //
-  //      //              if (obj instanceof Outil)
-  //      //              {
-  //      //                  test1.bombExplosion(i, j);
-  //      //              }
-  //      //          }
-  //      //          else
-  //      //          {
-  //      //              System.out.println("has not element");
-  //      //          }
-  //      //      }
-  //      //  }
-  //      test1.printMap();
-  //
-  //      //   for (int i = 0; i < 6; i++)
-  //      //   {
-  //      //       System.out.println(isOnFloor);
-  //      //       test1.getAnimalsOnFloor();
-  //      //       if (isOnFloor == true)                                             //test animal rescue()
-  //      //       {
-  //      //           System.out.println("");
-  //      //           System.out.println("Need to rescue ");
-  //      //           test1.rescueAnimals(test1.getAnimalsOnFloor());
-  //      //           // System.out.println("");
-  //      //           test1.printMap();
-  //      //       }
-  //      //       System.out.println("Start cycle " + i);
-  //      //       test1.cleanCase(6, 6);
-  //      //       test1.printMap();
-  //      //       test1.shiftDown(6, 6);
-  //      //       System.out.println("");
-  //      //       test1.getAnimalsOnFloor();
-  //      //       if (isOnFloor == true)
-  //      //       {
-  //      //           System.out.println("");
-  //      //           System.out.println("Need to rescue ");
-  //      //           test1.rescueAnimals(test1.getAnimalsOnFloor());
-  //      //           // System.out.println("");
-  //      //           test1.printMap();
-  //      //       }
-  //      //
-  //      //   }
-  //
-  //      //  test1.getGroup(5, 6);                                       //test getGroup()
-  //      //  System.out.println("");
-  //      //  test1.getGroup(3, 4);
-  //
-  //  }
+
 }

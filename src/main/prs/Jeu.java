@@ -200,7 +200,6 @@ public class Jeu
         return plateau.getObject(x, y);
     }
 
-
     /**
      * return current level status
      *
@@ -225,8 +224,6 @@ public class Jeu
         }
         return status;
     }
-
-
 
     /**
       {@summary function which provide reactions for clic:}<br>
@@ -433,7 +430,4 @@ public class Jeu
             this.gamers = new ArrayList<Joueur>();
         }
     }
-
-
-
 }
