@@ -24,7 +24,6 @@ public class PanelPlateau extends JPanel implements MouseListener{
     setOpaque(false);
     setLayout(null);
     addMouseListener(this);
-    //setBackground(new Color(255,255,255,150)); don't work.
   }
   // GET SET -------------------------------------------------------------------
   public Plateau getPlateau(){return motor.getPlateau();}
@@ -99,6 +98,9 @@ public class PanelPlateau extends JPanel implements MouseListener{
       g.drawLine(0,xT,jeu.getData().getTailleDUneCase()*xCase,xT);
     }
   }
+  /**
+  *Draw Bloc.
+  */
   public void drawColorRect(int i, int j, Color c, Graphics g){
     int tc = jeu.getData().getTailleDUneCase();
     g.setColor(c);
@@ -118,6 +120,7 @@ public class PanelPlateau extends JPanel implements MouseListener{
     g2d.setColor(new Color(255,255,255,50));
     g2d.drawLine(tc*(i+1),tc*(j+1),tc*(i+1)-tc/8,tc*(j+1)-tc/8);
   }
+
   public void drawballon(int i, int j, Color c, Graphics g){
       int tc = jeu.getData().getTailleDUneCase();
       g.setColor(c);
@@ -125,7 +128,6 @@ public class PanelPlateau extends JPanel implements MouseListener{
       g.setColor(Color.BLACK);
       g.drawOval(tc*i+tc/10,tc*j,(tc*8)/10,(tc*9)/10);
   }
-  //public class Listener implements MouseListener{
     public void mouseClicked(MouseEvent e){
         System.out.println("clic en "+e.getY()+" "+e.getX());//@a
         jeu.clicOnPlateau(e.getY(),e.getX()); // /!\ our x & y are revers to the java usualx & y.
@@ -137,6 +139,4 @@ public class PanelPlateau extends JPanel implements MouseListener{
     public void mouseExited(MouseEvent event) {}
     public void mousePressed(MouseEvent event) { }
     public void mouseReleased(MouseEvent event) { }
-  //}
-  // SUB-CLASS -----------------------------------------------------------------
 }

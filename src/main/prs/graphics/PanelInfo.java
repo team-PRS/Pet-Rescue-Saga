@@ -39,13 +39,7 @@ public class PanelInfo extends JPanel{
         placeBallon = new JButton();
         backToMap = new JButton();
         iaFinish = new JButton();
-        add(score);
-        add(gold);
-        add(ballon);
-        add(addBallon);
-        add(placeBallon);
-        add(backToMap);
-        add(iaFinish);
+        addAll();
         setFont();
     }
     // GET SET -------------------------------------------------------------------
@@ -91,5 +85,14 @@ public class PanelInfo extends JPanel{
         placeBallon.setFont(font);
         backToMap.setFont(font);
         iaFinish.setFont(font);
+    }
+    private void addAll(){
+        add(score);
+        add(gold);
+        add(ballon);
+        add(addBallon);
+        add(placeBallon);
+        add(backToMap);
+        add(iaFinish);
     }
 }
